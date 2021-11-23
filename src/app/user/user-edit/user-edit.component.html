@@ -1,0 +1,51 @@
+<div class="container">
+    <h3 mat-dialog-title>Người dùng</h3>
+  
+    <form class="mat-dialog-content" (ngSubmit)="submit" #formControl="ngForm">
+  
+      <div class="form">
+        <mat-form-field color="accent">
+          <input matInput #input class="form-control" placeholder="Tên người dùng" [(ngModel)]="data.userName" name="userName" required />
+          <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>  
+      <!--Textarea for demo purposes-->
+      <div class="form">
+        <mat-form-field color="accent">
+          <input matInput #input class="form-control" placeholder="Tên đầy đủ" [(ngModel)]="data.fullName" name="fullName" required />
+          <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form">
+        <mat-form-field color="accent">
+          <input matInput #input class="form-control" placeholder="Mật khẩu" [(ngModel)]="data.password" name="password" required />
+          <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form">
+        <mat-form-field color="accent">          
+          <input matInput [hidden]="true" [(ngModel)]="data.admin" name="admin">
+          <!-- <input type="checkbox" matInput #input class="form-control" placeholder="Toàn quyền" [(ngModel)]="data.admin" name="admin" /> -->
+          <mat-checkbox [(ngModel)]="data.admin" name="admin">Toàn quyền</mat-checkbox>
+          <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form">
+        <mat-form-field color="accent">
+          <mat-select placeholder="Chọn ..." type="text" id="place" [(ngModel)]="data.placeID"  name="palceID">
+            <mat-option>--Chọn Phường--</mat-option>
+            <mat-option *ngFor="let t of placeData"
+            [value]="t.oid">{{t.placeName}}
+            </mat-option>
+          </mat-select>
+          
+        </mat-form-field>
+      </div>
+  
+      <div mat-dialog-actions>
+        <button mat-button  [disabled]="!formControl.valid" [mat-dialog-close]="1" (click)="stopEdit()">Save</button>
+        <button mat-button (click)="onNoClick()" tabindex="-1">Cancel</button>
+      </div>
+    </form>
+</div>
+  

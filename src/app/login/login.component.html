@@ -1,0 +1,65 @@
+<div class="login-layout">
+    <div id="left pr">
+      <div id="wrap" style="height: 100%; min-height: 100%">
+        <div id="main" style="overflow: auto; padding-bottom: 48px">
+          <div id="wrapper" style="padding-top: 8%">
+            <div class="logo-wrapper mb24">
+              <div
+                style="height: 100%; display: table-cell; vertical-align: bottom"
+              >
+              <img src="favicon.ico" width="200" />
+              <p style="text-align: center;color: chocolate;"><b>CÔNG AN TỈNH BÌNH DƯƠNG</b></p>
+              </div>
+            </div>
+            <div id="content" style="display: block">
+              <div id="theloginform">
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                  <div class="loginError" style="display: block">
+                    {{
+                      errormgs == undefined
+                        ? "Để truy cập phần mềm bạn cần đăng nhập"
+                        : errormgs
+                    }}
+                  </div>
+                  <div id="usernamegroup" style="position: relative">
+                    <label for="username" class="label usernamelabel"
+                      >Tên người dùng</label
+                    ><br />
+                    <input
+                      class="input wide mb16 mt8 username" style="margin-top: 0.5rem;"
+                      matInput
+                      formControlName="username"
+                      [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
+                    /><br />
+                    <label for="password" class="label">Mật khẩu</label><br />
+                    <input
+                      class="input wide mb16 mt8 password" style="margin-top: 0.5rem;"
+                      type="password"
+                      matInput
+                      formControlName="password"
+                    />
+                  </div>
+                  <!-- login button -->
+                  <input
+                    [disabled]="isLoading"
+                    class="button r4 wide secondary"
+                    value="Đăng nhập"
+                    type="submit"
+                  />
+                  
+                </form>
+              </div>
+              <div class="mb20 mt8" style="margin-top: 0.5rem;">
+                <a href="" class="fl small" style="text-decoration: none"
+                  >Quên mật khẩu?</a
+                >
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="footer">© 2021 Copyright Oryza. All rights reserved.</div>
+    </div>
+  </div>
+  

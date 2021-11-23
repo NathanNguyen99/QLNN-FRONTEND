@@ -1,0 +1,88 @@
+<!-- <mat-toolbar color="primary" class="mat-elevation-z1"> -->
+<!-- <mat-toolbar-row>
+    <button mat-icon-button id="menu" (click)="navService.tongleNav()">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <span fxHide.xs>HỆ THỐNG QUẢN LÝ NGƯỜI NGHIỆN</span>
+    <span class="example-spacer"></span>
+
+    <button mat-button [matMenuTriggerFor]="menu">
+      <mat-icon>account_box</mat-icon>
+      {{ helper.getUserFullName() }}
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item [routerLink]="'system/changepassword'">
+        <mat-icon>account_circle</mat-icon>
+        <span>Đổi mật khẩu</span>
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>power_settings_new</mat-icon>
+        <span>Đăng xuất</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar-row>
+</mat-toolbar> -->
+
+<header class="top-bar-nav">
+  <div
+    class="menu-section-container"
+    ng-sidebar-content
+    (click)="navService.tongleNav(); tongleNav()"
+    style="display: flex"
+  >
+    <div class="menu-button" style="cursor: pointer">
+      <mat-icon class="menu-icon">{{ _opened ? "close" : "menu" }}</mat-icon>
+    </div>
+    <div style="display: block">
+      <div class="active-section">
+        {{ _opened ? "Đóng" : "Menu" }}
+        <div class="triangle-bottom-right"></div>
+      </div>
+    </div>
+  </div>
+  <div class="logo-wrapper" [routerLink]="'/home/dashboard'">
+    <div style="height: 100%; display: table-cell; vertical-align: bottom">
+      <div
+        class=""
+        style="
+          display: block;
+          font-weight: bold;
+          margin-left: auto;
+          margin-right: auto;
+          font-size: 24px;
+        "
+      >
+        HỆ THỐNG QUẢN LÝ NGƯỜI NGHIỆN
+      </div>
+    </div>
+  </div>
+  <div class="user-control">
+
+    <!-- user icon -->
+    <div class="user-icon-wrapper"style="text-align: center;margin-right: 20px;">
+      <div class="user-icon-container" >
+        <div mat-button [matMenuTriggerFor]="menu" href="">
+          <span>
+            <mat-icon>account_box</mat-icon>
+            {{ helper.getUserFullName() }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item [routerLink]="'/home/system/changepassword'">
+        <mat-icon>account_circle</mat-icon>
+        <span>Đổi mật khẩu</span>
+      </button>
+      <!-- <button mat-menu-item [routerLink]=" ['./logout'] ">
+          <mat-icon>power_settings_new</mat-icon>
+         <span>Log out</span>
+        </button> -->
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>power_settings_new</mat-icon>
+        <span>Log out</span>
+      </button>
+    </mat-menu>
+  </div>
+</header>

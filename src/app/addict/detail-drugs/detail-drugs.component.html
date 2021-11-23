@@ -1,0 +1,18 @@
+<div>
+    <dx-data-grid #dxgridDrugs id="gridDrugs" [dataSource]="addictDrugData"   [showBorders]="true">
+        <dxo-editing                                 
+            [allowAdding]="true"
+            [allowUpdating]="true"
+            [allowDeleting]="true"
+            >
+       </dxo-editing>
+        <dxi-column dataField="drugsID" caption="Loại ma túy">                    
+            <dxo-lookup [dataSource]="drugData" valueExpr="oid" displayExpr="drugsName"></dxo-lookup>
+        </dxi-column>
+        <dxi-column dataField="useID" caption="Cách dùng">                    
+            <dxo-lookup [dataSource]="useData" valueExpr="oid" displayExpr="methodName"></dxo-lookup>
+        </dxi-column>
+        <dxi-column dataField="inUse" caption="Đang dùng"></dxi-column>
+        <dxi-column dataField="remarks" caption="Ghi chú"></dxi-column>                
+    </dx-data-grid>
+</div>

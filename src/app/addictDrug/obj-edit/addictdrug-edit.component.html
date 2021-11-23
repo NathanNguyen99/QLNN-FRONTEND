@@ -1,0 +1,56 @@
+<div class="container">
+    <h3 mat-dialog-title>Thuốc</h3>
+  
+    <form class="mat-dialog-content" (ngSubmit)="submit" #formControl="ngForm">
+  
+      <div class="form">        
+          <!-- <input matInput class="form-control" placeholder="họ tên" [(ngModel)]="data.addictName" name="AddictName" required > -->
+          <mat-form-field color="accent">
+            <mat-select placeholder="Họ tên ..." #select1 id="Adidct" [(ngModel)]="data.addictID" required (ngModelChange)="selectChange($event)" name="addictID">
+              <mat-select-filter *ngIf="select1.focused" [array]="addictData" [displayMember]="'fullName'" (filteredReturn)="addictSearch =$event"></mat-select-filter>
+              <mat-option *ngFor="let t of addictSearch" [value]="t.oid">{{t.addictCode}} <b> | </b> {{t.fullName}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+          </mat-form-field>
+      </div>
+  
+      <div class="form">
+        <mat-form-field color="accent">
+          <mat-select placeholder="Thuốc ..." type="text" id="drug" [(ngModel)]="data.drugsID" required (ngModelChange)="selectChange($event)" name="drugsID">
+            <mat-option *ngFor="let t of drugData" [value]="t.oid">{{t.drugsName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form">
+        <mat-form-field color="accent">
+          <mat-select placeholder="Cách dùng ..." type="text" id="use" [(ngModel)]="data.useID" required (ngModelChange)="selectChange($event)" name="useID">
+            <mat-option *ngFor="let t of useData" [value]="t.oid">{{t.methodName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form">
+        <mat-form-field color="accent">
+          <input matInput [hidden]="true" [(ngModel)]="data.inUse" name="admin">
+          <mat-checkbox [(ngModel)]="data.inUse" name="InUse">Đang dùng</mat-checkbox>
+          <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+  
+      <div class="form">
+        <mat-form-field color="accent">
+          <textarea matInput class="form-control" placeholder="Ghi chú" [(ngModel)]="data.remarks" name="Remarks" ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div mat-dialog-actions>
+        <button mat-button type="submit" [disabled]="!formControl.valid" [mat-dialog-close]="1" (click)="stopEdit()">Save</button>
+        <button mat-button (click)="onNoClick()" tabindex="-1">Cancel</button>
+      </div>
+    </form>
+</div>
+  

@@ -1,0 +1,231 @@
+.searchhistory {
+  overflow: hidden;
+  background-color: rgba(245, 247, 250, 1);
+
+  .main-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+
+    .second-table {
+      width: 30%;
+      height: fit-content;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+      padding-left: 0px;
+      top: 320px;
+      left: 45px;
+      padding-top: 10px;
+      //Change position here
+      position: absolute;
+
+      .second-table-cover {
+        border-radius: 8px;
+        background-color: white;
+        position: relative;
+        max-width: 700px;
+        display: block;
+        overflow: hidden;
+
+        .second-table-container {
+          position: relative;
+          max-width: 780px;
+          padding: 15px;
+
+          .second-table-content {
+            cursor: pointer;
+            position: relative;
+            width: 100%;
+            color: black;
+            font-weight: bold;
+            user-select: none;
+            padding-bottom: 10px;
+            box-sizing: border-box;
+          }
+
+          #moving {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+          }
+
+          #moving td,
+          #moving th {
+            border: 1px solid #ddd;
+            padding: 8px;
+          }
+
+          #moving tr:nth-child(even) {
+            background-color: #f2f2f2;
+          }
+
+          #moving tr:hover {
+            background-color: #ddd;
+          }
+
+          #moving th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4395a3;
+            color: white;
+          }
+        }
+      }
+    }
+
+    .left-column {
+      width: 30%;
+      height: fit-content;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+      padding-left: 0px;
+      top: 50;
+      left: -50;
+      padding-top: 10px;
+      //Change position here
+      position: absolute;
+
+      .left-column-cover {
+        border-radius: 8px;
+        background-color: white;
+        position: relative;
+        max-width: 400px;
+        display: block;
+        overflow: hidden;
+
+        .left-column-container {
+          position: relative;
+          max-width: 780px;
+          padding: 15px;
+          .title-content {
+            font-size: 16px;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 16px;
+          }
+
+          .search {
+            grid-column: 2;
+            width: 500px;
+            max-width: 100%;
+            justify-self: center;
+            .search-form {
+              display: flex;
+              flex-direction: row;
+              border: 2px solid grey;
+              border-radius: 15px 15px 15px 15px;
+              width: 100%;
+              max-width: 500px; /* added */
+              margin: 8px 0; /* added */
+
+              #search-bar {
+                flex-grow: 2;
+                border: white 1px;
+                font-size: 16px;
+                padding: 4px;
+                border-radius: 15px 0 0 15px;
+              }
+
+              #forum-button {
+                background: gray;
+                color: black;
+                font-size: 16px;
+                border-radius: 0px 10px 10px 0px;
+                border: gray solid 1px;
+                padding: 2px;
+                font-weight: bold;
+              }
+            }
+          }
+          .box {
+            border-top: 1px solid rgba(182, 165, 166, 0.2);
+            padding: 20px 0px;
+            min-height: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            .box-container {
+              width: 100%;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+
+              .box-title {
+                color: rgb(85, 85, 85);
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+              }
+
+              .filter-box {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                .filter-box-container {
+                  width: 130px;
+                  display: block;
+                  position: relative;
+                  font-size: 14px;
+
+                  .filter-box-content {
+                    cursor: pointer;
+                    position: relative;
+                    width: 100%;
+                    color: rgb(120, 120, 120);
+                    font-weight: 500;
+                    user-select: none;
+                    border-radius: 4px;
+                    background-color: rgb(235, 235, 235);
+                    padding: 12px;
+                    box-sizing: border-box;
+                    font-size: 14px;
+
+                    .filter-box-icon {
+                      width: 12px;
+                      position: absolute;
+                      top: 6px;
+                      right: 12px;
+                      opacity: 0.7;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        .bottom-box {
+          padding: 14px 20px;
+          text-align: right;
+          border-bottom-left-radius: 8px;
+          border-bottom-right-radius: 8px;
+          background-color: rgb(239, 239, 239);
+          .bottom-box-button {
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: rgba(0, 0, 0, 20%) 0px 2px 2px;
+            color: white;
+            opacity: 0.9;
+            font-size: 14px;
+            padding: 8px 12px;
+            min-width: 70px;
+            background-color: rgb(34, 34, 34);
+            border: 2px solid rgb(34, 34, 34);
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* agm-map {
+    height: 500px;
+    width: 500px;
+ } */

@@ -1,0 +1,11 @@
+.mat-sidenav {
+  width: 300px;
+}
+
+
+.mat-sidenav-container {
+  background-color: white !important;
+  height: 100%;
+  /* width: 100%; */
+
+}

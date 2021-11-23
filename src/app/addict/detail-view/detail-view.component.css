@@ -1,0 +1,14 @@
+::ng-deep .form-container {
+    padding: 20px;
+}
+
+::ng-deep .address-form label {
+    font-weight: bold;
+}
+
+::ng-deep .employeeInfo .employeePhoto{
+    height: 320px;
+    padding: 5px;
+    float: left;
+    /* padding: 20px 20px 20px 0; */
+}

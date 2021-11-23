@@ -1,0 +1,49 @@
+.chartwrapper {
+  height: 350px; 
+  width: 100%;
+  border: 5px solid #af1b1b4d;
+  
+}
+
+
+.mat-card {
+  padding: 2px;
+}
+
+.row {
+    /* margin-top: 40px; */
+    /* box-sizing: border-box; */
+}
+
+.newchartwrapper {
+  height: 440px;
+  width: 100%;
+  word-wrap: break-word;
+  border: 5px solid #af1b1b4d;
+  overflow:hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.left {
+  background-color: #af1b1b4d;
+  padding: 5px;
+  float: left;
+  width: 40%; /* The width is 20%, by default */
+}
+
+.main {
+  background-color: #af1b1b4d;
+  padding: 5px;
+  float: left;
+  width: 60%; /* The width is 60%, by default */
+}
+
+@media screen and (max-width: 800px) {
+  .left, .main {
+    width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
+  }
+}
+

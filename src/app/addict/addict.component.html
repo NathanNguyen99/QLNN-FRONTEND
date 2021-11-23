@@ -1,0 +1,588 @@
+<dx-data-grid
+  id="gridContainer"
+  #dxgridMaster
+  [dataSource]="dataSource"
+  [remoteOperations]="true"
+  [repaintChangesOnly]="true"
+  [hoverStateEnabled]="true"
+  [showBorders]="true"
+  [showRowLines]="true"
+  [rowAlternationEnabled]="true"
+  [allowColumnResizing]="true"
+  (onEditingStart)="onEditing($event.data)"
+  (onInitNewRow)="onInitNewRow($event)"
+  (onSaving)="FormSaving($event)"
+  (onRowUpdating)="updateRow($event)"
+  (onRowInserting)="insertRow($event)"
+  (onSaved)="FormSaved($event)"
+>
+  <dxo-master-detail [enabled]="true" template="detail"></dxo-master-detail>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+  <dxo-header-filter [visible]="true"></dxo-header-filter>
+  <dxo-scrolling mode="virtual"></dxo-scrolling>
+  <dxo-search-panel
+    [visible]="true"
+    [width]="240"
+    placeholder="Tìm kiếm..."
+  ></dxo-search-panel>
+  <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+
+  <dxo-editing
+    mode="popup"
+    [allowAdding]="true"
+    [allowUpdating]="true"
+    [allowDeleting]="true"
+  >
+    <dxo-texts
+      confirmDeleteMessage="Bạn có muốn xóa dữ liệu này không?"
+    ></dxo-texts>
+    <!-- <dxo-texts cancelRowChanges="Hủy"></dxo-texts>
+        <dxo-texts saveRowChanges="Lưu"></dxo-texts> -->
+    <dxo-popup
+      title="Thông tin"
+      [showTitle]="true"
+      [width]="1200"
+      [height]="850"
+    >
+      <!-- <dxi-toolbar-item widget="dxButton"
+                        location="after"
+                        toolbar="bottom"
+                        [options]="{
+                        text: 'Lưu',
+                        disabled: allValid}">
+            </dxi-toolbar-item>
+            <dxi-toolbar-item widget="dxButton"
+                                location="after"
+                                toolbar="bottom"
+                                [options]="{
+                    text: 'Hủy'
+                }">
+            </dxi-toolbar-item> -->
+    </dxo-popup>
+
+    <dxo-form [colCount]="3">
+      <!-- <dxo-col-count-by-screen [xs]="1" [sm]="2" [md]="3" [lg]="4"></dxo-col-count-by-screen>         -->
+      <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
+        <dxi-item dataField="addictCode"></dxi-item>
+        <dxi-item dataField="fullName"></dxi-item>
+
+        <dxi-item dataField="otherName"></dxi-item>
+        <dxi-item dataField="genderID"></dxi-item>
+        <dxi-item dataField="dateOfBirth"></dxi-item>
+
+        <dxi-item dataField="placeOfBirthID"></dxi-item>
+        <dxi-item dataField="citizenID"></dxi-item>
+        <dxi-item dataField="issueDate"></dxi-item>
+        <dxi-item dataField="issuePlaceID"></dxi-item>
+        <dxi-item dataField="nationalityID"></dxi-item>
+        <dxi-item dataField="ethnicID"></dxi-item>
+        <dxi-item dataField="religionID"></dxi-item>
+        <dxi-item dataField="workStatusID"></dxi-item>
+        <dxi-item dataField="ingredientID"></dxi-item>
+        <dxi-item dataField="educationLevelID"></dxi-item>
+        <dxi-item dataField="profession"></dxi-item>
+        <dxi-item dataField="phoneNumber"></dxi-item>
+        <dxi-item dataField="socialNetworkAccount"></dxi-item>
+      </dxi-item>
+      <dxi-item itemType="group">
+        <dxi-item dataField="imgLink"></dxi-item>
+        <dxi-item dataField="marriageID"></dxi-item>
+      </dxi-item>
+
+      <dxi-item itemType="group" [colCount]="3" [colSpan]="3">
+        <!-- <dxi-item
+                    dataField="pemanentAddress"                    
+                    editorType="dxTextArea"
+                    [colSpan]="3"
+                    [editorOptions]="{ height: 50 }"
+                    >
+                </dxi-item>
+                <dxi-item
+                    dataField="currentAddress"                    
+                    editorType="dxTextArea"
+                    [colSpan]="3"
+                    [editorOptions]="{ height: 50 }">
+                </dxi-item> -->
+        <dxi-item dataField="pemanentAddress" [colSpan]="3"></dxi-item>
+        <dxi-item dataField="currentAddress" [colSpan]="3"></dxi-item>
+        <dxi-item dataField="fartherName"></dxi-item>
+        <dxi-item dataField="motherName"></dxi-item>
+        <dxi-item dataField="partnerName"></dxi-item>
+      </dxi-item>
+
+      <dxi-item itemType="tabbed" [colSpan]="3">
+        <dxi-tab title="Thông tin khác" [colCount]="3">
+          <dxi-item dataField="characteristics" [colSpan]="3"></dxi-item>
+          <dxi-item dataField="criminalConviction" [colSpan]="3"></dxi-item>
+          <dxi-item dataField="criminalRecord" [colSpan]="3"></dxi-item>
+          <dxi-item dataField="detoxed"></dxi-item>
+          <!-- <dxi-item dataField="manageType"></dxi-item> -->
+
+          <dxi-item dataField="complete"></dxi-item>
+          <dxi-item dataField="completeDate"></dxi-item>
+          <dxi-item dataField="dead"></dxi-item>
+          <dxi-item dataField="managePlaceID"></dxi-item>
+          <dxi-item dataField="createDate"></dxi-item>
+
+          <dxi-item
+            dataField="remarks3"
+            [colSpan]="3"
+            editorType="dxTextArea"
+            [editorOptions]="{ height: 80 }"
+          ></dxi-item>
+          <dxi-item
+            dataField="remarks1"
+            [colSpan]="3"
+            editorType="dxTextArea"
+            [editorOptions]="{ height: 50 }"
+          ></dxi-item>
+          <!-- <dxi-item dataField="remarks1" editorType="dxTextArea" [editorOptions]="{ height: 50 }"></dxi-item>
+                            <dxi-item dataField="remarks2" editorType="dxTextArea" [editorOptions]="{ height: 50 }"></dxi-item> -->
+        </dxi-tab>
+        <dxi-tab title="Phân loại đối tượng">
+          <div *dxTemplate="let cellInfo of 'drugEditor'">
+            <dx-data-grid
+              [dataSource]="addictClassifyData"
+              (onInitNewRow)="onInitRowClassify($event)"
+              (onSaved)="FormDetailSaved($event)"
+            >
+              <dxi-column dataField="classifyID" caption="Loại đối tượng">
+                <dxo-lookup
+                  [dataSource]="classifyData"
+                  valueExpr="oid"
+                  displayExpr="classifyName"
+                ></dxo-lookup>
+                <dxi-validation-rule
+                  type="required"
+                  message="thông tin này không được bỏ trống"
+                ></dxi-validation-rule>
+              </dxi-column>
+              <!-- <dxi-column dataField="useID" caption="Cách dùng">                    
+                                <dxo-lookup [dataSource]="useData" valueExpr="oid" displayExpr="methodName"></dxo-lookup>
+                                <dxi-validation-rule type="required" message="thông tin này không được bỏ trống"></dxi-validation-rule>
+                            </dxi-column>
+                            <dxi-column dataField="inUse" dataType="boolean" caption="Đang dùng"></dxi-column> -->
+              <dxi-column dataField="remarks" caption="Ghi chú"></dxi-column>
+
+              <dxo-editing
+                mode="row"
+                [allowDeleting]="true"
+                [allowAdding]="true"
+                [allowUpdating]="true"
+                [useIcons]="true"
+              >
+              </dxo-editing>
+            </dx-data-grid>
+          </div>
+        </dxi-tab>
+        <dxi-tab title="Lịch sử hoạt động">
+          <!-- <div *dxTemplate="let dg of 'drugEditor'">
+                            <app-detail-drugs [key]="dg"></app-detail-drugs>
+                        </div> -->
+          <div *dxTemplate="let cellInfo of 'drugEditor'">
+            <dx-data-grid
+              [dataSource]="addictPlaceData"
+              (onInitNewRow)="onInitRowPlace($event)"
+              (onSaved)="FormDetailSaved($event)"
+            >
+              <dxi-column
+                dataField="placeTypeID"
+                caption="Phân loại"
+                [setCellValue]="setPlaceTypeValue"
+              >
+                <dxo-lookup
+                  [dataSource]="placeTypeData"
+                  valueExpr="oid"
+                  displayExpr="placeTypeName"
+                ></dxo-lookup>
+                <dxi-validation-rule
+                  type="required"
+                  message="thông tin này không được bỏ trống"
+                ></dxi-validation-rule>
+              </dxi-column>
+              <dxi-column dataField="managePlaceID" caption="Nơi quản lý">
+                <dxo-lookup
+                  [dataSource]="getFilteredPlaces"
+                  valueExpr="oid"
+                  displayExpr="placeName"
+                ></dxo-lookup>
+                <dxi-validation-rule
+                  type="required"
+                  message="thông tin này không được bỏ trống"
+                ></dxi-validation-rule>
+              </dxi-column>
+
+              <!-- <dxi-column dataField="fromDate" dataType="date" caption="Từ ngày" format="dd/MM/yyyy"></dxi-column>
+                            <dxi-column dataField="toDate" dataType="date" caption="Đến ngày" format="dd/MM/yyyy"></dxi-column> -->
+              <dxi-column dataField="remarks" caption="Ghi chú"></dxi-column>
+
+              <dxo-editing
+                mode="row"
+                [allowDeleting]="true"
+                [allowAdding]="true"
+                [allowUpdating]="true"
+                [useIcons]="true"
+              >
+              </dxo-editing>
+            </dx-data-grid>
+          </div>
+        </dxi-tab>
+        <dxi-tab title="Lịch sử dùng ma túy">
+          <div *dxTemplate="let cellInfo of 'drugEditor'">
+            <dx-data-grid
+              [dataSource]="addictDrugData"
+              (onInitNewRow)="onInitRowDrug($event)"
+              (onSaved)="FormDetailSaved($event)"
+            >
+              <dxi-column dataField="drugsID" caption="Loại ma túy">
+                <dxo-lookup
+                  [dataSource]="drugData"
+                  valueExpr="oid"
+                  displayExpr="drugsName"
+                ></dxo-lookup>
+                <dxi-validation-rule
+                  type="required"
+                  message="thông tin này không được bỏ trống"
+                ></dxi-validation-rule>
+              </dxi-column>
+              <dxi-column dataField="useID" caption="Cách dùng">
+                <dxo-lookup
+                  [dataSource]="useData"
+                  valueExpr="oid"
+                  displayExpr="methodName"
+                ></dxo-lookup>
+                <dxi-validation-rule
+                  type="required"
+                  message="thông tin này không được bỏ trống"
+                ></dxi-validation-rule>
+              </dxi-column>
+              <dxi-column
+                dataField="inUse"
+                dataType="boolean"
+                caption="Đang dùng"
+              ></dxi-column>
+              <dxi-column dataField="remarks" caption="Ghi chú"></dxi-column>
+
+              <dxo-editing
+                mode="row"
+                [allowDeleting]="true"
+                [allowAdding]="true"
+                [allowUpdating]="true"
+                [useIcons]="true"
+              >
+              </dxo-editing>
+            </dx-data-grid>
+          </div>
+        </dxi-tab>
+      </dxi-item>
+    </dxo-form>
+  </dxo-editing>
+  <dxi-column type="buttons">
+    <!-- <dxi-button name="cmdEdit" text="Chỉnh" cssClass="my-class" [onClick]="myCommand"></dxi-button> -->
+    <!-- <button name="edit" nz-button nzType="default" nzShape="circle"><i nz-icon nzType="user-add" nzTheme="outline"></i></button> -->
+
+    <dxi-button icon="edit" name="edit" text="Sửa"
+      ><i nz-icon nzType="user-add" nzTheme="outline"></i
+    ></dxi-button>
+    <dxi-button name="delete" icon="remove" text="Xóa"></dxi-button>
+  </dxi-column>
+
+  <dxi-column dataField="addictCode" caption="Mã số" [width]="100">
+    <dxi-validation-rule
+      type="required"
+      message="thông tin này không được bỏ trống"
+    ></dxi-validation-rule>
+  </dxi-column>
+  <dxi-column
+    dataField="imgLink"
+    caption="H"
+    [width]="70"
+    [visible]="false"
+    [allowFiltering]="false"
+    [allowSorting]="false"
+    cellTemplate="cellTemplate"
+    editCellTemplate="editCellTemplate"
+  >
+  </dxi-column>
+  <!-- <div *dxTemplate="let data of 'cellTemplate'">
+    <img [src]="GetImageurl + data.value"/>
+  </div> -->
+  <div *dxTemplate="let data of 'editCellTemplate'">
+    <img *ngIf="data.value"
+      #uploadedImage
+      class="uploadedImage"
+      [src]="GetImageurl + data.value"
+    />
+    <dx-file-uploader
+      #fileUploader
+      [multiple]="false"
+      selectButtonText="chọn ảnh"
+      labelText=""
+      accept="image/*"
+      [allowedFileExtensions]="['.jpg', '.png']"
+      [maxFileSize]="1024 * 1024"
+      uploadMode="instantly"
+      [uploadUrl]="backendURL + 'FileHandle/post'"
+      (onValueChanged)="onValueChanged($event)"
+      (onUploaded)="onUploaded($event, data)"
+      (onUploadError)="onUploadError($event)"
+    ></dx-file-uploader>
+    <dx-button
+      class="retryButton"
+      text="Retry"
+      [visible]="retryButtonVisible"
+      (click)="onClick($event)"
+    ></dx-button>
+  </div>
+
+  <dxi-column dataField="fullName" caption="Họ tên" [width]="160">
+    <dxi-validation-rule
+      type="required"
+      message="thông tin này không được bỏ trống"
+    ></dxi-validation-rule>
+  </dxi-column>
+
+  <dxi-column
+    dataField="otherName"
+    [visible]="false"
+    caption="Tên khác"
+    [width]="160"
+  ></dxi-column>
+
+  <dxi-column
+    dataField="genderID"
+    caption="Giới tính"
+    dataType="number"
+    [width]="100"
+  >
+    <dxo-lookup
+      [dataSource]="genderData"
+      valueExpr="id"
+      displayExpr="Text"
+    ></dxo-lookup>
+  </dxi-column>
+  <dxi-column
+    dataField="dateOfBirth"
+    dataType="date"
+    alignment="center"
+    format="dd/MM/yyyy"
+    caption="Ngày sinh"
+    [width]="120"
+  ></dxi-column>
+
+  <dxi-column dataField="placeOfBirthID" caption="Nơi sinh" [width]="150">
+    <dxo-lookup
+      [dataSource]="placeOfBirthData"
+      valueExpr="oid"
+      displayExpr="provinceName"
+    ></dxo-lookup>
+  </dxi-column>
+  <dxi-column
+    dataField="phoneNumber"
+    caption="Số ĐT"
+    [width]="110"
+  ></dxi-column>
+  <dxi-column dataField="citizenID" caption="CMND" [width]="110"></dxi-column>
+  <dxi-column
+    dataField="issueDate"
+    dataType="date"
+    format="dd/MM/yyyy"
+    caption="Ngày cấp"
+    [width]="110"
+  ></dxi-column>
+  <dxi-column dataField="issuePlaceID" caption="Nơi cấp" [width]="150">
+    <dxo-lookup
+      [dataSource]="placeOfBirthData"
+      valueExpr="oid"
+      displayExpr="provinceName"
+    ></dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="nationalityID" caption="Quốc tịch" [width]="110">
+    <dxo-lookup
+      [dataSource]="country"
+      valueExpr="oid"
+      displayExpr="Text"
+    ></dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="ethnicID" caption="Dân tộc" [width]="90">
+    <dxo-lookup
+      [dataSource]="ethnic"
+      valueExpr="oid"
+      displayExpr="Text"
+    ></dxo-lookup>
+  </dxi-column>
+
+  <dxi-column dataField="religionID" caption="Tôn giáo" [width]="90">
+    <dxo-lookup
+      [dataSource]="religion"
+      valueExpr="oid"
+      displayExpr="Text"
+    ></dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="marriageID" caption="Hôn nhân" [width]="120">
+    <dxo-lookup
+      [dataSource]="marriageData"
+      valueExpr="oid"
+      displayExpr="Text"
+    ></dxo-lookup>
+  </dxi-column>
+  <dxi-column
+    dataField="workStatusID"
+    caption="Tình trạng việc làm"
+    [width]="200"
+  >
+    <dxo-lookup
+      [dataSource]="workStatus"
+      valueExpr="oid"
+      displayExpr="Text"
+    ></dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="ingredientID" caption="Thành phần" [width]="120">
+    <dxo-lookup
+      [dataSource]="ingredient"
+      valueExpr="oid"
+      displayExpr="Text"
+    ></dxo-lookup>
+  </dxi-column>
+  <dxi-column
+    dataField="pemanentAddress"
+    caption="Đ/C thường trú"
+    [width]="200"
+  ></dxi-column>
+  <dxi-column
+    dataField="currentAddress"
+    caption="Đ/C hiện tại"
+    [width]="200"
+  ></dxi-column>
+  <dxi-column
+    dataField="profession"
+    caption="Nghề nghiệp"
+    [width]="110"
+  ></dxi-column>
+
+  <dxi-column dataField="educationLevelID" caption="Trình độ" [width]="110">
+    <dxo-lookup
+      [dataSource]="eduLevelData"
+      valueExpr="oid"
+      displayExpr="educationName"
+    ></dxo-lookup>
+  </dxi-column>
+  <dxi-column
+    dataField="socialNetworkAccount"
+    caption="TK mạng XH"
+    [width]="120"
+  ></dxi-column>
+  <dxi-column
+    dataField="fartherName"
+    caption="Họ tên cha"
+    [width]="160"
+  ></dxi-column>
+  <dxi-column
+    dataField="motherName"
+    caption="Họ tên mẹ"
+    [width]="160"
+  ></dxi-column>
+  <dxi-column
+    dataField="partnerName"
+    caption="Tên vợ/chồng"
+    [width]="160"
+  ></dxi-column>
+  <dxi-column
+    dataField="characteristics"
+    caption="Đặc điểm nhận dạng"
+    [width]="200"
+  ></dxi-column>
+  <dxi-column
+    dataField="criminalConviction"
+    caption="Tiền án"
+    [width]="200"
+  ></dxi-column>
+  <dxi-column
+    dataField="criminalRecord"
+    caption="Tiền sự"
+    [width]="200"
+  ></dxi-column>
+
+  <dxi-column dataField="managePlaceID" caption="Nơi quản lý" [width]="200">
+    <dxo-lookup
+      [dataSource]="wardData"
+      valueExpr="oid"
+      displayExpr="placeName"
+    ></dxo-lookup>
+  </dxi-column>
+
+  <dxi-column dataField="remarks1" caption="Ghi chú" [width]="200"></dxi-column>
+  <dxi-column
+    dataField="remarks3"
+    caption="Nhân thân"
+    [visible]="false"
+  ></dxi-column>
+  <!-- <dxi-column dataField="manageType" caption="Loại quản lý" [width]="130">
+        <dxo-lookup [dataSource]="manageTypeData" valueExpr="oid" displayExpr="Text"></dxo-lookup>
+    </dxi-column> -->
+  <dxi-column
+    dataField="detoxed"
+    caption="Từng cai nghiện"
+    [width]="120"
+  ></dxi-column>
+  <dxi-column
+    dataField="complete"
+    caption="Hoàn thành"
+    [width]="120"
+  ></dxi-column>
+  <dxi-column
+    dataField="completeDate"
+    dataType="date"
+    caption="Ngày hoàn thành"
+    [width]="150"
+  ></dxi-column>
+  <dxi-column
+    dataField="dead"
+    dataType="boolean"
+    caption="Đã chết"
+    [width]="90"
+  ></dxi-column>
+  <dxi-column dataField="createUser" caption="Người tạo" [width]="120">
+    <dxo-lookup
+      [dataSource]="userData"
+      valueExpr="oid"
+      displayExpr="userName"
+    ></dxo-lookup>
+  </dxi-column>
+  <dxi-column
+    dataField="createDate"
+    dataType="date"
+    alignment="center"
+    format="dd/MM/yyyy"
+    caption="Ngày tạo"
+    [width]="100"
+  ></dxi-column>
+  <dxi-column
+    dataField="updCount"
+    [visible]="false"
+    [allowSorting]="false"
+  ></dxi-column>
+  <dxi-column
+    dataField="drugs"
+    [visible]="false"
+    [allowSorting]="false"
+    editCellTemplate="drugEditor"
+  >
+  </dxi-column>
+
+  <div *dxTemplate="let item of 'detail'">
+    <detail-view [key]="item.data.oid" [rowData]="item.data"></detail-view>
+  </div>
+</dx-data-grid>
+
+<div
+  class="selection-summary center"
+  style="padding-top: 8px; padding-left: 5px; font-weight: bold"
+>
+  <div>
+    <div class="column">
+      <span class="text count">Tổng số người : </span>
+      <span class="value">{{ rountCount }}</span>
+    </div>
+  </div>
+</div>

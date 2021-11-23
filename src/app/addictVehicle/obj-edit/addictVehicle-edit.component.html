@@ -1,0 +1,63 @@
+<div class="container">
+    <h3 mat-dialog-title>Phân Loại</h3>
+  
+    <form class="mat-dialog-content" (ngSubmit)="submit" #formControl="ngForm">
+  
+      <div class="form">        
+          <!-- <input matInput class="form-control" placeholder="họ tên" [(ngModel)]="data.addictName" name="AddictName" required > -->
+          <mat-form-field color="accent">
+            <mat-select placeholder="Họ tên ..." #select1 id="Adidct" [(ngModel)]="data.addictID" required (ngModelChange)="selectChange($event)" name="addictID">
+              <mat-select-filter *ngIf="select1.focused" [array]="addictData" [displayMember]="'fullName'" (filteredReturn)="addictSearch =$event"></mat-select-filter>
+              <mat-option *ngFor="let t of addictSearch" [value]="t.oid">{{t.addictCode}} <b> | </b> {{t.fullName}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+          </mat-form-field>
+      </div>
+
+      <div class="form">
+        <mat-form-field color="accent">
+          <textarea matInput class="form-control" placeholder="Nhãn hiệu" [(ngModel)]="data.brandName" name="brandName" ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="form">
+        <mat-form-field color="accent">
+          <textarea matInput class="form-control" placeholder="Kiểu xe" [(ngModel)]="data.vehicleModel" name="vehicleModel" ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="form">
+        <mat-form-field color="accent">
+          <textarea matInput class="form-control" placeholder="Màu xe" [(ngModel)]="data.vehicleColor" name="vehicleColor" ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="form">
+        <mat-form-field color="accent">
+          <textarea matInput class="form-control" placeholder="Biển số" [(ngModel)]="data.plateNumber" name="plateNumber" ></textarea>
+        </mat-form-field>
+      </div>
+  
+      <div class="form">
+        <mat-form-field color="accent">
+          <mat-select placeholder="Nơi đăng ký ..." type="text" id="registerPlace" [(ngModel)]="data.registerPlaceID" (ngModelChange)="selectChange($event)" name="registerPlaceID">
+            <mat-option *ngFor="let t of provinceData" [value]="t.oid">{{t.provinceName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>      
+  
+      <div class="form">
+        <mat-form-field color="accent">
+          <textarea matInput class="form-control" placeholder="Giấy phép" [(ngModel)]="data.drivingLicense" name="drivingLicense" ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div mat-dialog-actions>
+        <button mat-button type="submit" [disabled]="!formControl.valid" [mat-dialog-close]="1" (click)="stopEdit()">Save</button>
+        <button mat-button (click)="onNoClick()" tabindex="-1">Cancel</button>
+      </div>
+    </form>
+</div>
+  

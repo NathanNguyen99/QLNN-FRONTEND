@@ -1,0 +1,42 @@
+.container {
+  //padding: 8px 24px 108px 24px;
+  margin-left: 5px;
+  margin-right: 10px;
+}
+
+.mat-elevation-z8 {
+  margin-right: 5px;
+}
+
+/* Toolbar */
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* Filter */
+.form {
+  height: auto;
+  width: 100%;
+  display: flex;
+  padding: 0.25rem 0.25rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.mat-header-cell {
+  background-color: #4395a3;
+  color: white;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.5px;
+  font-size: medium;
+}
+
+
+/* Round the top table corners */
+.mat-header-cell:first-child {
+  border-top-left-radius: 5px;
+}
+.mat-header-cell:last-child {
+  border-top-right-radius: 5px;
+}

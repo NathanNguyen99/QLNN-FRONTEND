@@ -1,0 +1,75 @@
+<div class="mat-elevation-z8">
+  <app-loading *ngIf="isLoadingResults"></app-loading>
+
+    <div class="form">
+      <div style="width: 25%"> 
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input type="text" matInput #filter nz-input placeholder="Tìm kiếm ..." />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <i nz-icon nzType="search"></i>
+        </ng-template>
+      </div>     
+    </div>
+      <mat-table #table [dataSource]="dataSource!" matSort class="mat-cell">
+        <ng-container matColumnDef="AddictCode">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Mã số</mat-header-cell>
+          <mat-cell *matCellDef="let row" >{{row.addictCode}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="AddictName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Họ tên</mat-header-cell>
+          <mat-cell *matCellDef="let row" >{{row.addictName}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="DrugsName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Loại thuốc</mat-header-cell>
+          <mat-cell *matCellDef="let row" >{{row.drugsName}}</mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="UseName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Cách dùng</mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.useName}}</mat-cell>
+        </ng-container>    
+          
+        <ng-container matColumnDef="InUse">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Đang dùng</mat-header-cell>
+          <mat-cell *matCellDef="let row"> 
+            <mat-checkbox [(ngModel)]="row.inUse" [disabled]="true"></mat-checkbox>
+          </mat-cell>         
+        </ng-container>
+
+        <ng-container matColumnDef="Remarks">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Ghi chú</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.remarks}}</mat-cell>
+          </ng-container> 
+
+        <!-- actions -->
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>
+            <button (click)="openAddDialog()" nz-button nzType="default" nzShape="circle"><i nz-icon nzType="user-add" nzTheme="outline"></i></button>
+
+          </mat-header-cell>
+    
+          <mat-cell *matCellDef="let row; let i=index;">
+            <button nz-button (click)="startEdit(i, row)" nzType="default" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+            <button style="margin-left:0.5rem" nz-button (click)="deleteItem(i, row)" nzType="default" nzDanger nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+    
+          </mat-cell>
+        </ng-container>
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>    
+    
+      <div class="no-results" [style.display]="totalCount === 0 ? '' : 'none'">
+        No results
+      </div>
+    
+      <mat-paginator #paginator
+                     [length]="totalCount"
+                     [pageIndex]="0"
+                     [pageSize]="10"
+                     [pageSizeOptions]="[5, 10, 25, 100]">
+      </mat-paginator>
+    </div>

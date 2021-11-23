@@ -1,0 +1,49 @@
+<dx-tab-panel>            
+    <dxi-item title="Hình" template="ImageTab"></dxi-item>
+    <div *dxTemplate="let i of 'ImageTab'">
+        <div class="employeeInfo">
+            <img class="employeePhoto" [src]="GetImageurl + rowData.imgLink" />
+        </div>
+    </div>    
+    <dxi-item title="Phân loại đối tượng" template="history1"></dxi-item>
+    <div *dxTemplate="let h1 of 'history1'">
+        <dx-data-grid 
+                    [dataSource]="addictClassifyData"
+                    [showBorders]="true">
+                    <dxi-column dataField="classifyName" caption="Loại đối tượng"></dxi-column>
+                    <dxi-column dataField="placeName" caption="Nơi quản lý"></dxi-column>
+                    <dxi-column dataField="fromDate" dataType="datetime" caption="Ngày nhập" format="dd/MM/yyyy"></dxi-column>
+                <!-- <dxi-column dataField="classifyID" caption="Loại đối tượng">                    
+                    <dxo-lookup [dataSource]="classifyData" valueExpr="oid" displayExpr="classifyName"></dxo-lookup>
+                </dxi-column>                 -->
+                <dxi-column dataField="remarks" caption="Ghi chú"></dxi-column>                
+         </dx-data-grid>
+    </div>
+    <dxi-item title="Lịch sử hoạt động" template="history2"></dxi-item>
+    <div *dxTemplate="let h2 of 'history2'">
+        <dx-data-grid         
+                    [dataSource]="addictPlaceData"
+                    [showBorders]="true">
+                <dxi-column dataField="placeTypeName" caption="Phân loại"></dxi-column>
+                <dxi-column dataField="placeName" caption="Nơi quản lý"></dxi-column>
+                <!-- <dxi-column dataField="fromDate" dataType="datetime" caption="Từ ngày" format="dd/MM/yyyy"></dxi-column>
+                <dxi-column dataField="toDate" dataType="datetime" caption="Đến ngày" format="dd/MM/yyyy"></dxi-column> -->
+                <dxi-column dataField="remarks" caption="Ghi chú"></dxi-column>                
+         </dx-data-grid>
+    </div>
+    <dxi-item title="Lịch sử dùng ma túy" template="history0"></dxi-item>
+    <div *dxTemplate="let h1 of 'history0'">
+        <dx-data-grid 
+                    [dataSource]="addictDrugData"
+                    [showBorders]="true">
+                <dxi-column dataField="drugsID" caption="Loại ma túy">                    
+                    <dxo-lookup [dataSource]="drugData" valueExpr="oid" displayExpr="drugsName"></dxo-lookup>
+                </dxi-column>
+                <dxi-column dataField="useID" caption="Cách dùng">                    
+                    <dxo-lookup [dataSource]="useData" valueExpr="oid" displayExpr="methodName"></dxo-lookup>
+                </dxi-column>
+                <dxi-column dataField="inUse" caption="Đang dùng"></dxi-column>
+                <dxi-column dataField="remarks" caption="Ghi chú"></dxi-column>                
+         </dx-data-grid>
+    </div>
+</dx-tab-panel>

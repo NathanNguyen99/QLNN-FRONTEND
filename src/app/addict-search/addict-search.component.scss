@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 93vh;
+}
+
+.row {
+  margin-top: 40px;
+}
+
+.leftPanel {
+  background-color: #beb5b559;
+  padding: 5px;
+  float: left;
+  width: 25%; /* The width is 20%, by default */
+}
+
+.mainPanel {
+  background-color: #1b5baf18;
+  padding: 5px;
+  float: left;
+  width: 75%; /* The width is 60%, by default */
+}
+
+::ng-deep #gridContainer {
+  height: 850px;
+}
+
+.input-section {
+  text-align: center;
+  width: 100%;
+  border: 1px solid black;
+  border-style: dotted;
+  padding: 0.5rem;
+  z-index: 10000;
+  border-radius: 1rem;
+  cursor: pointer;
+}
+
+.input-section:hover {
+  border: 1px solid #007cce;
+  border-style: dotted;
+
+  .title {
+    color: #007cce;
+  }
+}
+
+#upload_button {
+  display: inline-block;
+}
+#upload_button input[type=file] {
+  display:none;
+}
