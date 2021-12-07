@@ -1,188 +1,186 @@
-
 <div class="chartwrapper" #divToTrackHeightChanges>
-    <dx-chart #devXchart
-        [dataSource]="dash01s"
-        title="Số lượng thay đổi trong 12 tháng gần nhất">
-        <dxi-series valueField="qty" color="orange" name="Tháng"></dxi-series>				
-        <dxo-common-series-settings #seriesSettings
-            argumentField="monthID"
-            [type]="'spline'">
-        </dxo-common-series-settings>
-        <dxo-margin [bottom]="20"></dxo-margin>
-        <dxo-common-axis-settings>
-            <dxo-grid [visible]="true"></dxo-grid>
-        </dxo-common-axis-settings>
-        <dxo-legend
-            [visible]="false"
-            verticalAlignment="top"
-            horizontalAlignment="right">
-        </dxo-legend>
-        <dxo-argument-axis [allowDecimals]="false" [axisDivisionFactor]="60">
-            <dxo-label>
-                <dxo-format type="decimal"></dxo-format>
-            </dxo-label>
-        </dxo-argument-axis>
-        <dxo-tooltip
-            [enabled]="true"
-            [zIndex]="10"
-            >
-        </dxo-tooltip>
-        <dxo-size					
-            [height]="350">
-        </dxo-size>
-    </dx-chart>
-
-
+  <dx-chart
+    #devXchart
+    [dataSource]="dash01s"
+    title="Số lượng thay đổi trong 12 tháng gần nhất"
+  >
+    <dxi-series valueField="qty" color="orange" name="Tháng"></dxi-series>
+    <dxo-common-series-settings
+      #seriesSettings
+      argumentField="monthID"
+      [type]="'spline'"
+    >
+    </dxo-common-series-settings>
+    <dxo-margin [bottom]="20"></dxo-margin>
+    <dxo-common-axis-settings>
+      <dxo-grid [visible]="true"></dxo-grid>
+    </dxo-common-axis-settings>
+    <dxo-legend
+      [visible]="false"
+      verticalAlignment="top"
+      horizontalAlignment="right"
+    >
+    </dxo-legend>
+    <dxo-argument-axis [allowDecimals]="false" [axisDivisionFactor]="60">
+      <dxo-label>
+        <dxo-format type="decimal"></dxo-format>
+      </dxo-label>
+    </dxo-argument-axis>
+    <dxo-tooltip [enabled]="true" [zIndex]="10"> </dxo-tooltip>
+    <dxo-size [height]="350"> </dxo-size>
+  </dx-chart>
 </div>
 <div class="newchartwrapper">
-    <dx-chart id="chart" [dataSource]="dataSource" title="Phân bố theo phường xã">
-        <dxi-series
-          argumentField="day"
-          valueField="oranges"
-          name="Số lượng<br>người nghiện"
-          type="bar"
-          color="#ffaa66"
-        >
-        </dxi-series>
-      </dx-chart>
+  <dx-chart
+    id="chart"
+    [dataSource]="DashAddictType"
+    title="Phân bố theo phường xã"
+  >
+    <dxi-series
+      argumentField="placeName"
+      valueField="qty"
+      name="Số lượng<br>người nghiện"
+      type="bar"
+      color="#ffaa66"
+    >
+    </dxi-series>
+    <dxo-tooltip [enabled]="true" location="edge" [zIndex]="10"> </dxo-tooltip>
+  </dx-chart>
 </div>
 <!-- <div style="width:30%; height: 350px; border-style:solid;margin-top: 40px;">
 
 </div> -->
 
 <div class="row">
-    <div class="left">        
-        <mat-card>
-            <dx-pie-chart
-                id="pie"
-                #chartPie3             
-                palette="bright"                
-                [dataSource]="dash03s">
-                <dxo-title   text="Loại ma túy">          
-                    <dxo-font [size]="25"></dxo-font>
-                    
-                </dxo-title>
-                <!-- <dxo-adaptive-layout [height]="300" [width]="400"></dxo-adaptive-layout> -->
-                <dxo-legend
-                    orientation="horizontal"
-                    itemTextPosition="right"
-                    horizontalAlignment="center"
-                    verticalAlignment="bottom"
-                    [columnCount]="5">
-                </dxo-legend>
-                <dxi-series
-                    argumentField="drugName"
-                    valueField="qty">
-                    <dxo-label
-                        [visible]="true"
-                        position="columns"
-                        [customizeText]="customizeLabel">
-                        <dxo-font [size]="16"></dxo-font>
-                        <dxo-connector
-                            [visible]="true"
-                            [width]="0.5"></dxo-connector>
-                    </dxo-label>
-                </dxi-series>
-                <dxo-size					
-                    [height]="300">
-                </dxo-size>
-            </dx-pie-chart>     
-        </mat-card>
-            <mat-card style="margin-top: 5px;">
-                <dx-pie-chart #chartPie4
-                    id="pie1"
-                    title="Trình độ"                  
-                    [dataSource]="dash04s"
-					palette="Soft Pastel">
-                    <dxo-legend
-                        orientation="horizontal"
-                        itemTextPosition="right"
-                        horizontalAlignment="center"
-                        verticalAlignment="bottom"
-                        [columnCount]="5"></dxo-legend>
-                    <dxi-series
-                        argumentField="levelName"
-                        valueField="qty">
-                        <dxo-label
-                            [visible]="true"
-                            position="columns"
-                            [customizeText]="customizeLabel">
-                            <dxo-font [size]="16"></dxo-font>
-                            <dxo-connector
-                                [visible]="true"
-                                [width]="0.5"></dxo-connector>
-                        </dxo-label>
-                    </dxi-series>
-                    <dxo-size					
-                        [height]="300">
-                    </dxo-size>
-                </dx-pie-chart>            
-            </mat-card>
-        
+  <div class="left">
+    <mat-card>
+      <!-- <dx-pie-chart id="pie" #chartPie3 palette="bright" [dataSource]="dash03s">
+        <dxo-title text="Loại ma túy">
+          <dxo-font [size]="25"></dxo-font>
+        </dxo-title>
+        <dxo-legend
+          orientation="horizontal"
+          itemTextPosition="right"
+          horizontalAlignment="center"
+          verticalAlignment="bottom"
+          [columnCount]="5"
+        >
+        </dxo-legend>
+        <dxi-series argumentField="drugName" valueField="qty">
+          <dxo-label
+            [visible]="true"
+            position="columns"
+            [customizeText]="customizeLabel"
+          >
+            <dxo-font [size]="16"></dxo-font>
+            <dxo-connector [visible]="true" [width]="0.5"></dxo-connector>
+          </dxo-label>
+        </dxi-series>
+        <dxo-size [height]="300"> </dxo-size>
+      </dx-pie-chart> -->
+      <div class="pies-container">
+        <dx-pie-chart
+          class="pie"
+          [dataSource]="DashClassify"
+          sizeGroup="piesGroup"
+        >
+        <dxo-title text="Phân loại đối tượng">
+            <dxo-font [size]="25"></dxo-font>
+          </dxo-title>
+          <dxi-series argumentField="classifyName" valueField="qty">
+            <dxo-label [visible]="true" format="percent"></dxo-label>
+          </dxi-series>
+          <dxo-legend
+            verticalAlignment="bottom"
+            horizontalAlignment="center"
+            itemTextPosition="right"
+            [rowCount]="2"
+          >
+          </dxo-legend>
+        </dx-pie-chart>
       </div>
-      
-      <div class="main">
-        <mat-card>
-            <dx-chart id="chart1" #chartGender	
-            
-					[rotated]="true"				
-					[dataSource]="dash02s" >
-					<dxi-series valueField="male" name="Nam"></dxi-series>
-					<dxi-series valueField="female" name="Nữ"></dxi-series>		
-					<dxo-common-series-settings	
-						argumentField="syear"					
-						type="stackedBar"
-						[barWidth]="30">
-					</dxo-common-series-settings>
-					<dxo-legend
-						verticalAlignment="top"
-						horizontalAlignment="center"
-						itemTextPosition="top">
-					</dxo-legend>	
-                    				
-					<dxo-tooltip
-						[enabled]="true"
-						location="edge"
-                        [zIndex]="10">
-					</dxo-tooltip>
-					<dxo-size					
-						[height]="160">
-					</dxo-size>
-				</dx-chart>
-        </mat-card>
-        
-        <mat-card style="margin-top: 5px;">
-            
-             <dx-chart #chart5
-                
-                    id="chart5"
-                    title="Độ tuổi"
-                    [dataSource]="dash05s"
-                    palette="Office"
-                    >
-                    <dxi-series valueField="curQty" name="Năm nay"></dxi-series>
-                    <dxi-series valueField="preQty" name="năm trước"></dxi-series>                    
-                    <dxo-common-series-settings
-                        argumentField="ageRange"
-                        type="bar"
-                        [barWidth]="60"
-                        >                        
-                    </dxo-common-series-settings>
-                    <dxo-legend
-                        verticalAlignment="bottom"
-                        horizontalAlignment="center">
-                    </dxo-legend>     
-                    <dxo-size					
-						[height]="440">
-					</dxo-size>       
-                    <dxo-tooltip
-						[enabled]="true"
-						location="edge"
-                        [zIndex]="10">
-					</dxo-tooltip>     
-                </dx-chart>
-        </mat-card>
-        
-      </div>
-</div>
+    </mat-card>
+    <mat-card style="margin-top: 5px">
+      <dx-pie-chart
+        #chartPie4
+        id="pie1"
+        title="Trình độ"
+        [dataSource]="dash04s"
+        palette="Soft Pastel"
+      >
+        <dxo-legend
+          orientation="horizontal"
+          itemTextPosition="right"
+          horizontalAlignment="center"
+          verticalAlignment="bottom"
+          [columnCount]="5"
+        ></dxo-legend>
+        <dxi-series argumentField="levelName" valueField="qty">
+          <dxo-label
+            [visible]="true"
+            position="columns"
+            [customizeText]="customizeLabel"
+          >
+            <dxo-font [size]="16"></dxo-font>
+            <dxo-connector [visible]="true" [width]="0.5"></dxo-connector>
+          </dxo-label>
+        </dxi-series>
+        <dxo-size [height]="300"> </dxo-size>
+      </dx-pie-chart>
+    </mat-card>
+  </div>
 
+  <div class="main">
+    <mat-card>
+      <dx-chart
+        id="chart1"
+        #chartGender
+        [rotated]="true"
+        [dataSource]="dash02s"
+      >
+        <dxi-series valueField="male" name="Nam"></dxi-series>
+        <dxi-series valueField="female" name="Nữ"></dxi-series>
+        <dxo-common-series-settings
+          argumentField="syear"
+          type="stackedBar"
+          [barWidth]="30"
+        >
+        </dxo-common-series-settings>
+        <dxo-legend
+          verticalAlignment="top"
+          horizontalAlignment="center"
+          itemTextPosition="top"
+        >
+        </dxo-legend>
+
+        <dxo-tooltip [enabled]="true" location="edge" [zIndex]="10">
+        </dxo-tooltip>
+        <dxo-size [height]="160"> </dxo-size>
+      </dx-chart>
+    </mat-card>
+
+    <mat-card style="margin-top: 5px">
+      <dx-chart
+        #chart5
+        id="chart5"
+        title="Độ tuổi"
+        [dataSource]="dash05s"
+        palette="Office"
+      >
+        <dxi-series valueField="curQty" name="Năm nay"></dxi-series>
+        <dxi-series valueField="preQty" name="năm trước"></dxi-series>
+        <dxo-common-series-settings
+          argumentField="ageRange"
+          type="bar"
+          [barWidth]="60"
+        >
+        </dxo-common-series-settings>
+        <dxo-legend verticalAlignment="bottom" horizontalAlignment="center">
+        </dxo-legend>
+        <dxo-size [height]="440"> </dxo-size>
+        <dxo-tooltip [enabled]="true" location="edge" [zIndex]="10">
+        </dxo-tooltip>
+      </dx-chart>
+    </mat-card>
+  </div>
+</div>

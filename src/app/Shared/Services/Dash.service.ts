@@ -69,12 +69,12 @@ export class DashBoardService extends baseService {
     return data;
   }
 
-  // getDashBoardClassify (): Observable<DashClassify[]> {
-  //   return this.http.get<DashClassify[]>(this.pathAPI + 'dash/DBClassify', super.header());//.pipe(catchError(super.handleError));
-  // }  
+  getDashBoardClassify (): Observable<DashClassify[]> {
+    return this.http.get<DashClassify[]>(this.pathAPI + 'dash/DBClassify', super.header())
+  }  
 
-  // getDashBoardAddictType (): Observable<DashAddictType[]> {
+  getDashBoardAddictType (): Observable<DashAddictType[]> {
     
-  //   return this.http.get<DashAddictType[]>(this.pathAPI + 'dash/DBAddictType', super.header());//.pipe(catchError(super.handleError));
-  // }  
+    return this.http.get<DashAddictType[]>(this.pathAPI + 'dash/DBAddictType', super.header());//.pipe(catchError(super.handleError));
+  }  
 }

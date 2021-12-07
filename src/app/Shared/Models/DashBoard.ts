@@ -26,12 +26,12 @@ export interface Dash05 {
 }
 
 export interface DashClassify {
-    ClassifysName : string;
+    classifyName : string;
     qty : number;
 }
 
 export interface DashAddictType {
-    PlaceName : string;
+    placeName : string;
     qty : number;
 }
 

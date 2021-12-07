@@ -7,6 +7,7 @@ import {
   Dash04,
   Dash05,
   DashAddictType,
+  DashClassify,
 } from '../Shared/Models/DashBoard';
 import { Data, DashBoardService } from '../Shared/Services/Dash.service';
 
@@ -32,8 +33,8 @@ export class Dashboard1Component implements AfterViewChecked {
   @ViewChild('chart5') chart5!: DxChartComponent;
 
   dataSource: Data[];
-
-
+  DashClassify: DashClassify[] = [];
+  DashAddictType: DashAddictType[] = []
   constructor(private dbService: DashBoardService) {}
 
   ngOnInit(): void {
@@ -57,7 +58,14 @@ export class Dashboard1Component implements AfterViewChecked {
       this.dash05s = p;
     });
 
-    this.dataSource = this.dbService.getData();
+    this.dbService.getDashBoardClassify().subscribe((p) => {
+      this.DashClassify = p.map(response => ({...response, qty: response.qty / 100}))
+    });
+
+    //this.dataSource = this.dbService.getData();
+    this.dbService.getDashBoardAddictType().subscribe((p) => {
+      this.DashAddictType = p;
+    });
   }
 
   //   customizeTooltip (pointInfo: { originalValue: any; }) {
