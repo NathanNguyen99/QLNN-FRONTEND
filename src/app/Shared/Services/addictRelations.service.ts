@@ -2,38 +2,38 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { baseService } from '../Services/base.service';
+import { baseService } from './base.service';
 import { AppConfig } from '../../Config/config';    
 import { Helpers } from '../../Helpers/helpers';
-import { AddictDrugs } from '../Models/AddictDrugs';
+import { AddictRelations } from '../Models/AddictRelations';
 import {BehaviorSubject} from 'rxjs';
 @Injectable()
-export class AddictDrugsService extends baseService {
+export class AddictRelationsService extends baseService {
   private pathAPI = this.config.setting['PathAPI'];
 
-  dataChange: BehaviorSubject<AddictDrugs[]> = new BehaviorSubject<AddictDrugs[]>([]);
+  dataChange: BehaviorSubject<AddictRelations[]> = new BehaviorSubject<AddictRelations[]>([]);
   dialogData: any;
   constructor(private http: HttpClient, private config: AppConfig, helper: Helpers) { super(helper); }
   /** GET heroes from the server */
-  getAll (): Observable<AddictDrugs[]> {
-    return this.http.get<AddictDrugs[]>(this.pathAPI + 'AddictDrugs', super.header());//.pipe(catchError(super.handleError));
+  getAll (): Observable<AddictRelations[]> {
+    return this.http.get<AddictRelations[]>(this.pathAPI + 'AddictRelations', super.header());//.pipe(catchError(super.handleError));
   }
 
-  getByAddictID (addictID: string): Observable<AddictDrugs[]> {
-    return this.http.get<AddictDrugs[]>(this.pathAPI + 'AddictDrugs/GetByAddictID?adID=' + addictID, super.header());//.pipe(catchError(super.handleError));
+  getByAddictID (addictID: string): Observable<AddictRelations[]> {
+    return this.http.get<AddictRelations[]>(this.pathAPI + 'AddictRelations/GetByAddictID?adID=' + addictID, super.header());//.pipe(catchError(super.handleError));
   }
 
-  getByID(Oid: string): Observable<AddictDrugs> {
-    return this.http.get<AddictDrugs>(this.pathAPI + `AddictDrugs/${Oid}`, super.header());//.pipe(catchError(super.handleError));
+  getByID(Oid: string): Observable<AddictRelations> {
+    return this.http.get<AddictRelations>(this.pathAPI + `AddictRelations/${Oid}`, super.header());//.pipe(catchError(super.handleError));
   }
 
-  get data(): AddictDrugs[] {
+  get data(): AddictRelations[] {
     return this.dataChange.value;
   }
 
    /** CRUD METHODS */
    getAllData(): void {    
-    this.http.get<AddictDrugs[]>(this.pathAPI + 'AddictDrugs', super.header()).subscribe(data => {
+    this.http.get<AddictRelations[]>(this.pathAPI + 'AddictRelations', super.header()).subscribe(data => {
        //console.log(data);
         this.dataChange.next(data);
       },
@@ -44,7 +44,7 @@ export class AddictDrugsService extends baseService {
   }
 
   getPaging2 (sortname: string, dicrection: string, searchString: string, pageNum: number, pageSize: number) {
-    const requestUrl = `${this.pathAPI}AddictDrugs/GetPaging?sortName=${sortname}&sortDirection=${dicrection}&searchString=${searchString}&pageNumber=${pageNum}&pageSize=${pageSize}`;
+    const requestUrl = `${this.pathAPI}AddictRelations/GetPaging?sortName=${sortname}&sortDirection=${dicrection}&searchString=${searchString}&pageNumber=${pageNum}&pageSize=${pageSize}`;
     
     //console.log(requestUrl);
     return this.http.get<any>(requestUrl, super.header());
@@ -52,11 +52,11 @@ export class AddictDrugsService extends baseService {
   }
 
   // DEMO ONLY, you can find working methods below
-  addObject(issue: AddictDrugs): void {
+  addObject(issue: AddictRelations): void {
     this.dialogData = issue;
   }
 
-  updateObject(issue: AddictDrugs): void {
+  updateObject(issue: AddictRelations): void {
     this.dialogData = issue;
   }
 
@@ -68,7 +68,7 @@ export class AddictDrugsService extends baseService {
   }
 
   public deleteRecord(value: string):  Observable<any> {    
-    return this.http.delete(this.pathAPI + 'AddictDrugs/' + value, super.header()).pipe(
+    return this.http.delete(this.pathAPI + 'AddictRelations/' + value, super.header()).pipe(
       catchError((error: any) => {
            console.error(error);
            return of();
@@ -77,7 +77,7 @@ export class AddictDrugsService extends baseService {
   }
 
   SaveAddDrugs(): Observable<any> {
-    return this.http.put<AddictDrugs>(this.pathAPI + 'AddictDrugs', this.dialogData, super.header()).pipe(
+    return this.http.put<AddictRelations>(this.pathAPI + 'AddictRelations', this.dialogData, super.header()).pipe(
       catchError((error: any) => {
            console.error(error);
            return of();
@@ -86,7 +86,7 @@ export class AddictDrugsService extends baseService {
   }
 
   SaveEditDrugs(): Observable<any> {
-    return this.http.post<AddictDrugs>(this.pathAPI + 'AddictDrugs', this.dialogData, super.header()).pipe(
+    return this.http.post<AddictRelations>(this.pathAPI + 'AddictRelations', this.dialogData, super.header()).pipe(
       catchError((error: any) => {
            console.error(error);
            return of();

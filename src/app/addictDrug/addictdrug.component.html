@@ -22,21 +22,9 @@
           <mat-cell *matCellDef="let row" >{{row.addictName}}</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="DrugsName">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Loại thuốc</mat-header-cell>
-          <mat-cell *matCellDef="let row" >{{row.drugsName}}</mat-cell>
-        </ng-container>
-    
-        <ng-container matColumnDef="UseName">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Cách dùng</mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.useName}}</mat-cell>
-        </ng-container>    
-          
-        <ng-container matColumnDef="InUse">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Đang dùng</mat-header-cell>
-          <mat-cell *matCellDef="let row"> 
-            <mat-checkbox [(ngModel)]="row.inUse" [disabled]="true"></mat-checkbox>
-          </mat-cell>         
+        <ng-container matColumnDef="RelationsName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Loại quan hệ</mat-header-cell>
+          <mat-cell *matCellDef="let row" >{{row.relationsName}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="Remarks">
@@ -63,7 +51,7 @@
       </mat-table>    
     
       <div class="no-results" [style.display]="totalCount === 0 ? '' : 'none'">
-        No results
+        Không có kết quả
       </div>
     
       <mat-paginator #paginator

@@ -120,6 +120,10 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { RelationsComponent } from './relations/relations.component';
+import { RelationsEditComponent } from './relations/relations-edit/relations-edit.component';
+import { RelationsService } from './Shared/Services/relations.service';
+import { AddictRelationsService } from './Shared/Services/addictrelations.service';
 registerLocaleData(en);
 
 @NgModule({
@@ -161,6 +165,8 @@ registerLocaleData(en);
     MoveHistoryComponent,
     AddictVehicleComponent,
     AddictVehicleEditComponent,
+    RelationsComponent,
+    RelationsEditComponent,
   ],
   imports: [
     NzAlertModule,
@@ -231,6 +237,8 @@ registerLocaleData(en);
     ClassifyService,
     AddictClassifyService,
     AddictVehicleService,
+    RelationsService,
+    AddictRelationsService,
     { provide: NZ_I18N, useValue: en_US },
   ],
   bootstrap: [AppComponent],

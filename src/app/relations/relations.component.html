@@ -1,0 +1,65 @@
+<div class="mat-elevation-z8">
+    <div class="form">
+      <div style="width: 25%">
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input
+            type="text"
+            matInput
+            #filter
+            nz-input
+            placeholder="Tìm kiếm ..."
+          />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <i nz-icon nzType="search"></i>
+        </ng-template>
+      </div>
+      </div>
+    
+      <mat-table #table [dataSource]="dataSource" matSort class="mat-cell">
+        ng update @angular/cli @angular/core
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+    
+        <!-- ID Column -->
+        <ng-container matColumnDef="OID">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Mã số</mat-header-cell>
+          <mat-cell *matCellDef="let row" >{{row.oid}}</mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="relationName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Loại quan hệ</mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.relationName}}</mat-cell>
+        </ng-container>
+    
+          
+        <!-- actions -->
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>
+            <button (click)="openAddDialog()" nz-button nzType="default" nzShape="circle"><i nz-icon nzType="plus" nzTheme="outline"></i></button>
+
+          </mat-header-cell>
+    
+          <mat-cell *matCellDef="let row; let i=index;">
+            <button nz-button (click)="startEdit(i, row)" nzType="default" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+            <button style="margin-left:0.5rem" nz-button (click)="deleteItem(i, row)" nzType="default" nzDanger nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>  
+
+          </mat-cell>
+        </ng-container>
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    
+    
+      <div class="no-results" [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
+        No results
+      </div>
+    
+      <mat-paginator #paginator
+                     [length]="dataSource.filteredData.length"
+                     [pageIndex]="0"
+                     [pageSize]="10"
+                     [pageSizeOptions]="[5, 10, 25, 100]">
+      </mat-paginator>
+    </div>

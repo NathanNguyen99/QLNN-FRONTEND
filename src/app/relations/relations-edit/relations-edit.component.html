@@ -1,5 +1,5 @@
 <div class="container">
-    <h3 mat-dialog-title>Loại Ma túy</h3>
+    <h3 mat-dialog-title>Quan hệ</h3>
   
     <form class="mat-dialog-content" (ngSubmit)="submit" #formControl="ngForm">
   
@@ -13,7 +13,7 @@
       <!--Textarea for demo purposes-->
       <div class="form">
         <mat-form-field color="accent">
-          <textarea matInput #input class="form-control" placeholder="Tên loại thuốc" [(ngModel)]="data.drugsName" name="drugsName" required ></textarea>
+          <textarea matInput #input class="form-control" placeholder="Tên loại thuốc" [(ngModel)]="data.relationName" name="drugsName" required ></textarea>
           <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
         </mat-form-field>
       </div>

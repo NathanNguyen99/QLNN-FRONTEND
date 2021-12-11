@@ -2,6 +2,7 @@
 import { AddictDrugs } from "../Models/AddictDrugs";
 import { AddictManagePlace } from "../Models/AddictManagePlace";
 import { AddictClassify } from "./AddictClassify";
+import { AddictVehicle } from "./AddictVehicle";
 
 export interface Addict {
     oid	: string;
@@ -51,6 +52,7 @@ export interface Addict {
     drugs : AddictDrugs[];
     classifys : AddictClassify[];
     places : AddictManagePlace[];
+    vehicle: AddictVehicle[];
 }
 
 // export interface AddictBase {

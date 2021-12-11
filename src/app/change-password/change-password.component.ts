@@ -57,11 +57,27 @@ export class ChangePasswordComponent implements OnInit {
   @ViewChild('confirmpassword') confirmpassword: any;
 
   focusOn() {
+    let virtualPass = this.newpassword
     this.newpassword.nativeElement.focus();
+    if(virtualPass != this.newpassword) {
+      this.newpassword.nativeElement.blur();
+      this.submitted = false;
+      
+    }
+    //this.submitted = false;
+
   }
 
   secondFocusOn() {
     this.confirmpassword.nativeElement.focus();
+    let virtualPass = this.confirmpassword
+    if(virtualPass != this.confirmpassword) {
+      this.confirmpassword.nativeElement.blur();
+      this.submitted = false;
+      
+    }
+    //this.submitted = false;
+
   }
 
   onSubmit() {
@@ -94,6 +110,6 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   private fail() {
-    this.alertSv.message('Có lỗi, kiểm tra mật khẩu cũ');
+    this.alertSv.message('Mật khẩu sai');
   }
 }

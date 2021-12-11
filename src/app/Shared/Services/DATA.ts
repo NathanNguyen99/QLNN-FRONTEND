@@ -81,26 +81,26 @@ export const appMenuItem = [
                 link: '/home/addict/addict-move',
                 icon: 'history'
             },
+            // {
+            //     label: 'Lịch sử hoạt động',
+            //     icon: 'assignment_turned_in',         
+            //     link: '/home/addict/addict-place'
+            // },
             {
-                label: 'Lịch sử hoạt động',
-                icon: 'assignment_turned_in',         
-                link: '/home/addict/addict-place'
-            },
-            {
-                label: 'Lịch sử dùng ma túy',           
+                label: 'Lịch sử quan hệ',           
                 icon: 'speaker_notes',
                 link: '/home/addict/addict-drug'
             },
-            {
-                label: 'Phân loại đối tượng',
-                icon: 'dvr',
-                link: '/home/addict/addict-classify'
-            },
-            {
-                label: 'Phương tiện người nghiện',
-                icon: 'local_car_wash',
-                link: '/home/addict/addict-vehicle'
-            }
+            // {
+            //     label: 'Phân loại đối tượng',
+            //     icon: 'dvr',
+            //     link: '/home/addict/addict-classify'
+            // },
+            // {
+            //     label: 'Phương tiện người nghiện',
+            //     icon: 'local_car_wash',
+            //     link: '/home/addict/addict-vehicle'
+            // }
         ]
     },
     {
@@ -116,6 +116,11 @@ export const appMenuItem = [
             {
                 label: 'Loại ma túy',
                 link: '/home/category/drugs',
+                icon: 'send'
+            },
+            {
+                label: 'Loại quan hệ',
+                link: '/home/category/relations',
                 icon: 'send'
             },
             {

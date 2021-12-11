@@ -18,88 +18,85 @@ export const MY_DATE_FORMATS = {
     dateInput: 'DD-MM-YYYY',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY'
+    monthYearA11yLabel: 'MMMM YYYY',
   },
 };
 @Component({
   selector: 'app-addict-vehicle-edit',
   templateUrl: './addictVehicle-edit.component.html',
   styleUrls: ['./addictVehicle-edit.component.css'],
-  providers : [
-    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
-  ]
+  providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }],
 })
 export class AddictVehicleEditComponent implements OnInit {
-
-  constructor(public dialogRef: MatDialogRef<AddictVehicleEditComponent>,
+  constructor(
+    public dialogRef: MatDialogRef<AddictVehicleEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AddictVehicle,
     public dataService: AddictVehicleService,
-    private addictservice: addictService ) { }
+    private addictservice: addictService
+  ) {}
 
-    VehicleData : any;
-    addictData : any;
-    addictSearch : any ;
-    provinceData: any;
-    placeFilter: any;
-formControl = new FormControl('', [
-Validators.required
-// Validators.email,
-]);
+  VehicleData: any;
+  addictData: any;
+  addictSearch: any;
+  provinceData: any;
+  placeFilter: any;
+  formControl = new FormControl('', [
+    Validators.required,
+    // Validators.email,
+  ]);
 
-getErrorMessage() {
-return this.formControl.hasError('required') ? 'Required field' :'';
-}
+  getErrorMessage() {
+    return this.formControl.hasError('required') ? 'Required field' : '';
+  }
 
-ngOnInit() {
-  //this.loadVehicles();
-  this.loadAddicts();
-  this.loadProvince();
-}
+  ngOnInit() {
+    //this.loadVehicles();
+    this.loadAddicts();
+    this.loadProvince();
+  }
 
-public loadProvince() {   
-  this.addictservice.getPlaceOfBirth().subscribe(
-    {
-      next:(data: any)=> {
-        this.provinceData = data
+  public loadProvince() {
+    this.addictservice.getPlaceOfBirth().subscribe({
+      next: (data: any) => {
+        this.provinceData = data;
         //this.placeFilter = this.provinceData.filter((r: any)=>r.oid === this.data.placeTypeID);
       },
-      error: (err: any)=> console.log(err)
+      error: (err: any) => console.log(err),
     });
-    
-}
+  }
 
+  public loadAddicts() {
+    this.addictservice.getBaseFieldAddicts().subscribe(
+      (data: any) => {
+        this.addictData = data;
+        this.addictSearch = this.addictData.slice();
+      },
+      (err: any) => console.log(err)
+    );
+  }
 
-public loadAddicts() {    
-  this.addictservice.getBaseFieldAddicts().subscribe((data: any)=> {
-     this.addictData = data     
-     this.addictSearch = this.addictData.slice();
-    }, (err: any) => console.log(err));    
-}
+  submit() {
+    // emppty stuff
+  }
 
-submit() {
-// emppty stuff
-}
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 
-onNoClick(): void {
-this.dialogRef.close();
-}
+  public confirmAdd(): void {
+    this.dataService.addObject(this.data);
+  }
 
-public confirmAdd(): void {
-this.dataService.addObject(this.data);
-}
+  stopEdit(): void {
+    this.dataService.updateObject(this.data);
+  }
 
-stopEdit(): void {
-  this.dataService.updateObject(this.data);
-}
+  selectChange($event: any) {
+    //console.log($event);
+  }
 
-selectChange($event: any) {
-  //console.log($event);
-  
-}
-
-selectPlaceTypeChange(ptypeid: any) {
-  //console.log($event.target);
-  //this.placeFilter = this.managePlaceData.filter((r: any)=>r.placeTypeID === ptypeid);
-}
-
+  selectPlaceTypeChange(ptypeid: any) {
+    //console.log($event.target);
+    //this.placeFilter = this.managePlaceData.filter((r: any)=>r.placeTypeID === ptypeid);
+  }
 }

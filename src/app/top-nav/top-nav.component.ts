@@ -17,7 +17,6 @@ export class TopNavComponent implements OnInit {
    }
 
   ngOnInit() {    
-    
   }
 
   tongleNav(){

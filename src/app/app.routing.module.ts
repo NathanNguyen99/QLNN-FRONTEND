@@ -22,6 +22,7 @@ import { ClassifyComponent } from './classify/classify.component';
 import { AddictclassifyComponent } from './addictclassify/addictclassify.component';
 import { MoveHistoryComponent } from './moveHistory/moveHistory.component';
 import { AddictVehicleComponent } from './addictVehicle/addictVehicle.component';
+import { RelationsComponent } from './relations/relations.component';
 
 const routes: Routes = [
   {
@@ -89,6 +90,11 @@ const routes: Routes = [
           {
             path: 'drugs',
             component: DrugsComponent,
+            canActivate: [AuthGuard],
+          },
+          {
+            path: 'relations',
+            component: RelationsComponent,
             canActivate: [AuthGuard],
           },
           {

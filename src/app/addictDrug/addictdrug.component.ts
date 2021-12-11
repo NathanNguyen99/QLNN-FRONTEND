@@ -3,13 +3,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import {catchError, map, tap, startWith, switchMap, debounceTime} from 'rxjs/operators';
-import { AddictDrugsService } from '../Shared/Services/addictdrug.service';
 import { fromEvent,merge, BehaviorSubject, of as observableOf } from 'rxjs';
 import {AddictDrugEditComponent} from './obj-edit/addictdrug-edit.component';
 import { ConfirmService } from '../Shared/Services/confirm.service';
 import { AlertService } from '../Shared/Services/alert.service';
 import { Drugs} from '../Shared/Models/Drugs';
-import { AddictDrugs } from '../Shared/Models/AddictDrugs';
+import { AddictRelations } from '../Shared/Models/AddictRelations';
+import { AddictRelationsService } from '../Shared/Services/addictrelations.service';
 
 @Component({
   selector: 'app-addictdrug',
@@ -18,15 +18,15 @@ import { AddictDrugs } from '../Shared/Models/AddictDrugs';
 })
 export class AddictDrugComponent implements OnInit {
 
-  displayedColumns = ['AddictCode','AddictName','DrugsName', 'UseName', 'InUse', 'Remarks', 'actions'];
-  dataSource!: AddictDrugs[];
+  displayedColumns = ['AddictCode', 'AddictName', 'RelationsName', 'Remarks', 'actions'];
+  dataSource!: AddictRelations[];
   index: number=0;
   Oid: string='';
   _filterChange = new BehaviorSubject('');
   isLoadingResults = true;
   totalCount =0;
   constructor(public dialogService: MatDialog, 
-    public _Service: AddictDrugsService, 
+    public _Service: AddictRelationsService, 
     private confirmSv: ConfirmService, 
     private alertSv:AlertService,
     private changeDetectorRefs: ChangeDetectorRef) { }
@@ -89,7 +89,7 @@ export class AddictDrugComponent implements OnInit {
       });
   }
 
-  startEdit(i: number, odata: AddictDrugs) {
+  startEdit(i: number, odata: AddictRelations) {
     //this.Oid = oid;
     // index row is used just for debugging proposes and can be removed
     this.index = i;
@@ -118,11 +118,11 @@ export class AddictDrugComponent implements OnInit {
     });
   }
 
-  deleteItem(i: number, odata: AddictDrugs) {
+  deleteItem(i: number, odata: AddictRelations) {
     this.index = i;
     //const url = "123";
 
-    this.confirmSv.confirm(odata.drugsName, 'Bạn có chắc muốn xóa mã này không?')
+    this.confirmSv.confirm(odata.relationsName, 'Bạn có chắc muốn xóa mã này không?')
     .subscribe(r=> {if (r === true) {
       
       return this._Service!.deleteRecord(odata.oid).subscribe(
