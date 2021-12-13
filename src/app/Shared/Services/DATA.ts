@@ -81,6 +81,11 @@ export const appMenuItem = [
                 link: '/home/addict/addict-move',
                 icon: 'history'
             },
+            {
+                label: 'Lịch sử hoạt động',
+                icon: 'assignment_turned_in',         
+                link: '/home/addict/addict-place'
+            },
             // {
             //     label: 'Lịch sử hoạt động',
             //     icon: 'assignment_turned_in',         

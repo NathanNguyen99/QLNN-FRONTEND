@@ -32,6 +32,8 @@ import { MatSelectFilterModule } from 'mat-select-filter';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { MomentDateModule } from '@angular/material-moment-adapter';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 import {
   DxDataGridModule,
@@ -212,6 +214,8 @@ registerLocaleData(en);
     DxFileUploaderModule,
     DxButtonModule,
     FlexLayoutModule,
+    NzTableModule,
+    NzPaginationModule
   ],
   providers: [
     MultilevelMenuService,

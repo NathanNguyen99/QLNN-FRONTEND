@@ -11,3 +11,13 @@ export interface AddictManagePlace {
     toDate	: Date;
     remarks	: string;
 }
+
+export interface AddictManagePlace2 {
+    
+    addictID	: string;
+    addictCode : string;
+    addictName : string;   
+    dob	: Date;   
+    expand: boolean;
+    activityLog : AddictManagePlace[];
+}

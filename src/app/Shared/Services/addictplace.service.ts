@@ -46,6 +46,13 @@ export class AddictPlaceService extends baseService {
     //return this.http.get<any>(requestUrl, super.header()).pipe(map(data=> {return data}));//.pipe(catchError(super.handleError));
   }
   
+  getPaging22 (sortname: string, dicrection: string, searchString: string, pageNum: number, pageSize: number) {
+    const requestUrl = `${this.pathAPI}AddictManagePlace/GetPaging2?sortName=${sortname}&sortDirection=${dicrection}&searchString=${searchString}&pageNumber=${pageNum}&pageSize=${pageSize}`;
+    
+    //console.log(requestUrl);
+    return this.http.get<any>(requestUrl, super.header());
+  }
+
   get data(): AddictManagePlace[] {
     return this.dataChange.value;
   }

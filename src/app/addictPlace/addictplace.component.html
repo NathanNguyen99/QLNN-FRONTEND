@@ -2,100 +2,109 @@
   <app-loading *ngIf="isLoadingResults"></app-loading>
 
   <div class="form">
-    <div style="width: 25%"> 
-
+    <div style="width: 25%">
       <nz-input-group [nzSuffix]="suffixIconSearch">
-        <input type="text" matInput #filter nz-input placeholder="Tìm kiếm ..." />
+        <input
+          type="text"
+          matInput
+          #filter
+          nz-input
+          placeholder="Tìm kiếm ..."
+        />
       </nz-input-group>
       <ng-template #suffixIconSearch>
         <i nz-icon nzType="search"></i>
       </ng-template>
     </div>
-    <!-- <mat-form-field floatPlaceholder="never" color="accent">
-      <input class="search-input"  matInput #filter placeholder="Tìm kiếm" />
-    </mat-form-field> -->
-  </div>
-  <!-- <div class="form" >
-      <mat-form-field> 
-        <mat-select placeholder="Tìm theo phân loại nơi quản lý" >
-            <mat-option *ngFor="let p of placetypes"
-                        [value]="p"
-                        (click)="searchPlaceType(p)">{{p.PlaceTypeName}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-  </div> -->
-  <mat-table #table [dataSource]="dataSource" matSort class="mat-cell">
-    <ng-container matColumnDef="AddictCode">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Mã số</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row.addictCode }}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="AddictName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Họ tên</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">{{ row.addictName }}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="PlaceName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Nơi quản lý</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">{{ row.placeName }}</mat-cell>
-    </ng-container>
-
-    <!-- <ng-container matColumnDef="FromDate">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Từ ngày</mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.fromDate | momentPipe: 'DD/MM/YYYY'}}</mat-cell>
-        </ng-container>  
-        
-        <ng-container matColumnDef="ToDate">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Đến ngày</mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.toDate | momentPipe: 'DD/MM/YYYY'}}</mat-cell>
-        </ng-container>  -->
-
-    <ng-container matColumnDef="Remarks">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Nhật ký hoạt động</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row"> {{ row.remarks }}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="PlaceTypeName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Phân loại</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row"> {{ row.placeTypeName }}</mat-cell>
-    </ng-container>
-    <!-- actions -->
-    <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef>
-        <div>
-          <button (click)="openAddDialog()" nz-button nzType="default" nzShape="circle"><i nz-icon nzType="user-add" nzTheme="outline"></i></button>
-        </div>
-      </mat-header-cell>
-
-      <mat-cell *matCellDef="let row; let i = index">
-        <button nz-button (click)="startEdit(i, row)" nzType="default" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-        <button style="margin-left:0.5rem" nz-button (click)="deleteItem(i, row)" nzType="default" nzDanger nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-  </mat-table>
-
-  <div class="no-results" [style.display]="totalCount === 0 ? '' : 'none'">
-    No results
   </div>
 
-  <mat-paginator
-    #paginator
-    showFirstLastButtons
-    [length]="totalCount"
-    [pageIndex]="0"
-    [pageSize]="14"
-    [pageSizeOptions]="[5, 10, 25, 100]"
-  >
-  </mat-paginator>
+  <nz-table #nestedTable nzBordered [nzData]="dataSource" [nzShowPagination]="false">
+    <thead>
+      <tr>
+        <th style="width: 0px;"></th>
+        <th>Mã số</th>
+        <th>Họ tên</th>
+        <th>
+          Ngày sinh
+          <button
+            (click)="openAddDialog()"
+            nz-button
+            nzType="default"
+            nzShape="circle"
+          >
+            <i nz-icon nzType="user-add" nzTheme="outline"></i>
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-template  
+      ngFor let-data [ngForOf]="nestedTable.data"
+      >
+        <tr>
+          <td [(nzExpand)]="data.expand"></td>
+          <td>{{ data.addictCode }}</td>
+          <td>{{ data.addictName }}</td>
+          <td>{{ data.dob | date: "dd/MM/yyyy" }}</td>
+        </tr>
+        <tr [nzExpand]="data.expand">
+          <nz-table                   
+            #innerTable
+            [nzData]="data.activityLog"
+            [nzShowPagination]="false"
+            nzBordered
+          >
+            <thead>
+              <tr>
+                <th nzWidth="200px">Phân loại nơi</th>
+                <th nzWidth="180px">Nơi quản lý</th>
+                <th nzWidth="110px">ngày</th>
+                <th>Nhật ký hoạt động</th>
+                <th nzWidth="110px">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of innerTable.data">
+                <td>{{ data.placeTypeName }}</td>
+                <td>{{ data.placeName }}</td>
+                <td>{{ data.fromDate | date: "dd/MM/yyyy" }}</td>
+                <td>{{ data.remarks }}</td>
+                <td>
+                  <button
+                    nz-button
+                    (click)="startEdit(0, data)"
+                    nzType="default"
+                    nzShape="circle"
+                  >
+                    <i nz-icon nzType="edit" nzTheme="outline"></i>
+                  </button>
+                  <!-- <nz-divider nzType="vertical"></nz-divider> -->
+                  <button
+                    style="margin-left: 0.5rem"
+                    nz-button
+                    (click)="deleteItem(0, data)"
+                    nzType="default"
+                    nzDanger
+                    nzShape="circle"
+                  >
+                    <i nz-icon nzType="delete" nzTheme="outline"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </tr>
+      </ng-template>
+    </tbody>
+
+  </nz-table>
+  <div style="float: right;">
+
+    <nz-pagination
+      [nzPageIndex]="1"
+      [nzPageSize]="10"
+      [nzTotal]="totalCount"
+      (nzPageIndexChange)="PageChange($event)"
+    ></nz-pagination>
+  </div>
 </div>
