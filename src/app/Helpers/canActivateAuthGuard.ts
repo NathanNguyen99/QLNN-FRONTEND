@@ -6,7 +6,10 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(private router: Router, private helper: Helpers) {}
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> | boolean {
     if (!this.helper.isAuthenticated()) {
       this.router.navigate(['/login']);
       return false;

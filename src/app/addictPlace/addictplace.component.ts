@@ -17,7 +17,13 @@ import {
 } from '../Shared/Models/AddictManagePlace';
 import { AddictPlaceService } from '../Shared/Services/addictplace.service';
 import { AddictPlaceDataSource } from '../Shared/Datasources/addictPlace.Datasource';
-import { fromEvent, merge, BehaviorSubject, of as observableOf } from 'rxjs';
+import {
+  fromEvent,
+  merge,
+  BehaviorSubject,
+  of as observableOf,
+  combineLatest,
+} from 'rxjs';
 import {
   catchError,
   map,
@@ -32,6 +38,7 @@ import { ConfirmService } from '../Shared/Services/confirm.service';
 import { AlertService } from '../Shared/Services/alert.service';
 import { PlacetypeData } from '../Shared/Services/DATA';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,6 +46,7 @@ import { NzTableQueryParams } from 'ng-zorro-antd/table';
   templateUrl: './addictplace.component.html',
   styleUrls: ['./addictplace.component.scss'],
 })
+@UntilDestroy()
 export class AddictPlaceComponent implements AfterViewInit, OnInit {
   displayedColumns = [
     'AddictCode',
@@ -63,6 +71,7 @@ export class AddictPlaceComponent implements AfterViewInit, OnInit {
     private changeDetectorRefs: ChangeDetectorRef
   ) {}
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @ViewChild('filter', { static: true }) filter!: ElementRef;
   _filterChange = new BehaviorSubject('');
@@ -70,13 +79,11 @@ export class AddictPlaceComponent implements AfterViewInit, OnInit {
   isLoadingResults = true;
   //isRateLimitReached = false;
   //isLoading$ = new BehaviorSubject(true);
-  ngOnInit() {
-    //this._filterChange.next(this.filter.nativeElement.value);
+  ngOnInit(): void {
+    
   }
 
-  private refreshTable() {
-    this.paginator._changePageSize(this.paginator.pageSize);
-  }
+  
 
   public loadData() {
     // If the user changes the sort order, or search then reset back to the first page.
@@ -92,7 +99,7 @@ export class AddictPlaceComponent implements AfterViewInit, OnInit {
           //console.log(this._filterChange.value)
           let sortName = '';
           // if (this.sort.active)
-          //   sortName=this.sort.active; 
+          //   sortName=this.sort.active;
           return this._Service.getPaging22(
             sortName,
             'asc',
@@ -121,10 +128,7 @@ export class AddictPlaceComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit() {
-    // this.paginator.page
-    //     .pipe(
-    //         tap(() => this.dataSource.loadLessons(...))
-    //     ).subscribe();
+
     this.loadData();
 
     fromEvent(this.filter.nativeElement, 'keyup')
@@ -170,8 +174,9 @@ export class AddictPlaceComponent implements AfterViewInit, OnInit {
       .confirm(odata.placeName, 'Bạn có chắc muốn xóa mã này không?')
       .subscribe((r: boolean) => {
         if (r === true) {
-          return this._Service!.deleteRecord(odata.oid).subscribe(
+          return this._Service.deleteRecord(odata.addictCode).subscribe(
             (result) => {
+              console.log(result);
               this.success();
               // Refresh DataTable to remove row.
               this.deleteRowDataTable(i, 1, this.paginator, this.dataSource);
@@ -188,7 +193,6 @@ export class AddictPlaceComponent implements AfterViewInit, OnInit {
   }
 
   private success() {
-    //this.messagesService.openDialog('Success', 'Database updated as you wished!');
     this.alertSv.error('Xóa thành công', false);
   }
   private deleteRowDataTable(
@@ -215,7 +219,8 @@ export class AddictPlaceComponent implements AfterViewInit, OnInit {
             // After dialog is closed we're doing frontend updates
             // For add we're just pushing a new row inside DataService
             this._Service.dataChange.value.push(this._Service.getDialogData());
-            this.refreshTable();
+            this.loadData()
+            //this.refreshTable();
           },
           (error: any) => {
             console.log(error);
@@ -254,3 +259,4 @@ export class AddictPlaceComponent implements AfterViewInit, OnInit {
     this.loadData();
   }
 }
+

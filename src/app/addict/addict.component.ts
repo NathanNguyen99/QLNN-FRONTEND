@@ -32,6 +32,7 @@ import {
 import { AddictClassifyService } from '../Shared/Services/addictclassify.service';
 import { ClassifyService } from '../Shared/Services/classify.service';
 import { AddictVehicleService } from '../Shared/Services/addictVehicle.service';
+import { AddictVehicle } from '../Shared/Models/AddictVehicle';
 //import { PlaceType } from '../Shared/Models/PlaceType';
 
 @Component({
@@ -120,8 +121,9 @@ export class AddictComponent implements OnInit {
     this.loadUses();
     this.loadClassifys();
     this.loadProvince();
-
   }
+
+  clearEvents() {}
 
   //onValueChanged
 
@@ -181,7 +183,7 @@ export class AddictComponent implements OnInit {
       next: (data) => (this.managePlaceData = data),
       error: (e) => console.error(e),
     });
-  }  
+  }
 
   public loadUser() {
     this.userService.getUsers().subscribe({
@@ -295,12 +297,11 @@ export class AddictComponent implements OnInit {
     e.data.addictID = this.EditObject.oid;
   }
 
-
   onInitNewRow(e: any) {
     //this.addictDrugData$ = null;
     this.openFormType = 1; //new
     this.detailChange = false;
-    
+
     this.addictPlaceData = [];
     this.addictClassifyData = [];
     this.addictDrugData = [];
@@ -332,7 +333,6 @@ export class AddictComponent implements OnInit {
     this.loadAddictPlaces(data.oid, data);
     this.loadAddictClassify(data.oid, data);
     this.loadAddictVehicle(data.oid, data);
-
   }
   insertRow(e: any) {
     var model: Addict = e.data;
@@ -364,6 +364,20 @@ export class AddictComponent implements OnInit {
         return true;
       } else return false;
     });
+  }
+
+  deleteAddictVehicleItem(e: any) {
+    var model: AddictVehicle = e.data;
+    console.log(model);
+    this._addictVehicleService.deleteRecord(model.oid);
+  }
+
+  //remove(obj: Addict): Promise<boolean>
+  deleteRow(data: Addict) {
+    this.EditObject = data;
+    console.log(this.EditObject);
+    this.service.remove(this.EditObject);
+    // this.loadData();
   }
 
   FormSaving(e: any) {
@@ -409,7 +423,6 @@ export class AddictComponent implements OnInit {
   }
 
   public loadAddictDrugs(key: any, odata: any) {
-    //this.addictDrugData$=this.adrugsrv.getByAddictID(key);
     this.adrugsrv.getByAddictID(key).subscribe(
       (data) => {
         //console.log(data);
@@ -420,7 +433,6 @@ export class AddictComponent implements OnInit {
   }
 
   public loadAddictClassify(key: any, odata: any) {
-    //this.addictDrugData$=this.adrugsrv.getByAddictID(key);
     this.adclassifysrv.getByAddictID(key).subscribe(
       (data) => {
         //console.log(data);
@@ -432,7 +444,6 @@ export class AddictComponent implements OnInit {
   }
 
   public loadAddictPlaces(key: any, odata: any) {
-    //this.addictDrugData$=this.adrugsrv.getByAddictID(key);
     this.adplacesrv.getByAddictID(key).subscribe(
       (data) => {
         //console.log(data);
@@ -443,7 +454,6 @@ export class AddictComponent implements OnInit {
   }
 
   public loadAddictVehicle(key: any, odata: any) {
-    //this.addictDrugData$=this.adrugsrv.getByAddictID(key);
     this._addictVehicleService.getByAddictID(key).subscribe(
       (data) => {
         //console.log(data);
@@ -452,7 +462,6 @@ export class AddictComponent implements OnInit {
       (err) => console.log(err)
     );
   }
-
 
   myCommand(e: any) {
     console.log(e);

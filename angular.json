@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/App5",
+            "outputPath": "dist/App",
             "optimization": false,
             "index": "src/index.html",
             "main": "src/main.ts",

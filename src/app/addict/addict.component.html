@@ -14,6 +14,7 @@
   (onSaving)="FormSaving($event)"
   (onRowUpdating)="updateRow($event)"
   (onRowInserting)="insertRow($event)"
+  (onRowRemoved)="deleteRow($event.data)"
   (onSaved)="FormSaved($event)"
 >
   <dxo-master-detail [enabled]="true" template="detail"></dxo-master-detail>
@@ -34,7 +35,7 @@
     [allowDeleting]="true"
   >
     <dxo-texts
-      confirmDeleteMessage="Bạn có muốn xóa dữ liệu này không?"
+      confirmDeleteMessage="Bạn có chắc chắn muốn xóa dữ liệu này không?"
     ></dxo-texts>
     <!-- <dxo-texts cancelRowChanges="Hủy"></dxo-texts>
         <dxo-texts saveRowChanges="Lưu"></dxo-texts> -->
@@ -43,7 +44,7 @@
       [showTitle]="true"
       [width]="1200"
       [height]="850"
-    >
+    > 
       <!-- <dxi-toolbar-item widget="dxButton"
                         location="after"
                         toolbar="bottom"
@@ -90,19 +91,6 @@
       </dxi-item>
 
       <dxi-item itemType="group" [colCount]="3" [colSpan]="3">
-        <!-- <dxi-item
-                    dataField="pemanentAddress"                    
-                    editorType="dxTextArea"
-                    [colSpan]="3"
-                    [editorOptions]="{ height: 50 }"
-                    >
-                </dxi-item>
-                <dxi-item
-                    dataField="currentAddress"                    
-                    editorType="dxTextArea"
-                    [colSpan]="3"
-                    [editorOptions]="{ height: 50 }">
-                </dxi-item> -->
         <dxi-item dataField="pemanentAddress" [colSpan]="3"></dxi-item>
         <dxi-item dataField="currentAddress" [colSpan]="3"></dxi-item>
         <dxi-item dataField="fartherName"></dxi-item>
@@ -280,6 +268,7 @@
               [dataSource]="addictVehicleData"
               (onInitNewRow)="onInitRowVehicle($event)"
               (onSaved)="FormDetailSaved($event)"
+              (onRowRemoved)="deleteAddictVehicleItem($event)"
             >
               <dxi-column dataField="nhanHieu" caption="Nhãn hiệu">
                 <dxi-validation-rule

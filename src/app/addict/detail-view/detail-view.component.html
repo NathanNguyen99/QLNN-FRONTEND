@@ -46,4 +46,32 @@
                 <dxi-column dataField="remarks" caption="Ghi chú"></dxi-column>                
          </dx-data-grid>
     </div>
+    <dxi-item title="Phương tiện người nghiện" template="history3"></dxi-item>
+    <div *dxTemplate="let h1 of 'history3'">
+        <dx-data-grid
+              [dataSource]="addictVehicleData"
+              [showBorders]="true"
+            >
+              <dxi-column dataField="nhanHieu" caption="Nhãn hiệu">
+                
+              </dxi-column>
+              <dxi-column dataField="kieuXe" caption="Kiểu xe"> </dxi-column>
+              <dxi-column dataField="mauXe" caption="Màu xe"></dxi-column>
+
+              <dxi-column dataField="bienSo" caption="Biển số"> </dxi-column>
+              <dxi-column dataField="noiDangKy" caption="Nơi đăng ký">
+                <dxo-lookup
+                  valueExpr="oid"
+                  displayExpr="provinceName"
+                ></dxo-lookup>
+              </dxi-column>
+              <dxi-column dataField="giayPhep" caption="Giấy phép">
+              </dxi-column>
+              <dxi-column dataField="remarks" caption="Ghi chú"></dxi-column>
+
+    
+            </dx-data-grid>
+    </div>
 </dx-tab-panel>
+<!--                   [dataSource]="placeOfBirthData"
+ -->
