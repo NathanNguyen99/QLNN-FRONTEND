@@ -13,7 +13,7 @@
       <!--Textarea for demo purposes-->
       <div class="form">
         <mat-form-field color="accent">
-          <textarea matInput #input class="form-control" placeholder="Tên loại thuốc" [(ngModel)]="data.relationName" name="drugsName" required ></textarea>
+          <textarea matInput #input class="form-control" placeholder="Tên quan hệ" [(ngModel)]="data.relationName" name="drugsName" required ></textarea>
           <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
         </mat-form-field>
       </div>

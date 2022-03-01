@@ -1,24 +1,46 @@
 <div class="container">
-  <h3 mat-dialog-title>Nơi quản lý</h3>
+  <h3 mat-dialog-title>Lịch sử hoạt động</h3>
 
-  <form class="mat-dialog-content" (ngSubmit)="submit" #formControl="ngForm">
-
-    <div class="form">        
+  <form class="mat-dialog-content" (ngSubmit)="(submit)" #formControl="ngForm">
+    <div class="form">
       <!-- <input matInput class="form-control" placeholder="họ tên" [(ngModel)]="data.addictName" name="AddictName" required > -->
       <mat-form-field color="accent">
-        <mat-select placeholder="Họ tên ..." #select1 id="Adidct" [(ngModel)]="data.addictID" required name="addictID">
-          <mat-select-filter *ngIf="select1.focused" [array]="addictData" [displayMember]="'fullName'" (filteredReturn)="addictSearch =$event"></mat-select-filter>
-          <mat-option *ngFor="let t of addictSearch" [value]="t.oid">{{t.addictCode}} <b> | </b> {{t.fullName}}
+        <mat-select
+          placeholder="Họ tên ..."
+          #select1
+          id="Adidct"
+          [(ngModel)]="data.addictID"
+          required
+          name="addictID"
+        >
+          <mat-select-filter
+            *ngIf="select1.focused"
+            [array]="addictData"
+            [displayMember]="'fullName'"
+            (filteredReturn)="addictSearch = $event"
+          ></mat-select-filter>
+          <mat-option *ngFor="let t of addictSearch" [value]="t.oid"
+            >{{ t.addictCode }} <b> | </b> {{ t.fullName }}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        <mat-error *ngIf="formControl.invalid">{{
+          getErrorMessage()
+        }}</mat-error>
       </mat-form-field>
-  </div>
+    </div>
     <div class="form">
       <mat-form-field color="accent">
-        <mat-select placeholder="Chọn ..." type="text" id="placeTypeID" [(ngModel)]="data.placeTypeID" required (ngModelChange)="selectPlaceTypeChange($event)" name="placeTypeID">
-          <mat-option *ngFor="let t of placetypes"
-          [value]="t.oid">{{t.placeTypeName}}
+        <mat-select
+          placeholder="Chọn ..."
+          type="text"
+          id="placeTypeID"
+          [(ngModel)]="data.placeTypeID"
+          required
+          (ngModelChange)="selectPlaceTypeChange($event)"
+          name="placeTypeID"
+        >
+          <mat-option *ngFor="let t of placetypes" [value]="t.oid"
+            >{{ t.placeTypeName }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -26,9 +48,16 @@
 
     <div class="form">
       <mat-form-field color="accent">
-        <mat-select placeholder="Nơi quản lý ..." type="text" id="placeID" [(ngModel)]="data.managePlaceID" required name="managePlaceID">
-          <mat-option *ngFor="let t of placeFilter"
-          [value]="t.oid">{{t.placeName}}
+        <mat-select
+          placeholder="Nơi quản lý ..."
+          type="text"
+          id="placeID"
+          [(ngModel)]="data.managePlaceID"
+          required
+          name="managePlaceID"
+        >
+          <mat-option *ngFor="let t of placeFilter" [value]="t.oid"
+            >{{ t.placeName }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -43,11 +72,19 @@
 
     <!--Textarea for demo purposes-->
     <div class="form">
-      <mat-form-field color="accent">        
-        <input matInput [matDatepicker]="picker" class="form-control" [(ngModel)]="data.fromDate" name="FromDate">
+      <mat-form-field color="accent">
+        <input
+          matInput
+          [matDatepicker]="picker"
+          class="form-control"
+          [(ngModel)]="data.fromDate"
+          name="FromDate"
+        />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        <mat-error *ngIf="formControl.invalid">{{
+          getErrorMessage()
+        }}</mat-error>
       </mat-form-field>
     </div>
 
@@ -61,12 +98,29 @@
     </div> -->
     <div class="form">
       <mat-form-field color="accent">
-        <textarea matInput #input class="form-control" placeholder="Ghi chú" [(ngModel)]="data.remarks" name="Remarks" ></textarea>
-        <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        <textarea
+          matInput
+          #input
+          class="form-control"
+          placeholder="Ghi chú"
+          [(ngModel)]="data.remarks"
+          name="Remarks"
+        ></textarea>
+        <mat-error *ngIf="formControl.invalid">{{
+          getErrorMessage()
+        }}</mat-error>
       </mat-form-field>
     </div>
     <div mat-dialog-actions>
-      <button mat-button type="submit" [disabled]="!formControl.valid" mat-dialog-close="1" (click)="stopEdit()">Lưu</button>
+      <button
+        mat-button
+        type="submit"
+        [disabled]="!formControl.valid"
+        mat-dialog-close="1"
+        (click)="stopEdit()"
+      >
+        Lưu
+      </button>
       <button mat-button (click)="onNoClick()" tabindex="-1">Hủy</button>
     </div>
   </form>

@@ -30,13 +30,58 @@
     letter-spacing: 0.5px;
     font-size: medium;
   }
+
+  .mat-table-sticky-border-elem-left {
+    border-right: 1px solid #e0e0e0;
+  }
+
+  .mat-table-sticky-border-elem-right {
+    border-left: 1px solid #e0e0e0;
+  }
+
   .mat-column-Remarks {
-    flex: 0 0 40%;
+    flex: 0 0 24%;
   }
 
   .mat-column-AddictCode {
-    flex: 0 0 5%;
+    flex: 0 0 6%;
+  }
 
+  .mat-column-AddictName {
+    flex: 0 0 10%;
+    padding-left: 1rem;
+  }
+
+  .mat-column-RelationsName {
+    flex: 0 0 8%;
+  }
+
+  .mat-column-RelationWithName {
+    flex: 0 0 10%;
+  }
+
+  .mat-column-othername {
+    flex: 0 0 8%;
+  }
+
+  .mat-column-currentAddress {
+    flex: 0 0 8%;
+  }
+
+  .mat-column-managePlaceName {
+    flex: 0 0 8%;
+  }
+
+  .mat-column-blackList {
+    flex: 0 0 6%;
+  }
+
+  .mat-column-Date {
+    flex: 0 0 6%;
+  }
+
+  .mat-column-actions {
+    padding-left: 0.8rem;
   }
   
   /* Round the top table corners */

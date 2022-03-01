@@ -20,6 +20,7 @@ export class NavigationComponent implements OnInit {
     paddingAtStart: true,
     classname: 'my-custom-class',
     fontColor: 'rgb(8, 54, 71)',
+    highlightOnSelect: true,
     //selectedListFontColor: 'red',
   };
   isHandset$: Observable<boolean> = this.media.media$.pipe(

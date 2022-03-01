@@ -55,6 +55,7 @@ export class RelationsService extends baseService {
          }),
     );
   }
+  //
 
   SaveEditObject(): Observable<any> {
     // console.log(this.dialogData);
@@ -80,7 +81,7 @@ export class RelationsService extends baseService {
   }
   
   public deleteRecord(value: number):  Observable<any> {    
-    return this.http.delete(this.pathAPI + 'relations/' + value, super.header()).pipe(
+    return this.http.delete(this.pathAPI + 'Relations/' + value, super.header()).pipe(
       catchError((error: any) => {
            console.error(error);
            return of();

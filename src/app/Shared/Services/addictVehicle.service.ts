@@ -76,6 +76,16 @@ export class AddictVehicleService extends baseService {
     );
   }
 
+  async remove(obj: AddictVehicle): Promise<boolean> {
+    //const httpParams = new HttpParams({ fromObject: { key: change.key } });
+    //const httpOptions = { withCredentials: true, body: obj };
+    const data = await this.http
+      .delete<boolean>(`${this.pathAPI}AddictVehicle/${obj.oid}`, super.header())
+      .toPromise();
+    //this.updateAddicts(obj, data);
+    return data;
+  }
+
   SaveAddDrugs(): Observable<any> {
     return this.http.put<AddictVehicle>(this.pathAPI + 'AddictVehicle', this.dialogData, super.header()).pipe(
       catchError((error: any) => {

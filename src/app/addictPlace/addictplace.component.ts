@@ -59,10 +59,16 @@ export class AddictPlaceComponent implements AfterViewInit, OnInit {
   //displayedColumns = ['AddictCode','AddictName','PlaceName', 'FromDate', 'ToDate', 'PlaceTypeName', 'Remarks', 'actions'];
 
   dataSource!: AddictManagePlace2[];
+  
+
+  filterList: string[];
+  filteredOptions: string[] = [];
+
   index: number = 0;
   pageIndex: number = 1;
   Oid: string = '';
   totalCount: number = 0;
+  inputValue?: string;
   constructor(
     public dialogService: MatDialog,
     public _Service: AddictPlaceService,
@@ -75,67 +81,100 @@ export class AddictPlaceComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @ViewChild('filter', { static: true }) filter!: ElementRef;
   _filterChange = new BehaviorSubject('');
+
   public placetypes = PlacetypeData;
-  isLoadingResults = true;
+  isLoadingResults = false;
+
+  handleEnterClick() {
+    this.isLoadingResults = !this.isLoadingResults;
+  }
+
+  onChange(value: string): void {
+    this.filteredOptions = this.filterList.filter(option => option.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+  }
+
   //isRateLimitReached = false;
   //isLoading$ = new BehaviorSubject(true);
   ngOnInit(): void {
+    this.loadData();
+  }
+  copylistOfData: AddictManagePlace2[];
+  //copylistOfData = [...this.dataSource];
+
+  searchValue = '';
+
+  reset() {
+    this.copylistOfData.forEach((value: any) => {
+      let keys = Object.keys(value);
+
+      for (let i = 0; i < keys.length; i++) {
+        value[keys[4]] = false;
+      }
+    });
+    this.dataSource = this.copylistOfData;
+    this.isLoadingResults = false;
+  }
+
+  search(search: any) {
+    const targetValue: any[] = [];
+    this.copylistOfData.forEach((value: any) => {
+      let keys = Object.keys(value);
+
+      for (let i = 0; i < keys.length; i++) {
+        if (search == '') {
+          value[keys[4]] = false;
+          targetValue.push(value);
+          break;
+        }
+        //this.removeAscent(value[keys[i]].toString());
+        if (
+          value[keys[i]] &&
+          value[keys[i]]
+            .toString()
+            .toLocaleLowerCase()
+            .includes(search.toLocaleLowerCase())
+        ) {
+          value[keys[4]] = true;
+          targetValue.push(value);
+          break;
+        }
+      }
+    });
+    this.dataSource = targetValue;
+  }
+  // removeAscent (str: string) {
+  //   if (str === null || str === undefined) return str;
+  //   str = str.toLowerCase();
+  //   str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+  //   str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+  //   str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+  //   str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+  //   str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+  //   str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+  //   str = str.replace(/đ/g, "d");
+  //   return str;
+  // }
+  public loadData() {
+    this._Service.getPaging22().subscribe({
+      next: (data) => {
+        this.isLoadingResults = false;
+        this.dataSource = data;
+        this.filterList = this.dataSource.map(a => a.addictName);
+        this.copylistOfData = data;
+        this.changeDetectorRefs.detectChanges();
+      },
+      error: (err) => console.log(err),
+    });
     
   }
 
-  
-
-  public loadData() {
-    // If the user changes the sort order, or search then reset back to the first page.
-    // this._filterChange.subscribe(() => this.paginator.pageIndex = 0);
-    // this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-    merge(this._filterChange)
-      .pipe(
-        startWith({}),
-        switchMap(() => {
-          this.isLoadingResults = true;
-          //console.log("change");
-          //console.log(this._filterChange.value)
-          let sortName = '';
-          // if (this.sort.active)
-          //   sortName=this.sort.active;
-          return this._Service.getPaging22(
-            sortName,
-            'asc',
-            this._filterChange.value,
-            this.pageIndex,
-            10
-          );
-        }),
-        map((data: any) => {
-          // Flip flag to show that loading has finished.
-          this.isLoadingResults = false;
-          this.totalCount = data.totalCount;
-          return data.items;
-        }),
-        catchError(() => {
-          this.isLoadingResults = false;
-          return observableOf([]);
-        })
-      )
-      .subscribe((data) => {
-        //this.refreshTable();
-        console.log(data);
-        this.dataSource = data;
-        this.changeDetectorRefs.detectChanges();
-      });
-  }
-
   ngAfterViewInit() {
-
-    this.loadData();
-
-    fromEvent(this.filter.nativeElement, 'keyup')
-      .pipe(debounceTime(500))
-      .subscribe(() => {
-        this._filterChange.next(this.filter.nativeElement.value);
-      });
+    //this.loadData();
+    // fromEvent(this.filter.nativeElement, 'keyup')
+    //   .pipe(debounceTime(500))
+    //   .subscribe(() => {
+    //     this._filterChange.next(this.filter.nativeElement.value);
+    //   });
   }
   startEdit(i: number, odata: AddictManagePlace) {
     this.index = i;
@@ -166,27 +205,48 @@ export class AddictPlaceComponent implements AfterViewInit, OnInit {
     });
   }
 
+  startAddPlace(i: number, odata: AddictManagePlace2) {
+    this.index = i;
+    console.log(odata);
+    const dialogRef = this.dialogService.open(AddictPlaceEditComponent, {
+      data: odata,
+    });
+
+    dialogRef.afterClosed().subscribe((result: number) => {
+      if (result == 1) {
+        this._Service.SaveAddPlace().subscribe(
+          (data) => {
+            // After dialog is closed we're doing frontend updates
+            // For add we're just pushing a new row inside DataService
+            this._Service.dataChange.value.push(this._Service.getDialogData());
+            //this.loadData();
+            //this.refreshTable();
+            console.log(this._Service.getDialogData());
+          },
+          (error: any) => {
+            console.log(error);
+          }
+        );
+        this.loadData();
+      }
+    });
+  }
+  
+
   deleteItem(i: number, odata: AddictManagePlace) {
     this.index = i;
     //const url = "123";
-
+    console.log(odata.oid)
     this.confirmSv
       .confirm(odata.placeName, 'Bạn có chắc muốn xóa mã này không?')
       .subscribe((r: boolean) => {
         if (r === true) {
-          return this._Service.deleteRecord(odata.addictCode).subscribe(
-            (result) => {
-              console.log(result);
-              this.success();
-              // Refresh DataTable to remove row.
-              this.deleteRowDataTable(i, 1, this.paginator, this.dataSource);
-            },
-            (err: any) => {
-              console.log(err.error);
-              console.log(err.message);
-              this.alertSv.error('Delete did not happen.');
-            }
-          );
+          console.log(odata);
+          this._Service.remove(odata);
+          //this.dataSource.map(a => a.activityLog).splice(i, 1)
+          //this.dataSource = [...this.dataSource];
+          this.success();
+
         }
         return undefined;
       });
@@ -195,16 +255,12 @@ export class AddictPlaceComponent implements AfterViewInit, OnInit {
   private success() {
     this.alertSv.error('Xóa thành công', false);
   }
-  private deleteRowDataTable(
-    recordId: any,
-    idColumn: any,
-    paginator: any,
-    dataSource: any
-  ) {
-    // this.dsData = dataSource.data;
-    // const itemIndex = this.dsData.findIndex(obj => obj[idColumn] === recordId);
-    // dataSource.data.splice(itemIndex, 1);
-    // dataSource.paginator = paginator;
+
+  deleteRow(idx: any) {
+    this.dataSource.splice(idx, 1);
+    this._Service.remove(idx);
+    this.dataSource = [...this.dataSource];
+    console.log(this.dataSource);
   }
 
   openAddDialog() {
@@ -219,8 +275,9 @@ export class AddictPlaceComponent implements AfterViewInit, OnInit {
             // After dialog is closed we're doing frontend updates
             // For add we're just pushing a new row inside DataService
             this._Service.dataChange.value.push(this._Service.getDialogData());
-            this.loadData()
+            //this.loadData();
             //this.refreshTable();
+            console.log(this._Service.getDialogData());
           },
           (error: any) => {
             console.log(error);
@@ -242,21 +299,8 @@ export class AddictPlaceComponent implements AfterViewInit, OnInit {
     this.dataSource!.filter = o.PlaceTypeName;
   }
 
-  sortData(e: Sort) {
-    console.log(e);
-  }
-
-  handlePageEvent(event: PageEvent) {
-    console.log(event);
-  }
-
-  onQueryParamsChange(params: NzTableQueryParams): void {
-    console.log(params);
-  }
-
   PageChange(event: any) {
     this.pageIndex = event;
     this.loadData();
   }
 }
-

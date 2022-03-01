@@ -7,6 +7,7 @@ import { AuthenticationService } from './../Shared/Services/authentication.servi
 import { Helpers } from './../Helpers/helpers';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +35,8 @@ export class LoginComponent implements OnInit {
     //   this.router.navigate(['/']);
     //}
   }
-
+  
+  private currentUserSubject = new BehaviorSubject<any>(null);
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
@@ -52,12 +54,24 @@ export class LoginComponent implements OnInit {
       Username: this.f.username.value,
       Password: this.f.password.value,
     };
-    //let authValues = {"Username":"admin", "Password":"20@21"};
     this.tokenService.auth(authValues).subscribe(
       (token: any) => {
         this.isLoading = false;
         this.helpers.setToken(token);
+        
+        localStorage.setItem('placeName', token.placeName);
+
+        localStorage.setItem('placeId', token.placeId);
+        localStorage.setItem('userid', token.userid);
+        
+        
+        localStorage.setItem('manageCityID', token.manageCityID);
+        //localStorage.setItem('manageCityTypeID', token.manageCityTypeID);
+        
+        this.currentUserSubject.next(token.placeId);
+        //console.log(token.placeId)
         this.router.navigate(['/home/dashboard']);
+        return token.placeId;
       },
       (error: { status: number }) => {
         if (error.status === 0) this.errormgs = 'Không kết nối được đến server';
@@ -67,6 +81,10 @@ export class LoginComponent implements OnInit {
         this.isLoading = false;
       }
     );
+  }
+
+  getCurrentUser(): Observable<any> {
+    return this.currentUserSubject.asObservable();
   }
 
   get f() {
@@ -91,15 +109,5 @@ export class LoginComponent implements OnInit {
 
     this.login();
 
-    // this.authenticationService.login(this.f.username.value, this.f.password.value)
-    //     .pipe(first())
-    //     .subscribe(
-    //         data => {
-    //             this.router.navigate([this.returnUrl]);
-    //         },
-    //         error => {
-    //             this.alertService.error(error);
-    //             this.loading = false;
-    //         });
   }
 }

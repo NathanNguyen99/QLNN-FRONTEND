@@ -32,19 +32,38 @@
       </div>
       <div class="form">
         <mat-form-field color="accent">
-          <mat-select placeholder="Chọn ..." type="text" id="place" [(ngModel)]="data.placeID"  name="palceID">
-            <mat-option>--Chọn Phường--</mat-option>
-            <mat-option *ngFor="let t of placeData"
-            [value]="t.oid">{{t.placeName}}
+          <mat-select placeholder="Chọn vùng quản lý ..." type="text" id="manageCityTypeID" [(ngModel)]="data.manageCityTypeID" required (ngModelChange)="selectManageCityTypeChange($event)" name="manageCityTypeID">
+            <mat-option *ngFor="let t of manageCityTypes"
+            [value]="t.oid">{{t.manageCityTypeName}} 
             </mat-option>
           </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="form">
+        <mat-form-field color="accent">
+          <mat-select placeholder="Vùng quản lý ..." type="text"  id="manageCityID" (ngModelChange)="selectPlaceTypeChange($event)" [(ngModel)]="data.manageCityID" required name="manageCityID">
+            <mat-option *ngFor="let t of placeFilter"
+            [value]="t.oid">{{t.cityName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form">
+        <mat-form-field color="accent">
+          <mat-select placeholder="Chọn Phường, Xã, Thị Trấn" type="text" id="otherplace" [(ngModel)]="data.placeID" required  name="placeID">
+           
+            <mat-option *ngFor="let t of wardFilter"
+            [value]="t.oid">{{t.placeName}} 
+            </mat-option>
+          </mat-select> 
           
         </mat-form-field>
       </div>
   
       <div mat-dialog-actions>
-        <button mat-button  [disabled]="!formControl.valid" [mat-dialog-close]="1" (click)="stopEdit()">Save</button>
-        <button mat-button (click)="onNoClick()" tabindex="-1">Cancel</button>
+        <button mat-button  [disabled]="!formControl.valid" [mat-dialog-close]="1" (click)="stopEdit()">Lưu</button>
+        <button mat-button (click)="onNoClick()" tabindex="-1">Hủy</button>
       </div>
     </form>
 </div>

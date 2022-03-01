@@ -1,4 +1,4 @@
-import { ViewChild, Component, enableProdMode, OnInit } from '@angular/core';
+import { ViewChild, Component, enableProdMode, OnInit, ElementRef } from '@angular/core';
 import { Addict } from '../Shared/Models/Addict';
 import { addictService } from '../Shared/Services/addict.service';
 import { UserService } from '../Shared/Services/user.service';
@@ -12,10 +12,10 @@ import { AppConfig } from '../Config/config';
 import DataSource from 'devextreme/data/data_source';
 import { AddictDrugs } from '../Shared/Models/AddictDrugs';
 import { DxDataGridComponent } from 'devextreme-angular';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { AddictPlaceService } from '../Shared/Services/addictplace.service';
-import { AlertService } from '../Shared/Services';
+import { AlertService, ConfirmService } from '../Shared/Services';
 import { Guid } from 'guid-typescript';
 import { alert } from 'devextreme/ui/dialog';
 import {
@@ -33,12 +33,17 @@ import { AddictClassifyService } from '../Shared/Services/addictclassify.service
 import { ClassifyService } from '../Shared/Services/classify.service';
 import { AddictVehicleService } from '../Shared/Services/addictVehicle.service';
 import { AddictVehicle } from '../Shared/Models/AddictVehicle';
+import { AddictClassify } from '../Shared/Models/AddictClassify';
+import { AddictManagePlace } from '../Shared/Models/AddictManagePlace';
 //import { PlaceType } from '../Shared/Models/PlaceType';
+import { saveAs } from 'file-saver';
+import { HttpErrorResponse } from '@angular/common/http';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-addict',
   templateUrl: './addict.component.html',
-  styleUrls: ['./addict.component.css'],
+  styleUrls: ['./addict.component.scss'],
 })
 export class AddictComponent implements OnInit {
   backendURL = this.config.setting['PathAPI'];
@@ -78,6 +83,8 @@ export class AddictComponent implements OnInit {
   marriageData = Marriage;
   dataSource!: DataSource;
   placeOfBirthData: any;
+  managePlaceID: any;
+
   wardData: any;
   userData: any;
   eduLevelData: any;
@@ -105,15 +112,16 @@ export class AddictComponent implements OnInit {
     private usesService: UsesService,
     private _addictVehicleService: AddictVehicleService,
     private alertservice: AlertService,
-    private config: AppConfig
+    private config: AppConfig,
+    private confirmSv: ConfirmService
   ) {
     //this.dataSource = service.generateData(100000);
-    this.loadWard();
 
     this.getFilteredPlaces = this.getFilteredPlaces.bind(this);
   }
   ngOnInit(): void {
     this.loadData();
+    this.loadWard();
     this.loadplaceOfBirth();
     this.loadUser();
     this.loadEduLevel();
@@ -127,14 +135,132 @@ export class AddictComponent implements OnInit {
 
   //onValueChanged
 
+  async handleExportClick() {
+    await this.service.ExportExcel().subscribe(
+      (data) => {
+        this.downloadFile(data);
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error.name + ' ' + error.message);
+      }
+    );
+      
+    //this.downloadFile(this.response);
+  }
+
+  // Upload Part
+  spinnerEnabled = false;
+  keys: string[];
+  dataSheet:any = new Subject();
+  @ViewChild('inputFile') inputFile: ElementRef;
+  isExcelFile: boolean;
+
+  message: string;  
+  //Condition for upload button
+  isActive: boolean;
+  activeButton: boolean = true;
+  onDragOver(event: any) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isActive = true; 
+  }
+
+  onDrop(event: any) {
+    event.preventDefault();
+    event.stopPropagation();
+    let droppedFiles = event.dataTransfer.files;
+    if(droppedFiles.length > 0) {
+      this.onChange(event)
+    }
+    this.isActive = false;
+  }
+
+  onDragLeave(event: any) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isActive = false;
+  }
+
+
+  onChange(evt: any) {
+    let data: any, header;
+    const target: DataTransfer = <DataTransfer>(evt.target);
+    this.isExcelFile = !!target.files[0].name.match(/(.xls|.xlsx)/);
+    if (target.files.length > 1) {
+      this.inputFile.nativeElement.value = '';
+    }
+    if (this.isExcelFile) {
+      this.spinnerEnabled = true;
+      const reader: FileReader = new FileReader();
+      reader.onload = (e: any) => {
+        /* read workbook */
+        const bstr: string = e.target.result;
+        const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
+
+        /* grab first sheet */
+        const wsname: string = wb.SheetNames[0];
+        const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+
+        /* save data */
+        data = XLSX.utils.sheet_to_json(ws);
+      };
+      //Change the condition for upload button
+      this.activeButton = false;
+      reader.readAsBinaryString(target.files[0]);
+
+      reader.onloadend = (e) => {
+        this.spinnerEnabled = false;
+        this.keys = Object.keys(data[0]);
+        this.dataSheet.next(data)
+        
+      }
+    } else {
+      this.inputFile.nativeElement.value = '';
+    }
+  }
+
+  uploadFile() {  
+    let formData = new FormData();  
+    
+    formData.append('FileUpload', this.inputFile.nativeElement.files[0], this.inputFile.nativeElement.files[0].name)  
+    this.confirmSv.confirm('Tải lên Database', 'Bạn có chắc chắn muốn tải lên Database dữ liệu này không?')
+    .subscribe(r => {if (r === true) {
+      this.service.UploadExcel(formData).subscribe(result => {  
+        this.alertservice.success("Tải lên database thành công")
+        this.removeData();
+      });
+    }});
+  } 
+
+  removeData() {
+    this.inputFile.nativeElement.value = '';
+    this.dataSheet.next(null);
+    this.keys = null;
+    this.activeButton = true;
+  }
+  // ----------------------------------------------
+
+  // Load Data part
+  downloadFile(data: any) {
+    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    
+    saveAs(blob, "Hồ sơ người nghiện" + '.xlsx');
+  }
+
   public loadData() {
     if (window.localStorage['isAdmin']) {
       this.service.getAll().subscribe({
         next: (data) => {
+          data.forEach((i) => {
+            if (i.detoxed == null) i.detoxed = false;
+            if (i.complete == null) i.complete = false;
+            if (i.dead == null) i.dead = false;
+          });
           this.dataSource = new DataSource({
             store: data,
             reshapeOnPush: true,
           });
+
           this.rountCount = data.length;
         },
         error: (err) => console.log(err),
@@ -175,7 +301,12 @@ export class AddictComponent implements OnInit {
 
   public loadWard() {
     this.placeService.getWards().subscribe({
-      next: (data) => (this.wardData = data),
+      next: (data) => {
+        this.wardData = data
+        this.wardData = this.wardData.filter((i: any) => i.placeName !== "Admin")
+        
+      } 
+        ,
       error: (e) => console.error(e),
     });
 
@@ -189,9 +320,14 @@ export class AddictComponent implements OnInit {
     this.userService.getUsers().subscribe({
       next: (data) => {
         this.userData = data;
-      },
+        //console.log(localStorage.getItem('placeName'))
+        if(localStorage.getItem('placeName') != "Admin") {
+          this.managePlaceID = localStorage.getItem('placeId');
+        }
+      },                
       error: (err) => console.log(err),
     });
+    
   }
 
   public loadEduLevel() {
@@ -221,6 +357,7 @@ export class AddictComponent implements OnInit {
       error: (e) => console.error(e),
     });
   }
+  //-------------------------------------------------------
 
   fileUploader_uploadFile(file: any, progressCallback: any) {
     console.log(file);
@@ -312,6 +449,8 @@ export class AddictComponent implements OnInit {
     e.data.drugs = this.addictDrugData;
     e.data.vehicle = this.addictVehicleData;
 
+    //this.dataSource.store(
+
     e.data.createDate = new Date();
     e.data.oid = Guid.create().toString();
     e.data.createUser = window.localStorage['userid'];
@@ -340,7 +479,7 @@ export class AddictComponent implements OnInit {
     model.places = this.addictPlaceData;
     model.drugs = this.addictDrugData;
     model.vehicle = this.addictVehicleData;
-    console.log(model);
+    
     e.cancel = this.processSave(model, 'insert').then((r) => {
       if (r === false) {
         alert('lỗi lưu dữ liệu, vui lòng liên hệ admin', 'Thông báo');
@@ -366,10 +505,25 @@ export class AddictComponent implements OnInit {
     });
   }
 
+  deleteAddictClassifyItem(e: any) {
+    var model: AddictClassify = e.data;
+    console.log(model);
+    this.adclassifysrv.remove(model);
+  }
+
+  deleteAddictPlaceItem(e: any) {
+    var model: AddictManagePlace = e.data;
+    this.adplacesrv.remove(model);
+  }
+
+  deleteAddictDrugItem(e: any) {
+    var model: AddictDrugs = e.data;
+    this.adrugsrv.remove(model);
+  }
+
   deleteAddictVehicleItem(e: any) {
     var model: AddictVehicle = e.data;
-    console.log(model);
-    this._addictVehicleService.deleteRecord(model.oid);
+    this._addictVehicleService.remove(model);
   }
 
   //remove(obj: Addict): Promise<boolean>
@@ -381,20 +535,7 @@ export class AddictComponent implements OnInit {
   }
 
   FormSaving(e: any) {
-    //console.log(e);
-    // if (e.changes[0]){
-    //   const model = Object.assign({}, e.changes[0].key, e.changes[0].data) as Addict;
-    //   this.EditObject = model;
-    //   //console.log(model);
-    // }
-    // let actionType='update';
-    // if (this.openFormType===1)
-    //   actionType='insert';
-    // this.EditObject.drugs = this.addictDrugData;
-    // this.EditObject.places = this.addictPlaceData;
-    //   //console.log(this.EditObject);
-    //   //e.cancel = true;
-    //   e.promise =  this.processSave(this.EditObject, actionType);
+    
   }
 
   processSave(obj: Addict, type: string) {
@@ -517,26 +658,6 @@ export class AddictComponent implements OnInit {
   }
 
   saveEditData() {
-    // if (this.dataGrid.instance.hasEditData()) {
-    //     // Implement your logic here
-    //     this.dataGrid.instance.saveEditData();
-    // }
   }
-  // calculateSummary(options) {
-  //   console.log(options);
-  //   if(options.name == "customSummary1") {
-  //     switch(options.summaryProcess) {
-  //         case "start":
-  //           options.totalValue = 0;
-  //             break;
-  //         case "calculate":
-  //           options.totalValue +=1;
-  //             break;
-  //         case "finalize":
-  //             // Assigning the final value to "totalValue" here
-  //             options.totalValue=100;
-  //             break;
-  //     }
-  //   }
-  // }
+  
 }

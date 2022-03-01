@@ -80,7 +80,7 @@ export class DrugsService extends baseService {
   }
   
   public deleteRecord(value: number):  Observable<any> {    
-    return this.http.delete(this.pathAPI + 'drugs/' + value, super.header()).pipe(
+    return this.http.delete(this.pathAPI + 'Drugs/' + value, super.header()).pipe(
       catchError((error: any) => {
            console.error(error);
            return of();

@@ -23,6 +23,7 @@ import { AddictclassifyComponent } from './addictclassify/addictclassify.compone
 import { MoveHistoryComponent } from './moveHistory/moveHistory.component';
 import { AddictVehicleComponent } from './addictVehicle/addictVehicle.component';
 import { RelationsComponent } from './relations/relations.component';
+import { ImportExcelComponent } from './manageplace/import-excel/import-excel.component';
 
 const routes: Routes = [
   {
@@ -101,6 +102,13 @@ const routes: Routes = [
             path: 'manageplace',
             component: ManageplaceComponent,
             canActivate: [AuthGuard],
+            // children: [
+            //   {
+            //     path: 'import-excel',
+            //     component: ImportExcelComponent,
+            //     canActivate: [AuthGuard],
+            //   }
+            // ]
           },
           {
             path: 'classify',

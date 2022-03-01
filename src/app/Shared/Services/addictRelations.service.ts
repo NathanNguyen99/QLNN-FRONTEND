@@ -51,6 +51,13 @@ export class AddictRelationsService extends baseService {
     //return this.http.get<any>(requestUrl, super.header()).pipe(map(data=> {return data}));//.pipe(catchError(super.handleError));
   }
 
+  getPaging22 () {
+    const requestUrl = `${this.pathAPI}AddictRelations/GetPaging2`;
+    
+    console.log(requestUrl);
+    return this.http.get<any>(requestUrl, super.header());
+  }
+
   // DEMO ONLY, you can find working methods below
   addObject(issue: AddictRelations): void {
     this.dialogData = issue;
@@ -67,13 +74,14 @@ export class AddictRelationsService extends baseService {
     return this.dialogData;
   }
 
-  public deleteRecord(value: string):  Observable<any> {    
-    return this.http.delete(this.pathAPI + 'AddictRelations/' + value, super.header()).pipe(
-      catchError((error: any) => {
-           console.error(error);
-           return of();
-         }),
-    );
+  async remove(obj: AddictRelations): Promise<boolean> {
+    //const httpParams = new HttpParams({ fromObject: { key: change.key } });
+    //const httpOptions = { withCredentials: true, body: obj };
+    const data = await this.http
+      .delete<boolean>(`${this.pathAPI}AddictRelations/${obj.oid}`, super.header())
+      .toPromise();
+    //this.updateAddicts(obj, data);
+    return data;
   }
 
   SaveAddDrugs(): Observable<any> {

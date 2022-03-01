@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import {api_to_config, api_to_test} from '../../assets/config'
+//import {api_to_config, api_to_test} from '../../assets/config'
+import { ConfigService } from '../Shared/Services/config.service';
 @Injectable()
 export class AppConfig {
     private _config: { [key: string]: string };
-    constructor() {
+    constructor(
+        configService: ConfigService) {
         this._config = { 
-            //PathAPI: 'http://118.69.60.194:54399/api/'
-            
-            //PathAPI: 'https://localhost:44337/api/'
-            PathAPI: api_to_test
-            //PathAPI: api_to_config
+            //Test here
+            PathAPI: 'https://localhost:44337/api/'
+            //PathAPI: configService.config.apiUrl
         };
     }
     get setting():{ [key: string]: string } {

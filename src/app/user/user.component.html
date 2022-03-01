@@ -40,8 +40,12 @@
         </ng-container>
           
         <ng-container matColumnDef="PlaceName">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Phường</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Phường, Xã, Thị Trấn</mat-header-cell>
           <mat-cell *matCellDef="let row"> {{row.placeName}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="manageCityName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Thuộc Vùng Quản Lý</mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.manageCityName}}</mat-cell>
         </ng-container>
         <!-- actions -->
         <ng-container matColumnDef="actions">

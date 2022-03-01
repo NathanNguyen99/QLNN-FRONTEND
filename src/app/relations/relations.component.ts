@@ -93,13 +93,15 @@ export class RelationsComponent implements OnInit {
     const url = "123";
 
     this.confirmSv.confirm(odata.drugsName, 'Bạn có chắc muốn xóa mã này không?')
-    .subscribe(r=> {if (r === true) {
+    .subscribe(r => {if (r === true) {
       
        this._Database.deleteRecord(odata.oid).subscribe(
         result => {
+          console.log(result)
           this.success();
           // Refresh DataTable to remove row.
-          this.deleteRowDataTable (i, 1, this.paginator, this.dataSource);
+          this._Database!.dataChange.value.splice(i, 1)
+          this.refreshTable();
         },
         (err: any) => {
           console.log(err.error);
@@ -108,35 +110,12 @@ export class RelationsComponent implements OnInit {
         }
       );
     }});
-    // .pipe(
-    //   switchMap(res => {if (res === true) {
-    //     console.log('url: ', url);
-    //     return this._Database.deleteRecord(url);
-    //   }}))
-    //   .subscribe(
-    //     result => {
-    //       this.success();
-    //       // Refresh DataTable to remove row.
-    //       this.deleteRowDataTable (i, 1, this.paginator, this.dataSource);
-    //     },
-    //     (err: any) => {
-    //       console.log(err.error);
-    //       console.log(err.message);
-    //       this.alertSv.error('Delete did not happen.');
-    //     }
-    //   );
   }
 
 
   private success() {
     //this.messagesService.openDialog('Success', 'Database updated as you wished!');
     this.alertSv.error("Xóa thành công",false);
-  }
-  private deleteRowDataTable (recordId: any, idColumn: any, paginator: any, dataSource: any) {
-    // this.dsData = dataSource.data;
-    // const itemIndex = this.dsData.findIndex(obj => obj[idColumn] === recordId);
-    // dataSource.data.splice(itemIndex, 1);
-    // dataSource.paginator = paginator;
   }
 
   openAddDialog() {

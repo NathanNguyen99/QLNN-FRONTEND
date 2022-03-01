@@ -1,63 +1,293 @@
 <div class="mat-elevation-z8">
-  <app-loading *ngIf="isLoadingResults"></app-loading>
+  <div
+    class="form"
+    style="display: flex; flex-direction: row; align-items: center"
+  >
+    <div style="width: 30%; margin: 0 auto">
+      <nz-input-group
+        [nzPrefix]="PrefixIconSearch"
+        [nzSuffix]="SuffixIconSearch"
+      >
+        <input
+        placeholder="Tìm kiếm ..."
+        nz-input
+        #searchText
+        [(ngModel)]="inputValue"
+        (ngModelChange)="onChange($event)"
+        (keyup.enter)="search(searchText.value); handleEnterClick()"
+        [nzAutocomplete]="auto"
+      />
+      <nz-autocomplete
+        [nzDataSource]="filteredOptions"
+        #auto
+      ></nz-autocomplete>
+      </nz-input-group>
+      <ng-template #SuffixIconSearch>
+        <i
+          class="closeSuffix"
+          nz-popover
+          nzPopoverContent="Xóa"
+          *ngIf="searchText.value"
+          nz-icon
+          nzType="close"
+          (click)="searchText.value = ''; reset()"
+        ></i>
+      </ng-template>
+      <ng-template #PrefixIconSearch>
+        <i nz-icon nzType="search"></i>
+      </ng-template>
+    </div>
+    <div style="float: left">
+      <button
+        (click)="openAddDialog()"
+        nz-button
+        nzType="default"
+        nzShape="circle"
+      >
+        <i nz-icon nzType="plus" nzTheme="outline"></i>
+      </button>
+    </div>
+  </div>
+  <nz-table
+    #nestedTable
+    nzBordered
+    [nzData]="dataSource"
+    [nzShowPagination]="false"
+  >
+    <thead>
+      <tr style="background-color: #4395a3">
+        <th nzAlign="center" style="width: 0px"></th>
+        <th nzAlign="center">Mã số</th>
+        <th nzAlign="center">Họ tên</th>
+        <th nzAlign="center">Ngày sinh</th>
+        <th nzAlign="center">Thao tác</th>
+      </tr>
+    </thead>
 
-    <div class="form">
-      <div style="width: 25%"> 
-        <nz-input-group [nzSuffix]="suffixIconSearch">
-          <input type="text" matInput #filter nz-input placeholder="Tìm kiếm ..." />
-        </nz-input-group>
-        <ng-template #suffixIconSearch>
-          <i nz-icon nzType="search"></i>
+    <tbody *ngIf="isLoadingResults">
+      <ng-template ngFor let-data [ngForOf]="nestedTable.data">
+        <tr>
+          <td [(nzExpand)]="data.expand"></td>
+          <td nzAlign="center">{{ data.addictCode }}</td>
+          <td nzAlign="center">{{ data.addictName }}</td>
+          <td nzAlign="center">{{ data.dob | date: "dd/MM/yyyy" }}</td>
+          <td nzAlign="center">
+            <button
+              (click)="startAddPlace(0, data)"
+              nz-button
+              nzType="default"
+              nzShape="circle"
+            >
+              <i nz-icon nzType="plus" nzTheme="outline"></i>
+            </button>
+          </td>
+        </tr>
+        <tr [nzExpand]="data.expand">
+          <nz-table
+            #innerTable
+            [nzData]="data.activityLog"
+            [nzShowPagination]="false"
+            nzBordered
+          >
+            <thead>
+              <tr>
+                <th style="text-align: center">Mối quan hệ</th>
+                <th nzAlign="center">Quan hệ với</th>
+                <th nzAlign="center">Tên gọi khác</th>
+                <th nzAlign="center">Ngày sinh</th>
+                <th nzAlign="center">Vào ngày</th>
+                <th nzAlign="center">Khu vực</th>
+                <th nzAlign="center">Danh sách đen</th>
+                <th nzAlign="center">Ghi chú</th>
+                <th nzAlign="center">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of innerTable.data">
+                <td>{{ data.relationsName }}</td>
+                <td>{{ data.relationWithName }}</td>
+                <td>{{ data.otherName }}</td>
+                <td>{{ data.dateOfBirth | date: "dd/MM/yyyy" }}</td>
+                <td>{{ data.date | date: "dd/MM/yyyy" }}</td>
+
+                <td>{{ data.managePlaceName }}</td>
+
+                <td nzAlign="center">
+                  <div *ngIf="data.blackList; else elseBlock">
+                    <mat-icon style="color: #e0e0e0"
+                      >check_box_outline_blank</mat-icon
+                    >
+                  </div>
+                  <ng-template #elseBlock>
+                    <mat-icon style="color: #4395a3">check_box</mat-icon>
+                  </ng-template>
+                </td>
+                <td>{{ data.remarks }}</td>
+                <td>
+                  <button
+                    nz-button
+                    (click)="startEdit(0, data)"
+                    nzType="default"
+                    nzShape="circle"
+                  >
+                    <i nz-icon nzType="edit" nzTheme="outline"></i>
+                  </button>
+                  <!-- <nz-divider nzType="vertical"></nz-divider> <app-loading *ngIf="isLoadingResults"></app-loading>-->
+                  <button
+                    style="margin-left: 0.5rem"
+                    nz-button
+                    (click)="deleteItem(0, data)"
+                    nzType="default"
+                    nzDanger
+                    nzShape="circle"
+                  >
+                    <i nz-icon nzType="delete" nzTheme="outline"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </tr>
+      </ng-template>
+    </tbody>
+  </nz-table>
+  <div style="float: right">
+    <nz-pagination
+      [nzPageIndex]="1"
+      [nzPageSize]="10"
+      [nzTotal]="totalCount"
+      (nzPageIndexChange)="PageChange($event)"
+    ></nz-pagination>
+  </div>
+  <!-- <mat-table #table [dataSource]="dataSource!" matSort class="mat-cell">
+    <ng-container matColumnDef="AddictCode" sticky>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Mã số</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.addictCode }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="AddictName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Đối tượng</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row">{{ row.addictName }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="RelationsName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Mối quan hệ</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row">{{ row.relationsName }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="RelationWithName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Quan hệ với</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row">{{ row.relationWithName }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="othername">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Tên gọi khác</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row">{{ row.otherName }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="dateOfBirth">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Ngày sinh</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row">{{
+        row.dateOfBirth | date: "dd/MM/yyyy"
+      }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Date">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Vào ngày</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row">{{
+        row.date | date: "dd/MM/yyyy"
+      }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="managePlaceName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Khu vực</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row">{{ row.managePlaceName }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="blackList">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Danh sách đen</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row">
+        <div *ngIf="row.blackList; else elseBlock">
+          <mat-icon style="color: #e0e0e0">check_box_outline_blank</mat-icon>
+        </div>
+        <ng-template #elseBlock>
+          <mat-icon style="color: #4395a3">check_box</mat-icon>
         </ng-template>
-      </div>     
-    </div>
-      <mat-table #table [dataSource]="dataSource!" matSort class="mat-cell">
-        <ng-container matColumnDef="AddictCode">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Mã số</mat-header-cell>
-          <mat-cell *matCellDef="let row" >{{row.addictCode}}</mat-cell>
-        </ng-container>
+      </mat-cell>
+    </ng-container>
 
-        <ng-container matColumnDef="AddictName">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Họ tên</mat-header-cell>
-          <mat-cell *matCellDef="let row" >{{row.addictName}}</mat-cell>
-        </ng-container>
+    <ng-container matColumnDef="Remarks">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Ghi chú</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row"> {{ row.remarks }}</mat-cell>
+    </ng-container>
 
-        <ng-container matColumnDef="RelationsName">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Loại quan hệ</mat-header-cell>
-          <mat-cell *matCellDef="let row" >{{row.relationsName}}</mat-cell>
-        </ng-container>
 
-        <ng-container matColumnDef="Remarks">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Ghi chú</mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.remarks}}</mat-cell>
-          </ng-container> 
+    <ng-container matColumnDef="actions" stickyEnd>
+      <mat-header-cell *matHeaderCellDef>
+        <button
+          (click)="openAddDialog()"
+          nz-button
+          nzType="default"
+          nzShape="circle"
+        >
+          <i nz-icon nzType="user-add" nzTheme="outline"></i>
+        </button>
+      </mat-header-cell>
 
-        <!-- actions -->
-        <ng-container matColumnDef="actions">
-          <mat-header-cell *matHeaderCellDef>
-            <button (click)="openAddDialog()" nz-button nzType="default" nzShape="circle"><i nz-icon nzType="user-add" nzTheme="outline"></i></button>
+      <mat-cell *matCellDef="let row; let i = index">
+        <button
+          nz-button
+          (click)="startEdit(i, row)"
+          nzType="default"
+          nzShape="circle"
+        >
+          <i nz-icon nzType="edit" nzTheme="outline"></i>
+        </button>
+        <button
+          style="margin-left: 0.5rem"
+          nz-button
+          (click)="deleteItem(i, row)"
+          nzType="default"
+          nzDanger
+          nzShape="circle"
+        >
+          <i nz-icon nzType="delete" nzTheme="outline"></i>
+        </button>
+      </mat-cell>
+    </ng-container>
 
-          </mat-header-cell>
-    
-          <mat-cell *matCellDef="let row; let i=index;">
-            <button nz-button (click)="startEdit(i, row)" nzType="default" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-            <button style="margin-left:0.5rem" nz-button (click)="deleteItem(i, row)" nzType="default" nzDanger nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
-    
-          </mat-cell>
-        </ng-container>
-    
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-      </mat-table>    
-    
-      <div class="no-results" [style.display]="totalCount === 0 ? '' : 'none'">
-        Không có kết quả
-      </div>
-    
-      <mat-paginator #paginator
-                     [length]="totalCount"
-                     [pageIndex]="0"
-                     [pageSize]="10"
-                     [pageSizeOptions]="[5, 10, 25, 100]">
-      </mat-paginator>
-    </div>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+
+  <div class="no-results" [style.display]="totalCount === 0 ? '' : 'none'">
+    Không có kết quả
+  </div>
+
+  <mat-paginator
+    #paginator
+    [length]="totalCount"
+    [pageIndex]="0"
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 25, 100]"
+  >
+  </mat-paginator> -->
+</div>

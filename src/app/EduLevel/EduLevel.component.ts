@@ -8,6 +8,7 @@ import { EduDataSource } from '../Shared/Datasources/EduLevel.Datasource';
 
 import { fromEvent} from 'rxjs';
 import {EduEditComponent} from './edu-edit/edu-edit.component';
+import { AlertService, ConfirmService } from '../Shared/Services';
 // var momentPipe = require ('../../Config/MomentPipe');
 
 // import * as MomentPipe from "../Config/MomentPipe";
@@ -25,7 +26,7 @@ export class EdulevelComponent implements OnInit {
   index: number=0;
   Oid: string='';
   
-  constructor(public dialogService: MatDialog, public EduService: EduLevelService) { }
+  constructor(public dialogService: MatDialog, public EduService: EduLevelService, private confirmSv: ConfirmService,private alertSv:AlertService) { }
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
   @ViewChild('filter',  {static: true}) filter!: ElementRef;
@@ -83,9 +84,25 @@ export class EdulevelComponent implements OnInit {
 
   deleteItem(i: number, odata: EducationLevel) {
     this.index = i;
-    //this.id = id;
-    console.log(odata);
-  }
+    const url = "123";
+
+    this.confirmSv.confirm(odata.educationName, 'Bạn có chắc muốn xóa mã này không?')
+    .subscribe(r=> {if (r === true) {
+      
+       this.EduService.deleteRecord(odata.oid).subscribe(
+        result => {
+          //this.success();
+          // Refresh DataTable to remove row.
+          this.EduDatabase!.dataChange.value.splice(i, 1)
+          this.refreshTable();
+        },
+        (err: any) => {
+          console.log(err.error);
+          console.log(err.message);
+          this.alertSv.error('Delete did not happen.');
+        }
+      );
+    }})};
 
   openAddDialog() {
     const dialogRef = this.dialogService.open(EduEditComponent, {

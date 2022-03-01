@@ -1,0 +1,45 @@
+<div class="input-section"(dragover)="onDragOver($event)"
+    (drop)="onDrop($event)"
+    (dragleave)="onDragLeave($event)"
+    [class.active]="isActive" #fileDrop >
+      <div class="upload_onHovering">
+        <i nz-icon nzType="up" nzTheme="outline"></i>
+      </div>
+      <div id="upload_button" >
+        <label>
+          <input
+            type="file"
+            #inputFile
+            ngf-select
+            ng-model="new_files"
+            (change)="onChange($event)"
+          />
+          <span class="title">
+            <i style="font-size: 35px; color: #007cce;" nz-icon nzType="inbox"></i>
+            <br /><div style="font-weight: 500;">Kéo thả file để chọn file hoặc</div> 
+            <div class="click-button">
+              <i nz-icon nzType="upload"></i>
+              ấn ở đây
+            </div>
+              
+            </span
+          >
+        </label>
+      </div>
+      
+    </div>
+<!-- <input type="file" (change)="onChange($event)" #inputFile /> -->
+<button (click)="removeData()">Remove Data</button>
+<div *ngIf="isExcelFile === false">This is not an Excel file</div>
+<span *ngIf="spinnerEnabled" class="k-i-loading k-icon"></span>
+
+<table>
+  <th *ngFor="let key of keys">
+    {{ key }}
+  </th>
+  <tr *ngFor="let item of dataSheet | async">
+    <td *ngFor="let key of keys">
+      {{ item[key] }}
+    </td>
+  </tr>
+</table>

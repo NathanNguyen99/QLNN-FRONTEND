@@ -3,9 +3,24 @@
   margin-right: 10px;
 }
 
+.closeSuffix {
+  cursor: pointer;
+}
+.closeSuffix:hover {
+  color: #40a9ff;
+}
+
 .mat-elevation-z8 {
   margin-right: 5px;
 
+}
+
+::ng-deep .ant-table-tbody > tr > td > .ant-table-wrapper:only-child .ant-table {
+  margin-left: 41px;
+}
+
+::ng-deep .ant-table-thead {
+  background-color: #4395a3;
 }
 
 /* Toolbar */

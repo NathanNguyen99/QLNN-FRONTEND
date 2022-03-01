@@ -1,6 +1,5 @@
-import { Component,ElementRef, ViewChild } from '@angular/core';
-// import { Subscription } from 'rxjs';
-// import { NavService } from './Shared/Services/nav.service';
+import { Component } from '@angular/core';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

@@ -2,7 +2,20 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 93vh;
+  height: 100%;
+}
+
+.input-section.active {
+  border: 2px dotted #007cce;
+  .title {
+    color: #007cce;
+  }
+
+  .click-button {
+    border: 2px dotted #007cce;
+  }
+
+  
 }
 
 .row {
@@ -11,7 +24,7 @@
 
 .leftPanel {
   background-color: #beb5b559;
-  padding: 5px;
+  padding: 1rem;
   float: left;
   width: 25%; /* The width is 20%, by default */
 }
@@ -24,32 +37,54 @@
 }
 
 ::ng-deep #gridContainer {
-  height: 850px;
+  height: 100%;
+}
+
+.click-button {
+  cursor: pointer;
+  display: inline-block;
+  border: 2px solid rgb(156, 156, 156);
+  padding: 2px 5px;
+  border-radius: 0.25rem;
+}
+
+.click-button:hover {
+  color: #007cce;
+  border: 2px dotted #007cce;
 }
 
 .input-section {
   text-align: center;
   width: 100%;
-  border: 1px solid black;
-  border-style: dotted;
+  border: 2px solid rgb(156, 156, 156);
   padding: 0.5rem;
   z-index: 10000;
-  border-radius: 1rem;
-  cursor: pointer;
-}
+  border-radius: 0.25rem;
+  background-color: rgb(250, 250, 250);
 
-.input-section:hover {
-  border: 1px solid #007cce;
-  border-style: dotted;
-
-  .title {
-    color: #007cce;
+  .upload_onHovering {
+    display: none;
+    font-size: 35px;
   }
 }
+
+.image-container {
+  background-color: #fafafa;
+  height: 85%;
+}
+
+// .input-section:hover {
+//   border: 2px solid #007cce;
+//   border-style: solid;
+
+//   .title {
+//     color: #007cce;
+//   }
+// }
 
 #upload_button {
   display: inline-block;
 }
-#upload_button input[type=file] {
-  display:none;
+#upload_button input[type="file"] {
+  display: none;
 }

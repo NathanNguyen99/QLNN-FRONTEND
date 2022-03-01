@@ -51,6 +51,7 @@ export class DetailViewComponent implements OnInit {
     this.loadAddictClassify();
     this.loadAddictPlace();
     this.loadAddictDrugs();
+    this.loadAddictVehicle();
   }
 
   public loadUses() {

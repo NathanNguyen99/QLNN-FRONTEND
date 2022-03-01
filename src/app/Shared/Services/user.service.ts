@@ -38,6 +38,15 @@ export class UserService extends baseService {
     super.header());//.pipe(catchError(super.handleError));    
   }
 
+  public deleteRecord(value: string):  Observable<any> {    
+    return this.http.delete(this.pathAPI + 'User/' + value, super.header()).pipe(
+      catchError((error: any) => {
+           console.error(error);
+           return of();
+         }),
+    );
+  }
+
   getAllUsers(): void {    
     this.http.get<User[]>(this.pathAPI + 'User', super.header()).subscribe(data => {
        //console.log(data);

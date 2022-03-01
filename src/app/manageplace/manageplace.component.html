@@ -1,129 +1,144 @@
-<div class="mat-elevation-z8">
-  <div class="form">
-    <div style="width: 25%">
-      <nz-input-group [nzSuffix]="suffixIconSearch">
-        <input
-          type="text"
-          matInput
-          #filter
-          nz-input
-          placeholder="Tìm kiếm ..."
-        />
-      </nz-input-group>
-      <ng-template #suffixIconSearch>
-        <i nz-icon nzType="search"></i>
-      </ng-template>
+<nz-tabset nzType="card">
+  <nz-tab nzTitle="Thông tin">
+    <div class="mat-elevation-z8">
+      <div class="form">
+        <div style="width: 25%">
+          <nz-input-group [nzSuffix]="suffixIconSearch">
+            <input
+              type="text"
+              matInput
+              #filter
+              nz-input
+              placeholder="Tìm kiếm ..."
+            />
+          </nz-input-group>
+          <ng-template #suffixIconSearch>
+            <i nz-icon nzType="search"></i>
+          </ng-template>
+        </div>
+        <div style="margin-left: 0.5rem">
+          <nz-select
+            style="display: inline-block; width: 240px"
+            [(ngModel)]="selectedProvince"
+            (ngModelChange)="provinceChange($event)"
+            nzPlaceHolder="Tìm theo phân loại nơi quản lý"
+          >
+            <nz-option
+              *ngFor="let p of placetypes"
+              [nzValue]="p"
+              nzLabel="{{ p.placeTypeName }}"
+            ></nz-option>
+          </nz-select>
+        </div>
+        <button  style="margin-left: 0.5rem" nz-button nzType="primary" (click)="handleExportClick()">
+          <i nz-icon nzType="export" nzTheme="outline"></i>
+          Xuất File Excel
+        </button>
+      </div>
+    
+      <!-- <div class="row" style="padding-left: 38;">
+            <mat-form-field> 
+                <mat-select placeholder="Tìm theo phân loại nơi quản lý" >
+                    <mat-option *ngFor="let p of placetypes"
+                                [value]="p"
+                                (click)="searchPlaceType(p)">{{p.placeTypeName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+      </div> -->
+      <mat-table
+        #table
+        [dataSource]="dataSource"
+        matSort
+        (matSortChange)="sortData($event)"
+        class="mat-cell"
+      >
+        
+        <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+    
+        <!-- ID Column -->
+    
+        <ng-container matColumnDef="PlaceName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Nơi quản lý</mat-header-cell
+          >
+          <mat-cell *matCellDef="let row">{{ row.placeName }}</mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="Address">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Địa chỉ</mat-header-cell
+          >
+          <mat-cell *matCellDef="let row"> {{ row.address }}</mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="PlaceTypeName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Phân loại</mat-header-cell
+          >
+          <mat-cell *matCellDef="let row"> {{ row.placeTypeName }}</mat-cell>
+        </ng-container>
+    
+        <!-- actions -->
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>
+            <button
+              (click)="openAddDialog()"
+              nz-button
+              nzType="default"
+              nzShape="circle"
+            >
+              <i nz-icon nzType="plus" nzTheme="outline"></i>
+            </button>
+          </mat-header-cell>
+    
+          <mat-cell *matCellDef="let row; let i = index">
+            <button
+              nz-button
+              (click)="startEdit(i, row)"
+              nzType="default"
+              nzShape="circle"
+            >
+              <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </button>
+            <button
+              style="margin-left: 0.5rem"
+              nz-button
+              (click)="deleteItem(i, row)"
+              nzType="default"
+              nzDanger
+              nzShape="circle"
+            >
+              <i nz-icon nzType="delete" nzTheme="outline"></i>
+            </button>
+          </mat-cell>
+        </ng-container>
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+    
+      <div
+        class="no-results"
+        [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'"
+      >
+        Không có kết quả
+      </div>
+    
+      <mat-paginator
+        #paginator
+        [length]="dataSource.filteredData.length"
+        [pageIndex]="0"
+        [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 25, 100]"
+      >
+      </mat-paginator>
     </div>
-    <div style="margin-left: 0.5rem">
-      <nz-select
-        style="display: inline-block; width: 240px"
-        [(ngModel)]="selectedProvince"
-        (ngModelChange)="provinceChange($event)"
-        nzPlaceHolder="Tìm theo phân loại nơi quản lý"
-      >
-        <nz-option
-          *ngFor="let p of placetypes"
-          [nzValue]="p"
-          nzLabel="{{ p.placeTypeName }}"
-        ></nz-option>
-      </nz-select>
-    </div>
-  </div>
-  <!-- <div class="row" style="padding-left: 38;">
-        <mat-form-field> 
-            <mat-select placeholder="Tìm theo phân loại nơi quản lý" >
-                <mat-option *ngFor="let p of placetypes"
-                            [value]="p"
-                            (click)="searchPlaceType(p)">{{p.placeTypeName}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-  </div> -->
-  <mat-table
-    #table
-    [dataSource]="dataSource"
-    matSort
-    (matSortChange)="sortData($event)"
-    class="mat-cell"
-  >
-    ng update @angular/cli @angular/core
-    <!--- Note that these columns can be defined in any order.
-              The actual rendered columns are set as a property on the row definition" -->
-
-    <!-- ID Column -->
-    <ng-container matColumnDef="PlaceName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Nơi quản lý</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">{{ row.placeName }}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="Address">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Địa chỉ</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row"> {{ row.address }}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="PlaceTypeName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Phân loại</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row"> {{ row.placeTypeName }}</mat-cell>
-    </ng-container>
-
-    <!-- actions -->
-    <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef>
-        <button
-          (click)="openAddDialog()"
-          nz-button
-          nzType="default"
-          nzShape="circle"
-        >
-          <i nz-icon nzType="plus" nzTheme="outline"></i>
-        </button>
-      </mat-header-cell>
-
-      <mat-cell *matCellDef="let row; let i = index">
-        <button
-          nz-button
-          (click)="startEdit(i, row)"
-          nzType="default"
-          nzShape="circle"
-        >
-          <i nz-icon nzType="edit" nzTheme="outline"></i>
-        </button>
-        <button
-          style="margin-left: 0.5rem"
-          nz-button
-          (click)="deleteItem(i, row)"
-          nzType="default"
-          nzDanger
-          nzShape="circle"
-        >
-          <i nz-icon nzType="delete" nzTheme="outline"></i>
-        </button>
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-  </mat-table>
-
-  <div
-    class="no-results"
-    [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'"
-  >
-    No results
-  </div>
-
-  <mat-paginator
-    #paginator
-    [length]="dataSource.filteredData.length"
-    [pageIndex]="0"
-    [pageSize]="10"
-    [pageSizeOptions]="[5, 10, 25, 100]"
-  >
-  </mat-paginator>
-</div>
+    
+  </nz-tab>
+  <nz-tab nzTitle="Thêm">
+    <app-import-excel [_Database]="_Database"></app-imp ort-excel>
+  </nz-tab>
+  
+</nz-tabset>

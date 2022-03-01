@@ -8,6 +8,8 @@ import { UserDataSource } from '../Shared/Datasources/user.Datasource';
 
 import { fromEvent} from 'rxjs';
 import {userEditComponent} from './user-edit/user-edit.component';
+import { ConfirmService } from '../Shared/Services/confirm.service';
+import { AlertService } from '../Shared/Services/alert.service';
 // var momentPipe = require ('../../Config/MomentPipe');
 
 // import * as MomentPipe from "../Config/MomentPipe";
@@ -19,7 +21,7 @@ import {userEditComponent} from './user-edit/user-edit.component';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
-  displayedColumns = ['UserName', 'FullName','Admin','PlaceName', 'actions'];
+  displayedColumns = ['UserName', 'FullName','Admin','manageCityName', 'PlaceName', 'actions'];
   userDatabase!: UserService;
   dataSource!: UserDataSource;
   index: number=0;
@@ -28,7 +30,7 @@ export class UserComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
   @ViewChild('filter',  {static: true}) filter!: ElementRef;
   
-  constructor(public dialogService: MatDialog, public userService: UserService) { }
+  constructor(public dialogService: MatDialog, private confirmSv: ConfirmService, public userService: UserService, private alertSv:AlertService) { }
 
 
   ngOnInit() {
@@ -57,6 +59,7 @@ export class UserComponent implements OnInit {
     //this.Oid = oid;
     // index row is used just for debugging proposes and can be removed
     this.index = i;
+      
     //console.log(this.index);
     const dialogRef = this.dialogService.open(userEditComponent, {
       data: odata
@@ -72,6 +75,7 @@ export class UserComponent implements OnInit {
             // Then you update that record using data from dialogData (values you enetered)
             this.userDatabase!.dataChange.value[foundIndex] = this.userService.getDialogData();
             // And lastly refresh table
+            this.loadData();
             this.refreshTable();
           },
           (error: any) => {
@@ -84,8 +88,25 @@ export class UserComponent implements OnInit {
 
   deleteItem(i: number, odata: User) {
     this.index = i;
-    //this.id = id;
-    console.log(odata);
+    const url = "123";
+
+    this.confirmSv.confirm(odata.userName, 'Bạn có chắc muốn xóa mã này không?')
+    .subscribe(r => {if (r === true) {
+      
+       this.userDatabase.deleteRecord(odata.oid).subscribe(
+        result => {
+          console.log(result)
+          // Refresh DataTable to remove row.
+          this.userDatabase!.dataChange.value.splice(i, 1)
+          this.refreshTable();
+        },
+        (err: any) => {
+          console.log(err.error);
+          console.log(err.message);
+          this.alertSv.error('Delete did not happen.');
+        }
+      );
+    }});
   }
 
   openAddDialog() {

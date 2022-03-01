@@ -51,6 +51,16 @@ export class AddictDrugsService extends baseService {
     //return this.http.get<any>(requestUrl, super.header()).pipe(map(data=> {return data}));//.pipe(catchError(super.handleError));
   }
 
+  async remove(obj: AddictDrugs): Promise<boolean> {
+    //const httpParams = new HttpParams({ fromObject: { key: change.key } });
+    //const httpOptions = { withCredentials: true, body: obj };
+    const data = await this.http
+      .delete<boolean>(`${this.pathAPI}AddictDrugs/${obj.oid}`, super.header())
+      .toPromise();
+    //this.updateAddicts(obj, data);
+    return data;
+  }
+
   // DEMO ONLY, you can find working methods below
   addObject(issue: AddictDrugs): void {
     this.dialogData = issue;

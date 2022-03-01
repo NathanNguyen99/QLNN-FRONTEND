@@ -4,6 +4,13 @@ export const PlacetypeData = [
     {oid : 3, placeTypeName : 'Trại Giam'}
 ];
 
+export const MangeCityTypeData = [
+    {oid : 1, manageCityTypeName : 'Thành phố'},
+    {oid : 2, manageCityTypeName : 'Thị xã'},
+    {oid : 3, manageCityTypeName : 'Huyện'},
+    {oid : 4, manageCityTypeName : 'Tỉnh'}
+];
+
 export const GenderData = [
     {id: 0, Text: 'Nam'},
     {id: 1, Text: 'Nữ'},

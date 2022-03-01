@@ -1,39 +1,209 @@
 <div class="container">
-    <h3 mat-dialog-title>Thuốc</h3>
-  
-    <form class="mat-dialog-content" (ngSubmit)="submit" #formControl="ngForm">
-  
-      <div class="form">        
-          <!-- <input matInput class="form-control" placeholder="họ tên" [(ngModel)]="data.addictName" name="AddictName" required > -->
-          <mat-form-field color="accent">
-            <mat-select placeholder="Họ tên ..." #select1 id="Adidct" [(ngModel)]="data.addictID" required (ngModelChange)="selectChange($event)" name="addictID">
-              <mat-select-filter *ngIf="select1.focused" [array]="addictData" [displayMember]="'fullName'" (filteredReturn)="addictSearch =$event"></mat-select-filter>
-              <mat-option *ngFor="let t of addictSearch" [value]="t.oid">{{t.addictCode}} <b> | </b> {{t.fullName}}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
-          </mat-form-field>
-      </div>
+  <h3 mat-dialog-title>Lịch sử quan hệ</h3>
 
-      <div class="form">
-        <mat-form-field color="accent">
-          <mat-select placeholder="Loại quan hệ ..." type="text" id="use" [(ngModel)]="data.relationsID" required (ngModelChange)="selectChange($event)" name="useID">
-            <mat-option *ngFor="let t of relationsData" [value]="t.oid">{{t.relationName}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-  
-      <div class="form">
-        <mat-form-field color="accent">
-          <textarea matInput class="form-control" placeholder="Ghi chú" [(ngModel)]="data.remarks" name="Remarks" ></textarea>
-        </mat-form-field>
-      </div>
+  <form class="mat-dialog-content" (ngSubmit)="(submit)" #formControl="ngForm">
+    <div class="form">
+      <!-- <input matInput class="form-control" placeholder="họ tên" [(ngModel)]="data.addictName" name="AddictName" required > -->
+      <mat-form-field color="accent">
+        <mat-select
+          placeholder="Họ tên ..."
+          #select1
+          id="addictID"
+          [(ngModel)]="data.addictID"
+          required
+          name="addictID"
+        >
+          <mat-select-filter
+            *ngIf="select1.focused"
+            [array]="addictData"
+            [displayMember]="'fullName'"
+            (filteredReturn)="addictSearch = $event"
+          ></mat-select-filter>
+          <mat-option *ngFor="let t of addictSearch" [value]="t.oid"
+            >{{ t.addictCode }} <b> | </b> {{ t.fullName }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formControl.invalid">{{
+          getErrorMessage()
+        }}</mat-error>
+      </mat-form-field>
+    </div>
 
-      <div mat-dialog-actions>
-        <button mat-button type="submit" [disabled]="!formControl.valid" [mat-dialog-close]="1" (click)="stopEdit()">Lưu</button>
-        <button mat-button (click)="onNoClick()" tabindex="-1">Hủy</button>
-      </div>
-    </form>
+    <div class="form">
+      <mat-form-field color="accent">
+        <mat-select
+          placeholder="Mối quan hệ ..."
+          type="text"
+          id="use"
+          [(ngModel)]="data.relationsID"
+          required
+          (ngModelChange)="selectChange($event)"
+          name="useID"
+        >
+          <mat-option *ngFor="let t of relationsData" [value]="t.oid"
+            >{{ t.relationName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <!-- <input matInput class="form-control" placeholder="họ tên" [(ngModel)]="data.addictName" name="AddictName" required > -->
+      <mat-form-field color="accent">
+        <mat-select
+          placeholder="Quan hệ với ..."
+          #select2
+          id="Adidct"
+          [(ngModel)]="data.relationWithID"
+          required
+          (ngModelChange)="selectChange($event)"
+          name="relationWithID"
+        >
+          <mat-select-filter
+            *ngIf="select2.focused"
+            [array]="relationWithData"
+            [displayMember]="'fullName'"
+            (filteredReturn)="addictSearch = $event"
+          ></mat-select-filter>
+          <mat-option *ngFor="let t of addictSearch" [value]="t.oid"
+            >{{ t.addictCode }} <b> | </b> {{ t.fullName }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formControl.invalid">{{
+          getErrorMessage()
+        }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <input
+          placeholder="Ngày sinh ..."
+          matInput
+          [matDatepicker]="picker"
+          class="form-control"
+          [(ngModel)]="data.dateOfBirth"
+          name="dateOfBirth"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="formControl.invalid">{{
+          getErrorMessage()
+        }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <textarea
+          matInput
+          class="form-control"
+          placeholder="Tên gọi khác"
+          [(ngModel)]="data.otherName"
+          name="otherName"
+        ></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <textarea
+          matInput
+          class="form-control"
+          placeholder="Địa chỉ"
+          [(ngModel)]="data.currentAddress"
+          name="currentAddress"
+        ></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <mat-select
+          placeholder="Khu vực ..."
+          #managePlaceID
+          type="text"
+          id="use"
+          [(ngModel)]="data.managePlaceID"
+          (ngModelChange)="selectChange($event)"
+          name="managePlaceID"
+        >
+          <mat-select-filter
+            *ngIf="managePlaceID.focused"
+            [array]="managePlacesData"
+            [displayMember]="'placeName'"
+            (filteredReturn)="placeSearch = $event"
+          ></mat-select-filter>
+          <mat-option *ngFor="let t of managePlacesData" [value]="t.oid"
+            >{{ t.placeName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-checkbox
+        class="form-control"
+        [checked]="data.blackList"
+        [(ngModel)]="data.blackList"
+        [color]="'primary'"
+        name="blackList"
+      >
+        Danh sách đen
+      </mat-checkbox>
+    </div>
+    <!-- <input
+    placeholder="Ngày sinh ..."
+    matInput
+    [matDatepicker]="picker"
+    class="form-control"
+    [(ngModel)]="data.dateOfBirth"
+    name="dateOfBirth"
+  /> -->
+    <div class="form">
+      <mat-form-field color="accent">
+        <input
+          placeholder="Vào ngày ..."
+          matInput
+          [matDatepicker]="picker2"
+          class="form-control"
+          [(ngModel)]="data.date"
+          name="Date"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker2"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+        <mat-error *ngIf="formControl.invalid">{{
+          getErrorMessage()
+        }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <textarea
+          matInput
+          class="form-control"
+          placeholder="Ghi chú"
+          [(ngModel)]="data.remarks"
+          name="Remarks"
+        ></textarea>
+      </mat-form-field>
+    </div>
+
+    <div mat-dialog-actions>
+      <button
+        mat-button
+        type="submit"
+        [disabled]="!formControl.valid"
+        [mat-dialog-close]="1"
+        (click)="stopEdit()"
+      >
+        Lưu
+      </button>
+      <button mat-button (click)="onNoClick()" tabindex="-1">Hủy</button>
+    </div>
+  </form>
 </div>
-  

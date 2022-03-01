@@ -29,6 +29,17 @@ export class EduLevelService extends baseService {
     return this.dataChange.value;
   }
 
+  public deleteRecord(value: string): Observable<any> {
+    return this.http
+      .delete(this.pathAPI + 'EducationLevel/' + value, super.header())
+      .pipe(
+        catchError((error: any) => {
+          console.error(error);
+          return of();
+        })
+      );
+  }
+
    /** CRUD METHODS */
    getAllEducationLevels(): void {    
     this.http.get<EducationLevel[]>(this.pathAPI + 'EducationLevel', super.header()).subscribe(data => {
@@ -74,4 +85,6 @@ export class EduLevelService extends baseService {
          }),
     );
   }
+
+
 }

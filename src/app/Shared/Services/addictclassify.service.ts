@@ -76,6 +76,16 @@ export class AddictClassifyService extends baseService {
     );
   }
 
+  async remove(obj: AddictClassify): Promise<boolean> {
+    //const httpParams = new HttpParams({ fromObject: { key: change.key } });
+    //const httpOptions = { withCredentials: true, body: obj };
+    const data = await this.http
+      .delete<boolean>(`${this.pathAPI}AddictClassify/${obj.oid}`, super.header())
+      .toPromise();
+    //this.updateAddicts(obj, data);
+    return data;
+  }
+
   SaveAddDrugs(): Observable<any> {
     return this.http.put<AddictClassify>(this.pathAPI + 'AddictClassify', this.dialogData, super.header()).pipe(
       catchError((error: any) => {

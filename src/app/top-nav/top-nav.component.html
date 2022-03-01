@@ -46,7 +46,7 @@
       <div
         class=""
         style="
-          display: block;
+          display: inline-block;
           font-weight: bold;
           margin-left: auto;
           margin-right: auto;
@@ -64,15 +64,20 @@
       <div class="user-icon-container" >
         <div mat-button [matMenuTriggerFor]="menu" href="">
           <span>
-            <mat-icon>account_box</mat-icon>
-            {{ helper.getUserFullName() }}
+            <i style="font-size: 1.5rem;" nz-icon nzType="user" nzTheme="outline"></i>
           </span>
         </div>
       </div>
     </div>
     <mat-menu #menu="matMenu">
+      <div style="text-align: center; border-bottom: 2px solid #f4f5f7;">
+
+        <span style="font-size: large; text-transform: uppercase;">
+          {{helper.getUserFullName()}}
+        </span>
+      </div>
       <button mat-menu-item [routerLink]="'/home/system/changepassword'">
-        <mat-icon>account_circle</mat-icon>
+        <i style="margin-right: 1rem; font-size: 1rem; color: black;" nz-icon nzType="redo" nzTheme="outline"></i>
         <span>Đổi mật khẩu</span>
       </button>
       <!-- <button mat-menu-item [routerLink]=" ['./logout'] ">
@@ -80,7 +85,7 @@
          <span>Log out</span>
         </button> -->
       <button mat-menu-item (click)="logout()">
-        <mat-icon>power_settings_new</mat-icon>
+        <i style="margin-right: 1rem; font-size: 1rem; color: black;" nz-icon nzType="logout" nzTheme="outline"></i>
         <span>Đăng xuất</span>
       </button>
     </mat-menu>

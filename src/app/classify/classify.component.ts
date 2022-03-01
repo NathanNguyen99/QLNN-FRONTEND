@@ -94,7 +94,8 @@ export class ClassifyComponent implements OnInit {
         result => {
           this.success();
           // Refresh DataTable to remove row.
-          this.deleteRowDataTable (i, 1, this.paginator, this.dataSource);
+          this._Database!.dataChange.value.splice(i, 1)
+          this.refreshTable();
         },
         (err: any) => {
           console.log(err.error);

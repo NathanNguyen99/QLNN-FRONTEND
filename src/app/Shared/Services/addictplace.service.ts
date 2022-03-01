@@ -5,7 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { baseService } from '../Services/base.service';
 import { AppConfig } from '../../Config/config';
 import { Helpers } from '../../Helpers/helpers';
-import { AddictManagePlace } from '../Models/AddictManagePlace';
+import { AddictManagePlace, AddictManagePlace2 } from '../Models/AddictManagePlace';
 import {BehaviorSubject, } from 'rxjs';
 @Injectable()
 export class AddictPlaceService extends baseService {
@@ -46,11 +46,11 @@ export class AddictPlaceService extends baseService {
     //return this.http.get<any>(requestUrl, super.header()).pipe(map(data=> {return data}));//.pipe(catchError(super.handleError));
   }
   
-  getPaging22 (sortname: string, dicrection: string, searchString: string, pageNum: number, pageSize: number) {
-    const requestUrl = `${this.pathAPI}AddictManagePlace/GetPaging2?sortName=${sortname}&sortDirection=${dicrection}&searchString=${searchString}&pageNumber=${pageNum}&pageSize=${pageSize}`;
+  getPaging22 () {
+    const requestUrl = `${this.pathAPI}AddictManagePlace/GetPaging2`;
     
-    //console.log(requestUrl);
-    return this.http.get<any>(requestUrl, super.header());
+    
+    return this.http.get<AddictManagePlace2[]>(requestUrl, super.header());
   }
 
   get data(): AddictManagePlace[] {
@@ -92,6 +92,16 @@ export class AddictPlaceService extends baseService {
            return of();
          }),
     );
+  }
+
+  async remove(obj: AddictManagePlace): Promise<boolean> {
+    //const httpParams = new HttpParams({ fromObject: { key: change.key } });
+    //const httpOptions = { withCredentials: true, body: obj };
+    const data = await this.http
+      .delete<boolean>(`${this.pathAPI}AddictManagePlace/${obj.oid}`, super.header())
+      .toPromise();
+    //this.updateAddicts(obj, data);
+    return data;
   }
 
   SaveAddPlace(): Observable<any> {

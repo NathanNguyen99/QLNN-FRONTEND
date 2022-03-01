@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app.routing.module';
@@ -11,6 +11,7 @@ import {
 //import { MaterialsModule } from './modules/materials.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { CommonModule } from '@angular/common';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
@@ -34,7 +35,8 @@ import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
-
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import {
   DxDataGridModule,
   DxFormModule,
@@ -113,6 +115,9 @@ import { AddictVehicleService } from './Shared/Services/addictVehicle.service';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
+import {MAT_DATE_LOCALE} from '@angular/material/core';
+import vi from '@angular/common/locales/vi';
+
 import en from '@angular/common/locales/en';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -126,7 +131,17 @@ import { RelationsComponent } from './relations/relations.component';
 import { RelationsEditComponent } from './relations/relations-edit/relations-edit.component';
 import { RelationsService } from './Shared/Services/relations.service';
 import { AddictRelationsService } from './Shared/Services/addictrelations.service';
+import { ConfigService } from './Shared/Services/config.service';
+// import { ImportExcelComponent } from './addict/import-excel/import-excel.component';
+import { ImportExcelComponent } from './manageplace/import-excel/import-excel.component';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 registerLocaleData(en);
+
+export const configFactory = (configService: ConfigService) => {
+  return () => configService.loadConfig();
+};
 
 @NgModule({
   declarations: [
@@ -169,8 +184,10 @@ registerLocaleData(en);
     AddictVehicleEditComponent,
     RelationsComponent,
     RelationsEditComponent,
+    ImportExcelComponent,
   ],
   imports: [
+    CommonModule,
     NzAlertModule,
     NzUploadModule,
     BrowserModule,
@@ -215,9 +232,19 @@ registerLocaleData(en);
     DxButtonModule,
     FlexLayoutModule,
     NzTableModule,
-    NzPaginationModule
+    NzPaginationModule,
+    NzMenuModule,
+    NzPopoverModule,
+    NzTabsModule,
+    NzAutocompleteModule
   ],
   providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: configFactory,
+      deps: [ConfigService],
+      multi: true
+    },
     MultilevelMenuService,
     NzMessageService,
     NavService,
@@ -243,6 +270,7 @@ registerLocaleData(en);
     AddictVehicleService,
     RelationsService,
     AddictRelationsService,
+    { provide: MAT_DATE_LOCALE, useValue: 'vi_VN' },
     { provide: NZ_I18N, useValue: en_US },
   ],
   bootstrap: [AppComponent],

@@ -7,4 +7,7 @@ export interface User {
     active: boolean;
     placeID: string;
     placeName : string;
+    manageCityID: number;
+    manageCityName: string;
+    manageCityTypeID: number;
 }

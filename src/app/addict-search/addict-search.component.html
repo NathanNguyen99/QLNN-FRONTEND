@@ -1,39 +1,45 @@
 <div class="container">
+  
   <app-loading *ngIf="isLoadingResults"></app-loading>
   <div class="leftPanel">
-    
-    <div class="input-section">
-        <!-- <input 
-        style="cursor: pointer;"
-          type="file"
-          #fileInput
-          name="filename"
-          accept="image/gif, image/jpeg, image/png"
-          (change)="readURL($event)"
-        /> -->
-        <div id="upload_button">
-            <label>
-              <input type="file" accept="image/gif, image/jpeg, image/png" #fileInput ngf-select ng-model="new_files" (change)="readURL($event)">
-              <span class="title"><mat-icon style="font-size: 2rem;">cloud_upload</mat-icon><br>Ấn ở đây để chọn file</span>
-            </label>
-          </div>
+    <div class="input-section"(dragover)="onDragOver($event)"
+    (drop)="onDrop($event)"
+    (dragleave)="onDragLeave($event)"
+    [class.active]="isActive" #fileDrop >
+      <div class="upload_onHovering">
+        <i nz-icon nzType="up" nzTheme="outline"></i>
+      </div>
+      <div id="upload_button" >
+        <label>
+          <input
+            type="file"
+            accept="image/gif, image/jpeg, image/png"
+            #fileInput
+            ngf-select
+            ng-model="new_files"
+            (change)="readURL($event)"
+          />
+          <span class="title">
+            <i style="font-size: 35px; color: #007cce;" nz-icon nzType="inbox"></i>
+            <br /><div style="font-weight: 500;">Kéo thả file để chọn file hoặc</div> 
+            <div class="click-button">
+              <i nz-icon nzType="upload"></i>
+              ấn ở đây
+            </div>
+              
+            </span
+          >
+        </label>
+      </div>
+      
     </div>
 
-    <div style="margin-top: 1rem;" *ngIf="imageSrc">
-        <img [src]="imageSrc" width="100%" style="max-height: 50vh"/>
-    
-    <br />
-    <button
-      color="warn"
-      mat-raised-button
-      class="btn"
-      style="background-color: #0d86bc; float: right; margin-top: 1rem;"
-      (click)="UploadImage()"
-    >
-      Tìm kiếm
-    </button>
-</div>
-   
+    <div class="image-container" style="margin-top: 1rem" *ngIf="imageSrc">
+      <img [src]="imageSrc" width="100%" style="max-height: 50vh" />
+
+      <br />
+      
+    </div>
   </div>
   <div class="mainPanel">
     <dx-data-grid

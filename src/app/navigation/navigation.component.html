@@ -1,29 +1,30 @@
-
-<mat-sidenav-container >
-    <mat-sidenav style="background-color: #f4f5f7;" #appDrawer [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)" role="navigation" id="matsideBar1">
-    <!-- <h3 class="text-center text-white bg-info mt-3">Logo</h3> -->
-    <div style="cursor: pointer;" [routerLink]="['/home/dashboard']">
-      <img style="margin-left: 50px;" src="favicon.ico" width="200" />
-      <p style="text-align: center;color: #ed7f1f;"><b>CÔNG AN TỈNH BÌNH DƯƠNG</b></p>
+<mat-sidenav-container>
+  <mat-sidenav
+    style="background-color: #f4f5f7"
+    #appDrawer
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)"
+    role="navigation"
+    id="matsideBar1"
+  >
+    <div
+      style="cursor: pointer; margin-top: 1rem"
+      [routerLink]="['/home/dashboard']"
+    >
+      <img style="margin-left: 50px" src="favicon.ico" width="200" />
+      <p style="text-align: center; color: #ed7f1f">
+        <b>CÔNG AN TỈNH BÌNH DƯƠNG</b>
+      </p>
     </div>
-
-    <ng-material-multilevel-menu [configuration]='config' [items]='appitems' (selectedItem)="selectedItem($event)">
+    <ng-material-multilevel-menu
+      [configuration]="config"
+      [items]="appitems"
+      (selectedItem)="selectedItem($event)"
+    >
     </ng-material-multilevel-menu>
-    </mat-sidenav>
-    
-    
-    <mat-sidenav-content>
-        <!-- <mat-toolbar color="warn">
-            <mat-toolbar-row>
-              <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="appDrawer.toggle()" color="primary">
-                <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-              </button>
-            </mat-toolbar-row>
-          </mat-toolbar> -->
-          <app-top-nav></app-top-nav>
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <app-top-nav></app-top-nav>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
 </mat-sidenav-container>
-
-
-  

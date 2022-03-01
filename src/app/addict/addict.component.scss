@@ -1,0 +1,133 @@
+::ng-deep #gridContainer {
+  height: 870px;
+}
+::ng-deep .options {
+  padding: 20px;
+  margin-top: 20px;
+  background-color: rgba(191, 191, 191, 0.15);
+  /* background-color: black; */
+}
+::ng-deep .caption {
+  font-size: 18px;
+  font-weight: 500;
+}
+::ng-deep .option {
+  margin-top: 10px;
+}
+::ng-deep .option > span {
+  margin-right: 10px;
+}
+::ng-deep .option > .dx-selectbox {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+::ng-deep .dx-datagrid-header-panel .dx-toolbar {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+/* ::ng-deep .dx-toolbar-after {
+    left: 0;
+} */
+
+::ng-deep .dx-toolbar .dx-toolbar-after {
+  padding-left: 5px;
+}
+
+::ng-deep .dx-header-row {
+  background-color: #4395a3;
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+::ng-deep .dx-header-filter {
+  color: #28373b !important;
+}
+
+::ng-deep .uploadedImage {
+  height: 275px;
+  margin-left: 3px;
+  margin-bottom: 2px;
+}
+
+::ng-deep .dx-row img {
+  height: 50px;
+}
+
+::ng-deep .retryButton {
+  margin-left: 7px;
+}
+
+::ng-deep .dx-popup-content {
+  padding-top: 5px;
+  padding-bottom: 0px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+::ng-deep .employeeInfo .employeePhoto {
+  height: 320px;
+  float: left;
+  /* padding: 20px 20px 20px 0; */
+}
+
+::ng-deep .dx-datagrid .dx-icon-remove {
+  color: red;
+}
+
+::ng-deep .dx-datagrid-rowsview .dx-row > .dx-master-detail-cell {
+  padding: 10px;
+}
+/* ::ng-deep .dx-datagrid .red-button{    
+    color: red;    
+} */
+
+::ng-deep .dx-layout-manager .dx-field-item:not(.dx-first-row) {
+  padding-top: 5px;
+}
+
+::ng-deep .dx-layout-manager .dx-tabpanel .dx-multiview-item-content {
+  padding: 10px;
+}
+
+::ng-deep .dx-fileuploader-wrapper {
+  padding: 0px;
+}
+
+::ng-deep .dx-fileuploader-input-wrapper {
+  padding: 0px;
+}
+.input-section {
+  text-align: center;
+  width: 30%;
+  border: 2px solid rgb(156, 156, 156);
+  padding: 0.5rem;
+  z-index: 10000;
+  border-radius: 0.25rem;
+  background-color: rgb(250, 250, 250);
+
+  .upload_onHovering {
+    display: none;
+    font-size: 35px;
+  }
+}
+
+#upload_button {
+  display: inline-block;
+}
+#upload_button input[type="file"] {
+  display: none;
+}
+
+.input-section.active {
+  border: 2px dotted #007cce;
+  .title {
+    color: #007cce;
+  }
+
+  .click-button {
+    border: 2px dotted #007cce;
+  }
+}

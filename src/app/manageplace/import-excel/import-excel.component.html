@@ -1,0 +1,57 @@
+<div style="display: flex; flex-direction: row;">
+
+  <div class="input-section"(dragover)="onDragOver($event)"
+      (drop)="onDrop($event)"
+      (dragleave)="onDragLeave($event)"
+      [class.active]="isActive" #fileDrop >
+        <div class="upload_onHovering">
+          <i nz-icon nzType="up" nzTheme="outline"></i>
+        </div>
+        <div id="upload_button" >
+          <label>
+            <input
+              type="file"
+              #inputFile
+              ngf-select
+              ng-model="new_files"
+              (change)="onChange($event)"
+            />
+            <span class="title">
+              <i style="font-size: 35px; color: #007cce;" nz-icon nzType="inbox"></i>
+              <br /><div style="font-weight: 500;">Chọn File</div> 
+              <div class="click-button">
+                <i nz-icon nzType="upload"></i>
+                ấn ở đây
+              </div>
+                
+              </span
+            >
+          </label>
+        </div>
+        
+      </div>
+  <!-- <input type="file" (change)="onChange($event)" #inputFile /> -->
+  <div style="display: flex; flex-direction: column;">
+    <button nz-button nzType="primary" [disabled]="activeButton" style="border: 1px solid rgb(156, 156, 156);" (click)="removeData()">
+      Xóa Dữ Liệu
+    </button>
+    <button nz-button nzType="primary" [disabled]="activeButton" style="margin-top: 0.5rem; border: 1px solid rgb(156, 156, 156);" (click)="uploadFile()">
+      Tải lên Database
+    </button> 
+  
+  </div>
+</div>
+
+<div *ngIf="isExcelFile === false">Đây không phải File Excel</div>
+<span *ngIf="spinnerEnabled" class="k-i-loading k-icon"></span>
+
+<table>
+  <th *ngFor="let key of keys">
+    {{ key }}
+  </th>
+  <tr *ngFor="let item of dataSheet | async">
+    <td *ngFor="let key of keys">
+      {{ item[key] }}
+    </td>
+  </tr>
+</table>

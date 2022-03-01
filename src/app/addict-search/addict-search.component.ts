@@ -39,16 +39,61 @@ export class AddictSearchComponent implements OnInit {
 
   // }
 
-  handleChange({ file, fileList }: NzUploadChangeParam): void {
-    const status = file.status;
-    if (status !== 'uploading') {
-      console.log(file, fileList);
+  isActive: boolean;
+
+  onDragOver(event: any) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isActive = true;
+    //console.log('Drag over');
+  }
+
+  onDragLeave(event: any) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isActive = false;
+    //console.log('Drag leave');
+  }
+
+  onDrop(event: any) {
+    event.preventDefault();
+    event.stopPropagation();
+    let droppedFiles = event.dataTransfer.files;
+    if(droppedFiles.length > 0) {
+      var reader = new FileReader();
+
+      reader.onload = (event: any) => {
+        this.imageSrc = event.target.result;
+        //console.log(this.imageSrc);
+      };
+
+      reader.readAsDataURL(event.dataTransfer.files[0]);
+
+      this.onDroppedFile(droppedFiles)
     }
-    if (status === 'done') {
-      this.msg.success(`${file.name} file uploaded successfully.`);
-    } else if (status === 'error') {
-      this.msg.error(`${file.name} file upload failed.`);
+    this.isActive = false;
+  }
+
+  onDroppedFile(droppedFiles: any) {
+    let formData = new FormData();
+    for(let item of droppedFiles) {
+      formData.append('files', item);
     }
+
+    this.isLoadingResults = true;
+    this.dataSource = null;
+    this.service.UploadImage(formData).subscribe( {
+      next: (data) => {
+        this.dataSource = new DataSource({
+          store: data,
+          reshapeOnPush: true,
+        });
+      },
+      error: (err) => console.log(err),
+      complete: () => (this.isLoadingResults = false),
+    }
+      
+    )
   }
 
   readURL(event: any) {
@@ -57,11 +102,12 @@ export class AddictSearchComponent implements OnInit {
 
       reader.onload = (event: any) => {
         this.imageSrc = event.target.result;
-        //console.log(this.imageSrc);
       };
 
       reader.readAsDataURL(event.target.files[0]);
     }
+
+    this.UploadImage();
   }
 
   UploadImage() {
@@ -82,14 +128,6 @@ export class AddictSearchComponent implements OnInit {
         error: (err) => console.log(err),
         complete: () => (this.isLoadingResults = false),
       });
-
-      // data=>{
-      // this.dataSource = new DataSource({
-      //   store: data,
-      //   reshapeOnPush: true
-      //   });
-      // },
-      // err=> console.log("loi gi o day"));
     }
   }
 }

@@ -98,7 +98,8 @@ export class DrugsComponent implements OnInit {
         result => {
           this.success();
           // Refresh DataTable to remove row.
-          this.deleteRowDataTable (i, 1, this.paginator, this.dataSource);
+          this._Database!.dataChange.value.splice(i, 1)
+          this.refreshTable();
         },
         (err: any) => {
           console.log(err.error);
@@ -131,12 +132,7 @@ export class DrugsComponent implements OnInit {
     //this.messagesService.openDialog('Success', 'Database updated as you wished!');
     this.alertSv.error("Xóa thành công",false);
   }
-  private deleteRowDataTable (recordId: any, idColumn: any, paginator: any, dataSource: any) {
-    // this.dsData = dataSource.data;
-    // const itemIndex = this.dsData.findIndex(obj => obj[idColumn] === recordId);
-    // dataSource.data.splice(itemIndex, 1);
-    // dataSource.paginator = paginator;
-  }
+
 
   openAddDialog() {
     const dialogRef = this.dialogService.open(DrugsEditComponent, {

@@ -46,6 +46,11 @@ export class addictService extends baseService {
     ); //.pipe(catchError(super.handleError));
   }
 
+  UploadExcel(formData: FormData) {   
+    //, httpOptions
+    return this.http.post(this.pathAPI + 'Addict/UploadExcel', formData, super.headerFormdata());
+  } 
+
   // get data(): Addict[] {
   //   return this.dataChange.value;
   // }
@@ -60,6 +65,12 @@ export class addictService extends baseService {
         console.log(error.name + ' ' + error.message);
       }
     );
+  }
+
+  ExportExcel():Observable<any> {
+    // this.http.get(this.pathAPI + 'ManagePlace/ExportExcel',
+    // super.headerExport()) 
+    return this.http.get(this.pathAPI + 'Addict/ExportExcel', super.headerExport());
   }
 
   getPlaceOfBirth(): any {

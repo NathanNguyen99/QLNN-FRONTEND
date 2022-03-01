@@ -1,54 +1,90 @@
 <div class="mat-elevation-z8">
-  <app-loading *ngIf="isLoadingResults"></app-loading>
-
-  <div class="form">
-    <div style="width: 25%">
-      <nz-input-group [nzSuffix]="suffixIconSearch">
+  <div
+    class="form"
+    style="display: flex; flex-direction: row; align-items: center"
+  >
+    <div style="width: 30%; margin: 0 auto">
+      <nz-input-group
+        [nzPrefix]="PrefixIconSearch"
+        [nzSuffix]="SuffixIconSearch"
+      >
         <input
-          type="text"
-          matInput
-          #filter
-          nz-input
           placeholder="Tìm kiếm ..."
+          nz-input
+          #searchText
+          [(ngModel)]="inputValue"
+          (ngModelChange)="onChange($event)"
+          (keyup.enter)="search(searchText.value); handleEnterClick()"
+          [nzAutocomplete]="auto"
         />
+        <nz-autocomplete
+          [nzDataSource]="filteredOptions"
+          #auto
+        ></nz-autocomplete>
       </nz-input-group>
-      <ng-template #suffixIconSearch>
+      <ng-template #SuffixIconSearch>
+        <i
+          class="closeSuffix"
+          nz-popover
+          nzPopoverContent="Xóa"
+          *ngIf="searchText.value"
+          nz-icon
+          nzType="close"
+          (click)="searchText.value = ''; reset()"
+        ></i>
+      </ng-template>
+      <ng-template #PrefixIconSearch>
         <i nz-icon nzType="search"></i>
       </ng-template>
     </div>
+    <div style="float: left">
+      <button
+        (click)="openAddDialog()"
+        nz-button
+        nzType="default"
+        nzShape="circle"
+      >
+        <i nz-icon nzType="plus" nzTheme="outline"></i>
+      </button>
+    </div>
   </div>
 
-  <nz-table #nestedTable nzBordered [nzData]="dataSource" [nzShowPagination]="false">
+  <nz-table
+    #nestedTable
+    nzBordered
+    [nzData]="dataSource"
+    [nzShowPagination]="false"
+  >
     <thead>
-      <tr>
-        <th style="width: 0px;"></th>
-        <th>Mã số</th>
-        <th>Họ tên</th>
-        <th>
-          Ngày sinh
-          <button
-            (click)="openAddDialog()"
-            nz-button
-            nzType="default"
-            nzShape="circle"
-          >
-            <i nz-icon nzType="user-add" nzTheme="outline"></i>
-          </button>
-        </th>
+      <tr style="background-color: #4395a3">
+        <th nzAlign="center" style="width: 0px"></th>
+        <th nzAlign="center">Mã số</th>
+        <th nzAlign="center">Họ tên</th>
+        <th nzAlign="center">Ngày sinh</th>
+        <th nzAlign="center">Thao tác</th>
       </tr>
     </thead>
-    <tbody>
-      <ng-template  
-      ngFor let-data [ngForOf]="nestedTable.data"
-      >
+
+    <tbody *ngIf="isLoadingResults">
+      <ng-template ngFor let-data [ngForOf]="nestedTable.data">
         <tr>
           <td [(nzExpand)]="data.expand"></td>
-          <td>{{ data.addictCode }}</td>
-          <td>{{ data.addictName }}</td>
-          <td>{{ data.dob | date: "dd/MM/yyyy" }}</td>
+          <td nzAlign="center">{{ data.addictCode }}</td>
+          <td nzAlign="center">{{ data.addictName }}</td>
+          <td nzAlign="center">{{ data.dob | date: "dd/MM/yyyy" }}</td>
+          <td nzAlign="center">
+            <button
+              (click)="startAddPlace(0, data)"
+              nz-button
+              nzType="default"
+              nzShape="circle"
+            >
+              <i nz-icon nzType="plus" nzTheme="outline"></i>
+            </button>
+          </td>
         </tr>
         <tr [nzExpand]="data.expand">
-          <nz-table                   
+          <nz-table
             #innerTable
             [nzData]="data.activityLog"
             [nzShowPagination]="false"
@@ -56,16 +92,14 @@
           >
             <thead>
               <tr>
-                <th nzWidth="200px">Phân loại nơi</th>
-                <th nzWidth="180px">Nơi quản lý</th>
-                <th nzWidth="110px">ngày</th>
-                <th>Nhật ký hoạt động</th>
-                <th nzWidth="110px">Action</th>
+                <th style="text-align: center" nzWidth="224px">Nơi quản lý</th>
+                <th nzWidth="110px" nzAlign="center">Ngày</th>
+                <th nzAlign="center">Nhật ký hoạt động</th>
+                <th nzWidth="110px" nzAlign="center">Thao tác</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let data of innerTable.data">
-                <td>{{ data.placeTypeName }}</td>
                 <td>{{ data.placeName }}</td>
                 <td>{{ data.fromDate | date: "dd/MM/yyyy" }}</td>
                 <td>{{ data.remarks }}</td>
@@ -78,7 +112,7 @@
                   >
                     <i nz-icon nzType="edit" nzTheme="outline"></i>
                   </button>
-                  <!-- <nz-divider nzType="vertical"></nz-divider> -->
+                  <!-- <nz-divider nzType="vertical"></nz-divider> <app-loading *ngIf="isLoadingResults"></app-loading>-->
                   <button
                     style="margin-left: 0.5rem"
                     nz-button
@@ -96,10 +130,8 @@
         </tr>
       </ng-template>
     </tbody>
-
   </nz-table>
-  <div style="float: right;">
-
+  <div style="float: right">
     <nz-pagination
       [nzPageIndex]="1"
       [nzPageSize]="10"

@@ -9,3 +9,12 @@
   /* width: 100%; */
 
 }
+
+
+.mat-list-item {
+  background-color: rgb(25, 118, 210);
+}
+
+[nz-menu] {
+  width: 240px;
+}
