@@ -79,9 +79,18 @@ export class ManagePlaceService extends baseService {
   }
   manageCityID: any
 
-  getWards(): Observable<ManagePlace[]> {
+  getWardsbasedOnUser(): Observable<ManagePlace[]> {
     this.manageCityID = localStorage.getItem('manageCityID');
+    console.log(this.manageCityID)
+    return this.http.get<ManagePlace[]>(
+      this.pathAPI + 'ManagePlace/GetByType?citytyp=' + this.manageCityID + '&typeid=1',
+      super.header()
+    ); //.pipe(catchError(super.handleError));
+  }
 
+  getWards(): Observable<ManagePlace[]> {
+    
+    console.log(this.manageCityID)
     return this.http.get<ManagePlace[]>(
       this.pathAPI + 'ManagePlace/GetByType?citytyp=' + this.manageCityID + '&typeid=1',
       super.header()

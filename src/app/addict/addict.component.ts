@@ -300,9 +300,10 @@ export class AddictComponent implements OnInit {
   }
 
   public loadWard() {
-    this.placeService.getWards().subscribe({
+    this.placeService.getWardsbasedOnUser().subscribe({
       next: (data) => {
         this.wardData = data
+        // Filter admin case
         this.wardData = this.wardData.filter((i: any) => i.placeName !== "Admin")
         
       } 

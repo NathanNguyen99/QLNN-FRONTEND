@@ -59,10 +59,10 @@ export class userEditComponent implements OnInit {
   }
 
   public loadPlaceData() {
-    this.placeService.getWards().subscribe(
+    this.placeService.getAll().subscribe(
       (data) => {
-        //console.log(data);
         this.placeData = data
+        //console.log(this.placeData);
         this.wardFilter = this.placeData.filter(
           (r: any) => r.manageCityID === this.data.manageCityID
         )
