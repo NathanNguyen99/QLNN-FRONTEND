@@ -175,6 +175,18 @@ export class AddictComponent implements OnInit {
     this.isActive = true; 
   }
 
+  changeCustomer(e: any) {
+    this.service.getByPlace(e).subscribe(
+      (data) => {this.dataSource = new DataSource({
+        store: data,
+        reshapeOnPush: true,
+      })
+        this.rountCount = data.length;
+      },
+      (err) => console.log(err)
+    )
+  }
+
   onDrop(event: any) {
     event.preventDefault();
     event.stopPropagation();
@@ -241,6 +253,7 @@ export class AddictComponent implements OnInit {
       });
     }});
   } 
+
 
   removeData() {
     this.inputFile.nativeElement.value = '';
@@ -310,10 +323,6 @@ export class AddictComponent implements OnInit {
       },
       (err: any) => console.log(err)
     );
-  }
-
-  public checkWardData() {
-    
   }
 
   public loadWard() {
@@ -628,11 +637,12 @@ export class AddictComponent implements OnInit {
 
   getFilteredPlaces(options: any) {
     //console.log(options);
+    console.log(options.data.placeTypeID);
     return {
       store: this.managePlaceData,
       filter: options.data
         ? ['placeTypeID', '=', options.data.placeTypeID]
-        : null,
+        : null, 
     };
     
   }

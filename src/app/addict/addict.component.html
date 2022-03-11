@@ -5,14 +5,14 @@
       style="padding-left: 5px; font-weight: bold"
     >
       <div>
+        <span style="margin-left: 5px;" class="text count">Bộ lọc thống kê </span>
         <div class="column">
-          <nz-select [(ngModel)]="singleValue" nzShowSearch nzPlaceHolder="Chọn vùng quản lý">
-            <nz-option *ngFor="let option of manageCityTypes" [nzLabel]="option.manageCityTypeName" [nzValue]="option.oid"></nz-option>
+
+          <nz-select style="width: 200px" [(ngModel)]="singleValue" (ngModelChange)="changeCustomer($event)" nzShowSearch nzPlaceHolder="Chọn vùng quản lý">
+            <nz-option *ngFor="let option of wardData" [nzLabel]="option.placeName" [nzValue]="option.oid"></nz-option>
           </nz-select>
-          <nz-select [(ngModel)]="doubleValue" nzShowSearch nzPlaceHolder="Chọn vùng quản lý">
-            <nz-option *ngFor="let option of manageCityTypes" [nzLabel]="option.manageCityTypeName" [nzValue]="option.oid"></nz-option>
-          </nz-select>
-          <span class="text count">Tổng số người : </span>
+        
+          <span style="margin-left: 5px;" class="text count">Tổng số người : </span>
           <span class="value">{{ rountCount }}</span>
         </div>
       </div>
@@ -36,6 +36,7 @@
       (onRowInserting)="insertRow($event)"
       (onRowRemoved)="deleteRow($event.data)"
       (onSaved)="FormSaved($event)"
+      
     >
       <dxo-master-detail [enabled]="true" template="detail"></dxo-master-detail>
       <dxo-filter-row [visible]="true"></dxo-filter-row>
