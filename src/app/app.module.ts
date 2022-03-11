@@ -46,6 +46,7 @@ import {
   DxPieChartModule,
   DxTextAreaModule,
   DxTabPanelModule,
+  DxValidatorModule,
   DxLoadPanelModule,
 } from 'devextreme-angular';
 import { DxFileUploaderModule } from 'devextreme-angular/ui/file-uploader';
@@ -72,7 +73,7 @@ import { UserComponent } from './user/user.component';
 import { userEditComponent } from './user/user-edit/user-edit.component';
 import { Dashboard1Component } from './dashboard1/dashboard1.component';
 import { LoadingComponent } from './Shared/loading/loading.component';
-import { Dashboard2Component } from './dashboard2/dashboard2.component';
+//import { Dashboard2Component } from './dashboard2/dashboard2.component';
 
 import { AuthGuard } from './Helpers/canActivateAuthGuard';
 import { Helpers } from './Helpers/helpers';
@@ -92,6 +93,7 @@ import { AddictDrugsService } from './Shared/Services/addictdrug.service';
 import { AddictPlaceService } from './Shared/Services/addictplace.service';
 import { addictService } from './Shared/Services/addict.service';
 import { DashBoardService } from './Shared/Services/Dash.service';
+import { AutoLogoutService } from './Shared/Services/auto-logout.service';
 import { HomeComponent } from './home/home.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { LoginlayoutComponent } from './loginlayout/loginlayout.component';
@@ -168,7 +170,7 @@ export const configFactory = (configService: ConfigService) => {
     userEditComponent,
     Dashboard1Component,
     LoadingComponent,
-    Dashboard2Component,
+    //Dashboard2Component,
     HomeComponent,
     NavigationComponent,
     LoginlayoutComponent,
@@ -234,6 +236,7 @@ export const configFactory = (configService: ConfigService) => {
     NzTableModule,
     NzPaginationModule,
     NzMenuModule,
+    DxValidatorModule,
     NzPopoverModule,
     NzTabsModule,
     NzAutocompleteModule
@@ -245,6 +248,7 @@ export const configFactory = (configService: ConfigService) => {
       deps: [ConfigService],
       multi: true
     },
+    AutoLogoutService,
     MultilevelMenuService,
     NzMessageService,
     NavService,

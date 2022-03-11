@@ -28,8 +28,6 @@ export class Helpers  {
             window.localStorage['token'] === '') {
             return '';
         }
-        // let obj = JSON.parse(window.localStorage['token']);
-        // return obj.token;
         
         return window.localStorage['token'];
     }
@@ -57,11 +55,7 @@ export class Helpers  {
     private setStorageToken(value: any):void {
         if (value==undefined)
         {
-            window.localStorage['token'] = undefined;
-            window.localStorage['userid'] = undefined;
-            window.localStorage['fullname'] = undefined;
-            window.localStorage['placeID'] = undefined;
-            window.localStorage['isAdmin'] = undefined;
+            localStorage.clear();
         }
         else {
             window.localStorage['token'] = value.token;

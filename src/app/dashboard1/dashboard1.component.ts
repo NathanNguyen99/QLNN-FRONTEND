@@ -1,5 +1,6 @@
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { DxChartComponent, DxPieChartComponent } from 'devextreme-angular';
+import { Helpers } from '../Helpers/helpers';
 import {
   Dash01,
   Dash02,
@@ -34,13 +35,20 @@ export class Dashboard1Component implements AfterViewChecked {
 
   dataSource: Data[];
   DashClassify: DashClassify[] = [];
-  DashAddictType: DashAddictType[] = []
-  constructor(private dbService: DashBoardService) {}
+  DashAddictType: DashAddictType[] = [];
+  constructor(private dbService: DashBoardService, private helper: Helpers) {}
 
   ngOnInit(): void {
-    this.dbService.getDashBoard01().subscribe((p) => {
-      this.dash01s = p;
-    });
+    this.dbService.getDashBoard01().subscribe(
+      (p) => {
+        this.dash01s = p;
+      },
+      (err) => {
+        console.log(err.status);
+        if (err.status == 401) 
+          this.helper.logout();
+      }
+    );
 
     this.dbService.getDashBoard02().subscribe((p) => {
       this.dash02s = p;
@@ -59,7 +67,10 @@ export class Dashboard1Component implements AfterViewChecked {
     });
 
     this.dbService.getDashBoardClassify().subscribe((p) => {
-      this.DashClassify = p.map(response => ({...response, qty: response.qty / 100}))
+      this.DashClassify = p.map((response) => ({
+        ...response,
+        qty: response.qty / 100,
+      }));
     });
 
     //this.dataSource = this.dbService.getData();

@@ -8,6 +8,7 @@ import { Helpers } from './../Helpers/helpers';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { AutoLogoutService } from '../Shared/Services/auto-logout.service';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authenticationService: AuthenticationService,
     private alertService: AlertService,
-    private navService: NavService
+    private navService: NavService,
+    private _autoLogoutService: AutoLogoutService
   ) {
     // if (this.authenticationService.currentUserValue) {
     //   this.router.navigate(['/']);
@@ -60,16 +62,13 @@ export class LoginComponent implements OnInit {
         this.helpers.setToken(token);
         
         localStorage.setItem('placeName', token.placeName);
-
         localStorage.setItem('placeId', token.placeId);
         localStorage.setItem('userid', token.userid);
-        
-        
         localStorage.setItem('manageCityID', token.manageCityID);
         //localStorage.setItem('manageCityTypeID', token.manageCityTypeID);
         
         this.currentUserSubject.next(token.placeId);
-        //console.log(token.placeId)
+        this._autoLogoutService.check();
         this.router.navigate(['/home/dashboard']);
         return token.placeId;
       },

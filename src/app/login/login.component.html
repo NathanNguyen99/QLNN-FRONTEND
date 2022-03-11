@@ -28,13 +28,17 @@
                     <input
                       class="input wide mb16 mt8 username" style="margin-top: 0.5rem;"
                       matInput
+                      required
                       formControlName="username"
                       [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
                     /><br />
+                    
+
                     <label for="password" class="label">Mật khẩu</label><br />
                     <input
                       class="input wide mb16 mt8 password" style="margin-top: 0.5rem;"
                       type="password"
+                      required
                       matInput
                       formControlName="password"
                     />

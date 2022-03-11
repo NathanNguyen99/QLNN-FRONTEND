@@ -1,5 +1,23 @@
 <nz-tabset nzType="card">
   <nz-tab nzTitle="Thông tin" style="margin: 0">
+    <div
+      class="selection-summary center"
+      style="padding-left: 5px; font-weight: bold"
+    >
+      <div>
+        <div class="column">
+          <nz-select [(ngModel)]="singleValue" nzShowSearch nzPlaceHolder="Chọn vùng quản lý">
+            <nz-option *ngFor="let option of manageCityTypes" [nzLabel]="option.manageCityTypeName" [nzValue]="option.oid"></nz-option>
+          </nz-select>
+          <nz-select [(ngModel)]="doubleValue" nzShowSearch nzPlaceHolder="Chọn vùng quản lý">
+            <nz-option *ngFor="let option of manageCityTypes" [nzLabel]="option.manageCityTypeName" [nzValue]="option.oid"></nz-option>
+          </nz-select>
+          <span class="text count">Tổng số người : </span>
+          <span class="value">{{ rountCount }}</span>
+        </div>
+      </div>
+    </div>
+
     <dx-data-grid
       id="gridContainer"
       #dxgridMaster
@@ -28,7 +46,7 @@
         [width]="240"
         placeholder="Tìm kiếm..."
       ></dxo-search-panel>
-      
+
       <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
 
       <dxo-editing
@@ -46,7 +64,6 @@
           [width]="1200"
           [height]="850"
         >
-          
         </dxo-popup>
 
         <dxo-form [colCount]="3">
@@ -95,9 +112,12 @@
               <dxi-item dataField="complete"></dxi-item>
               <dxi-item dataField="completeDate"></dxi-item>
               <dxi-item dataField="dead"></dxi-item>
-              <dxi-item [editorOptions]="{ value: managePlaceID }" dataField="managePlaceID"></dxi-item>
+              <dxi-item
+                [editorOptions]="{ value: managePlaceID }"
+                dataField="managePlaceID"
+              ></dxi-item>
               <dxi-item dataField="createDate"></dxi-item>
-              <dxi-item 
+              <dxi-item
                 dataField="remarks3"
                 [colSpan]="3"
                 editorType="dxTextArea"
@@ -306,7 +326,6 @@
         ></dxi-button>
         <dxi-button name="delete" icon="remove" text="Xóa"></dxi-button>
       </dxi-column>
-
       <dxi-column dataField="addictCode" caption="Mã số" [width]="100">
         <dxi-validation-rule
           type="required"
@@ -362,7 +381,18 @@
           message="thông tin này không được bỏ trống"
         ></dxi-validation-rule>
       </dxi-column>
-
+      <dxi-column dataField="managePlaceID" caption="Nơi quản lý" [width]="200">
+        <dxo-lookup
+          [dataSource]="wardData"
+          valueExpr="oid"
+          displayExpr="placeName"
+        ></dxo-lookup>
+        <dxi-validation-rule
+          *ngIf="wardData > 1"
+          type="required"
+          message="thông tin này không được bỏ trống"
+        ></dxi-validation-rule>
+      </dxi-column>
       <dxi-column
         dataField="otherName"
         [visible]="false"
@@ -528,18 +558,6 @@
         [width]="200"
       ></dxi-column>
 
-      <dxi-column dataField="managePlaceID" caption="Nơi quản lý" [width]="200">
-        <dxo-lookup
-          [dataSource]="wardData"
-          valueExpr="oid"
-          displayExpr="placeName"
-        ></dxo-lookup>
-        <dxi-validation-rule
-        type="required"
-        message="thông tin này không được bỏ trống"
-      ></dxi-validation-rule>
-      </dxi-column>
-
       <dxi-column
         dataField="remarks1"
         caption="Ghi chú"
@@ -607,71 +625,81 @@
         <detail-view [key]="item.data.oid" [rowData]="item.data"></detail-view>
       </div>
     </dx-data-grid>
-
-    <div
-      class="selection-summary center"
-      style="padding-top: 8px; padding-left: 5px; font-weight: bold"
-    >
-      <div>
-        <div class="column">
-          <span class="text count">Tổng số người : </span>
-          <span class="value">{{ rountCount }}</span>
-        </div>
-      </div>
-    </div>
   </nz-tab>
   <nz-tab nzTitle="Thêm">
-    <div style="display: flex; flex-direction: row;">
-
-      <div class="input-section"(dragover)="onDragOver($event)"
-          (drop)="onDrop($event)"
-          (dragleave)="onDragLeave($event)"
-          [class.active]="isActive" #fileDrop >
-            <div class="upload_onHovering">
-              <i nz-icon nzType="up" nzTheme="outline"></i>
-            </div>
-            <div id="upload_button" >
-              <label>
-                <input
-                  type="file"
-                  #inputFile
-                  ngf-select
-                  ng-model="new_files"
-                  (change)="onChange($event)"
-                />
-                <span class="title">
-                  <i style="font-size: 35px; color: #007cce;" nz-icon nzType="inbox"></i>
-                  <br /><div style="font-weight: 500;">Chọn File</div> 
-                  <div class="click-button">
-                    <i nz-icon nzType="upload"></i>
-                    ấn ở đây
-                  </div>
-                    
-                  </span
-                >
-              </label>
-            </div>
-            
-          </div>
+    <div style="display: flex; flex-direction: row">
+      <div
+        class="input-section"
+        (dragover)="onDragOver($event)"
+        (drop)="onDrop($event)"
+        (dragleave)="onDragLeave($event)"
+        [class.active]="isActive"
+        #fileDrop
+      >
+        <div class="upload_onHovering">
+          <i nz-icon nzType="up" nzTheme="outline"></i>
+        </div>
+        <div id="upload_button">
+          <label>
+            <input
+              type="file"
+              #inputFile
+              ngf-select
+              ng-model="new_files"
+              (change)="onChange($event)"
+            />
+            <span class="title">
+              <i
+                style="font-size: 35px; color: #007cce"
+                nz-icon
+                nzType="inbox"
+              ></i>
+              <br />
+              <div style="font-weight: 500">Chọn File</div>
+              <div class="click-button">
+                <i nz-icon nzType="upload"></i>
+                ấn ở đây
+              </div>
+            </span>
+          </label>
+        </div>
+      </div>
       <!-- <input type="file" (change)="onChange($event)" #inputFile /> -->
 
-      <div style="display: flex; flex-direction: column;">
-        <button nz-button nzType="primary" [disabled]="activeButton" style="border: 1px solid rgb(156, 156, 156);" (click)="removeData()">
+      <div style="display: flex; flex-direction: column">
+        <button
+          nz-button
+          nzType="primary"
+          [disabled]="activeButton"
+          style="border: 1px solid rgb(156, 156, 156)"
+          (click)="removeData()"
+        >
           Xóa Dữ Liệu
         </button>
-        <button nz-button nzType="primary" [disabled]="activeButton" style="margin-top: 0.5rem; border: 1px solid rgb(156, 156, 156);" (click)="uploadFile()">
+        <button
+          nz-button
+          nzType="primary"
+          [disabled]="activeButton"
+          style="margin-top: 0.5rem; border: 1px solid rgb(156, 156, 156)"
+          (click)="uploadFile()"
+        >
           Tải lên Database
-        </button> 
-        <button  nz-button style="margin-top: 0.5rem;" nzType="primary" (click)="handleExportClick()">
+        </button>
+        <button
+          nz-button
+          style="margin-top: 0.5rem"
+          nzType="primary"
+          (click)="handleExportClick()"
+        >
           <i nz-icon nzType="export" nzTheme="outline"></i>
           Xuất File Excel
         </button>
-      </div>  
+      </div>
     </div>
-    
+
     <div *ngIf="isExcelFile === false">Đây không phải File Excel</div>
     <span *ngIf="spinnerEnabled" class="k-i-loading k-icon"></span>
-    
+
     <table>
       <th *ngFor="let key of keys">
         {{ key }}
@@ -682,6 +710,5 @@
         </td>
       </tr>
     </table>
-    
   </nz-tab>
 </nz-tabset>

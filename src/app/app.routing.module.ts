@@ -10,7 +10,7 @@ import { ManageplaceComponent } from './manageplace/manageplace.component';
 import { AddictComponent } from './addict/addict.component';
 import { UserComponent } from './user/user.component';
 import { Dashboard1Component } from './dashboard1/dashboard1.component';
-import { Dashboard2Component } from './dashboard2/dashboard2.component';
+//import { Dashboard2Component } from './dashboard2/dashboard2.component';
 import { HomeComponent } from './home/home.component';
 import { LoginlayoutComponent } from './loginlayout/loginlayout.component';
 import { DatagridTestComponent } from './datagrid-test/datagrid-test.component';
@@ -140,18 +140,6 @@ const routes: Routes = [
     ],
   },
 
-  // { path: 'dashboard', component: Dashboard2Component},
-  //   {path: 'addict', children: [
-  //        {path: 'addict', component: AddictComponent},
-  //     ]},
-  //   {path: 'category', children: [
-  //       {path: 'drugs', component: DrugsComponent },
-  //       {path: 'manageplace', component: ManageplaceComponent},
-  //       {path: 'edulevel', component: EdulevelComponent}
-  //   ]},
-  //   {path: 'system', children: [
-  //     {path: 'user-account', component: UserComponent}
-  // ]}
 ];
 
 @NgModule({
@@ -161,4 +149,3 @@ const routes: Routes = [
 })
 export class AppRoutingModule {}
 
-//RouterModule.forRoot(routes, { useHash: true })

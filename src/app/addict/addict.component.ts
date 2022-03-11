@@ -28,6 +28,7 @@ import {
   Religion,
   Ingredient,
   Marriage,
+  MangeCityTypeData,
 } from './../Shared/Services/DATA';
 import { AddictClassifyService } from '../Shared/Services/addictclassify.service';
 import { ClassifyService } from '../Shared/Services/classify.service';
@@ -39,6 +40,8 @@ import { AddictManagePlace } from '../Shared/Models/AddictManagePlace';
 import { saveAs } from 'file-saver';
 import { HttpErrorResponse } from '@angular/common/http';
 import * as XLSX from 'xlsx';
+import { Helpers } from '../Helpers/helpers';
+import { FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-addict',
@@ -59,7 +62,11 @@ export class AddictComponent implements OnInit {
   @ViewChild('dxgridMaster', { static: false }) GridMaster:
     | DxDataGridComponent
     | undefined;
-  //dataSource: Addict[];
+
+  // Filter data  
+  public manageCityTypes = MangeCityTypeData;
+  singleValue = 'a10';
+  doubleValue = 'a20';
   useData: any;
   drugData: any;
   classifyData: any;
@@ -70,7 +77,7 @@ export class AddictComponent implements OnInit {
 
   addictVehicleData: any;
   provinceData: any;
-
+  control: FormControl;
   //addictDrugData$ : Observable<AddictDrugs[]>;
   placeTypeData = PlacetypeData;
   genderData = GenderData;
@@ -113,13 +120,16 @@ export class AddictComponent implements OnInit {
     private _addictVehicleService: AddictVehicleService,
     private alertservice: AlertService,
     private config: AppConfig,
-    private confirmSv: ConfirmService
+    private confirmSv: ConfirmService,
+    private helper: Helpers,
+    private fb: FormBuilder
   ) {
     //this.dataSource = service.generateData(100000);
 
     this.getFilteredPlaces = this.getFilteredPlaces.bind(this);
   }
   ngOnInit(): void {
+    this.control = this.fb.control([2]);
     this.loadData();
     this.loadWard();
     this.loadplaceOfBirth();
@@ -146,7 +156,7 @@ export class AddictComponent implements OnInit {
     );
       
     //this.downloadFile(this.response);
-  }
+  } 
 
   // Upload Part
   spinnerEnabled = false;
@@ -263,7 +273,10 @@ export class AddictComponent implements OnInit {
 
           this.rountCount = data.length;
         },
-        error: (err) => console.log(err),
+        error: (err) => {
+          if (err.status == 401) 
+            this.helper.logout();
+        },
       });
     } else {
       this.service.getByPlace(window.localStorage['placeID']).subscribe({
@@ -299,15 +312,17 @@ export class AddictComponent implements OnInit {
     );
   }
 
+  public checkWardData() {
+    
+  }
+
   public loadWard() {
     this.placeService.getWardsbasedOnUser().subscribe({
       next: (data) => {
         this.wardData = data
         // Filter admin case
-        this.wardData = this.wardData.filter((i: any) => i.placeName !== "Admin")
-        
-      } 
-        ,
+        this.wardData = this.wardData.filter((i: any) => i.placeName !== "Admin" )
+      },
       error: (e) => console.error(e),
     });
 
@@ -449,9 +464,7 @@ export class AddictComponent implements OnInit {
     e.data.places = this.addictPlaceData;
     e.data.drugs = this.addictDrugData;
     e.data.vehicle = this.addictVehicleData;
-
-    //this.dataSource.store(
-
+    
     e.data.createDate = new Date();
     e.data.oid = Guid.create().toString();
     e.data.createUser = window.localStorage['userid'];
@@ -476,6 +489,10 @@ export class AddictComponent implements OnInit {
   }
   insertRow(e: any) {
     var model: Addict = e.data;
+    
+    if(this.wardData.length == 1) {
+      model.managePlaceID = this.wardData[0].oid;
+    }
     model.classifys = this.addictClassifyData;
     model.places = this.addictPlaceData;
     model.drugs = this.addictDrugData;
@@ -617,6 +634,7 @@ export class AddictComponent implements OnInit {
         ? ['placeTypeID', '=', options.data.placeTypeID]
         : null,
     };
+    
   }
 
   onEditorPreparing(e: any) {
